@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pdfrx/pdfrx.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../models/edition.dart';
 import '../../services/edition_service.dart';
 
@@ -27,6 +28,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('N°${widget.edition.numero} — ${widget.edition.titre}'),
@@ -35,13 +37,13 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
         future: _pdfFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Telechargement de l\'edition...'),
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(l10n.downloadingEdition),
                 ],
               ),
             );
@@ -55,9 +57,8 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                   children: [
                     const Icon(Icons.error_outline, size: 48),
                     const SizedBox(height: 16),
-                    const Text(
-                      'Impossible d\'ouvrir cette edition.\n'
-                      'Verifiez votre connexion ou votre abonnement.',
+                    Text(
+                      l10n.pdfOpenError,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
@@ -66,7 +67,7 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                         _pdfFuture =
                             _editionService.getLocalPdf(widget.edition);
                       }),
-                      child: const Text('Reessayer'),
+                      child: Text(l10n.retry),
                     ),
                   ],
                 ),

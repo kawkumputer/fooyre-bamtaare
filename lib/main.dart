@@ -4,6 +4,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'config/supabase_config.dart';
+import 'l10n/app_localizations.dart';
+import 'l10n/fallback_localizations.dart';
 import 'models/profile.dart';
 import 'screens/admin/admin_upload_screen.dart';
 import 'screens/admin/admin_users_screen.dart';
@@ -11,11 +13,18 @@ import 'screens/auth/login_screen.dart';
 import 'screens/editions/editions_list_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'services/auth_service.dart';
+import 'services/locale_controller.dart';
 import 'theme/app_theme.dart';
+
+/// Controleur de langue global (pulaar/francais), accessible partout.
+final localeController = LocaleController();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Le pulaar n'a pas de locale intl dédiée : on formate les dates avec
+  // le francais dans les deux langues.
   await initializeDateFormatting('fr');
+  await localeController.load();
   await Supabase.initialize(
     url: SupabaseConfig.url,
     publishableKey: SupabaseConfig.anonKey,
@@ -28,20 +37,29 @@ class FooyreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fooyre Ɓamtaare',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      themeMode: ThemeMode.system,
-      locale: const Locale('fr'),
-      supportedLocales: const [Locale('fr')],
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      home: const AuthGate(),
+    return ValueListenableBuilder<Locale>(
+      valueListenable: localeController,
+      builder: (context, locale, _) {
+        return MaterialApp(
+          title: 'Fooyre Ɓamtaare',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          themeMode: ThemeMode.system,
+          locale: locale,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            // Repli pour les widgets systeme en mode pulaar (voir fichier).
+            FallbackMaterialLocalizationsDelegate(),
+            FallbackCupertinoLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          home: const AuthGate(),
+        );
+      },
     );
   }
 }
@@ -109,6 +127,7 @@ class _HomeShellState extends State<HomeShell> {
     }
 
     final isAdmin = _profile?.isAdmin ?? false;
+    final l10n = AppLocalizations.of(context);
 
     final screens = <Widget>[
       EditionsListScreen(profile: _profile),
@@ -123,27 +142,27 @@ class _HomeShellState extends State<HomeShell> {
     ];
 
     final destinations = <NavigationDestination>[
-      const NavigationDestination(
-        icon: Icon(Icons.menu_book_outlined),
-        selectedIcon: Icon(Icons.menu_book),
-        label: 'Editions',
+      NavigationDestination(
+        icon: const Icon(Icons.menu_book_outlined),
+        selectedIcon: const Icon(Icons.menu_book),
+        label: l10n.navEditions,
       ),
       if (isAdmin)
-        const NavigationDestination(
-          icon: Icon(Icons.people_outline),
-          selectedIcon: Icon(Icons.people),
-          label: 'Abonnes',
+        NavigationDestination(
+          icon: const Icon(Icons.people_outline),
+          selectedIcon: const Icon(Icons.people),
+          label: l10n.navSubscribers,
         ),
       if (isAdmin)
-        const NavigationDestination(
-          icon: Icon(Icons.cloud_upload_outlined),
-          selectedIcon: Icon(Icons.cloud_upload),
-          label: 'Publier',
+        NavigationDestination(
+          icon: const Icon(Icons.cloud_upload_outlined),
+          selectedIcon: const Icon(Icons.cloud_upload),
+          label: l10n.navPublish,
         ),
-      const NavigationDestination(
-        icon: Icon(Icons.person_outline),
-        selectedIcon: Icon(Icons.person),
-        label: 'Profil',
+      NavigationDestination(
+        icon: const Icon(Icons.person_outline),
+        selectedIcon: const Icon(Icons.person),
+        label: l10n.navProfile,
       ),
     ];
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/app_logo.dart';
 import 'register_screen.dart';
@@ -38,7 +39,10 @@ class _LoginScreenState extends State<LoginScreen> {
     } on AuthException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur : ${e.message}')),
+          SnackBar(
+            content:
+                Text(AppLocalizations.of(context).errorWithMessage(e.message)),
+          ),
         );
       }
     } finally {
@@ -48,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: Center(
@@ -70,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Jaaynde lewru e pulaar',
+                    l10n.appSubtitle,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
@@ -81,24 +86,24 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email_outlined),
+                    decoration: InputDecoration(
+                      labelText: l10n.email,
+                      prefixIcon: const Icon(Icons.email_outlined),
                     ),
                     validator: (v) => v == null || !v.contains('@')
-                        ? 'Email invalide'
+                        ? l10n.invalidEmail
                         : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Mot de passe',
-                      prefixIcon: Icon(Icons.lock_outline),
+                    decoration: InputDecoration(
+                      labelText: l10n.password,
+                      prefixIcon: const Icon(Icons.lock_outline),
                     ),
                     validator: (v) => v == null || v.length < 6
-                        ? 'Au moins 6 caracteres'
+                        ? l10n.passwordTooShort
                         : null,
                   ),
                   const SizedBox(height: 28),
@@ -110,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: 20,
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
-                        : const Text('Se connecter'),
+                        : Text(l10n.login),
                   ),
                   const SizedBox(height: 12),
                   TextButton(
@@ -119,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         builder: (_) => const RegisterScreen(),
                       ),
                     ),
-                    child: const Text('Pas de compte ? S\'inscrire'),
+                    child: Text(l10n.noAccountSignUp),
                   ),
                 ],
               ),

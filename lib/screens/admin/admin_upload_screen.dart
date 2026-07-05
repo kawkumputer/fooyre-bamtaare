@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../models/edition.dart';
 import '../../services/admin_service.dart';
 import '../../services/edition_service.dart';
@@ -56,11 +57,12 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
   }
 
   Future<void> _publish() async {
+    final l10n = AppLocalizations.of(context);
     if (!_formKey.currentState!.validate()) return;
     final file = _pickedFile;
     if (file == null || file.bytes == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Choisissez d\'abord un fichier PDF.')),
+        SnackBar(content: Text(l10n.chooseFileFirst)),
       );
       return;
     }
@@ -75,7 +77,7 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Edition publiee !')),
+          SnackBar(content: Text(l10n.editionPublished)),
         );
         setState(() {
           _pickedFile = null;
@@ -87,8 +89,9 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Erreur : $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorWithMessage('$e'))),
+        );
       }
     } finally {
       if (mounted) setState(() => _uploading = false);
@@ -96,26 +99,23 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
   }
 
   Future<void> _confirmDelete(Edition edition) async {
+    final l10n = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Supprimer cette edition ?'),
-        content: Text(
-          'N°${edition.numero} — ${edition.titre}\n\n'
-          'Le fichier PDF et l\'edition seront supprimes '
-          'definitivement.',
-        ),
+        title: Text(l10n.deleteEditionTitle),
+        content: Text(l10n.deleteEditionBody(edition.numero, edition.titre)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: const Text('Annuler'),
+            child: Text(l10n.cancel),
           ),
           FilledButton(
             style: FilledButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.error,
             ),
             onPressed: () => Navigator.pop(context, true),
-            child: const Text('Supprimer'),
+            child: Text(l10n.delete),
           ),
         ],
       ),
@@ -126,22 +126,24 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
       await _adminService.deleteEdition(edition);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Edition supprimee.')),
+          SnackBar(content: Text(l10n.editionDeleted)),
         );
         _reloadEditions();
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Erreur : $e')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorWithMessage('$e'))),
+        );
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Publier une edition')),
+      appBar: AppBar(title: Text(l10n.publishEdition)),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -155,33 +157,31 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
                   TextFormField(
                     controller: _numeroController,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Numero de l\'edition',
-                      hintText: 'ex : 262',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.editionNumber,
+                      hintText: l10n.editionNumberHint,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (v) =>
                         v == null || int.tryParse(v.trim()) == null
-                            ? 'Numero invalide'
+                            ? l10n.invalidNumber
                             : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _titreController,
-                    decoration: const InputDecoration(
-                      labelText: 'Titre',
-                      hintText: 'ex : Fooyre Ɓamtaare 262',
-                      border: OutlineInputBorder(),
+                    decoration: InputDecoration(
+                      labelText: l10n.title,
+                      hintText: l10n.titleHint,
+                      border: const OutlineInputBorder(),
                     ),
                     validator: (v) =>
-                        v == null || v.trim().isEmpty ? 'Titre requis' : null,
+                        v == null || v.trim().isEmpty ? l10n.titleRequired : null,
                   ),
                   const SizedBox(height: 16),
                   SwitchListTile(
-                    title: const Text('Edition gratuite'),
-                    subtitle: const Text(
-                      'Accessible a tous, meme sans abonnement',
-                    ),
+                    title: Text(l10n.freeEdition),
+                    subtitle: Text(l10n.freeEditionSubtitle),
                     value: _gratuit,
                     onChanged: (v) => setState(() => _gratuit = v),
                   ),
@@ -189,9 +189,7 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
                   OutlinedButton.icon(
                     icon: const Icon(Icons.attach_file),
                     label: Text(
-                      _pickedFile == null
-                          ? 'Choisir le fichier PDF'
-                          : _pickedFile!.name,
+                      _pickedFile == null ? l10n.choosePdf : _pickedFile!.name,
                       overflow: TextOverflow.ellipsis,
                     ),
                     onPressed: _uploading ? null : _pickPdf,
@@ -205,7 +203,7 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Icon(Icons.cloud_upload_outlined),
-                    label: Text(_uploading ? 'Publication...' : 'Publier'),
+                    label: Text(_uploading ? l10n.publishing : l10n.publish),
                     onPressed: _uploading ? null : _publish,
                   ),
                 ],
@@ -215,7 +213,7 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
             const Divider(),
             const SizedBox(height: 8),
             Text(
-              'Editions publiees',
+              l10n.publishedEditions,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -244,6 +242,7 @@ class _EditionsAdminList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return FutureBuilder<List<Edition>>(
       future: future,
       builder: (context, snapshot) {
@@ -258,17 +257,17 @@ class _EditionsAdminList extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                const Text('Erreur de chargement des editions.'),
-                TextButton(onPressed: onRetry, child: const Text('Reessayer')),
+                Text(l10n.loadErrorEditions),
+                TextButton(onPressed: onRetry, child: Text(l10n.retry)),
               ],
             ),
           );
         }
         final editions = snapshot.data ?? [];
         if (editions.isEmpty) {
-          return const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('Aucune edition publiee pour le moment.'),
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(l10n.noEditionsYet),
           );
         }
         return Column(
@@ -285,14 +284,14 @@ class _EditionsAdminList extends StatelessWidget {
                 ),
                 title: Text(edition.titre),
                 subtitle: Text(
-                  '$dateStr — ${edition.gratuit ? "Gratuit" : "Abonnes"}',
+                  '$dateStr — ${edition.gratuit ? l10n.free : l10n.subscribers}',
                 ),
                 trailing: IconButton(
                   icon: Icon(
                     Icons.delete_outline,
                     color: Theme.of(context).colorScheme.error,
                   ),
-                  tooltip: 'Supprimer',
+                  tooltip: l10n.delete,
                   onPressed: () => onDelete(edition),
                 ),
               ),

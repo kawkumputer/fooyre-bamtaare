@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../models/edition.dart';
 import '../../models/profile.dart';
 import '../../services/edition_service.dart';
@@ -34,6 +35,7 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     // L'admin a acces a tout : on le traite comme un abonne (pas de
     // banniere d'invitation a s'abonner).
     final hasSubscription = (widget.profile?.hasActiveSubscription ?? false) ||
@@ -78,7 +80,7 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
                   Padding(
                     padding: const EdgeInsets.all(24),
                     child: Text(
-                      'Erreur de chargement.\nTirez vers le bas pour reessayer.',
+                      l10n.loadError,
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.bodyLarge,
                     ),
@@ -98,10 +100,7 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    hasSubscription
-                        ? 'Aucune edition disponible pour le moment.'
-                        : 'Aucune edition gratuite disponible.\n'
-                            'Abonnez-vous pour acceder au journal.',
+                    hasSubscription ? l10n.noEditions : l10n.noFreeEditions,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -114,7 +113,7 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
               itemBuilder: (context, index) {
                 // Banniere d'invitation a s'abonner pour les non-abonnes.
                 if (!hasSubscription && index == 0) {
-                  return _SubscribeBanner(profile: widget.profile);
+                  return const _SubscribeBanner();
                 }
                 final edition =
                     editions[hasSubscription ? index : index - 1];
@@ -196,7 +195,7 @@ class _EditionTile extends StatelessWidget {
               const SizedBox(width: 8),
               if (edition.gratuit)
                 Chip(
-                  label: const Text('Gratuit'),
+                  label: Text(AppLocalizations.of(context).free),
                   visualDensity: VisualDensity.compact,
                   backgroundColor: scheme.secondaryContainer,
                   labelStyle: TextStyle(
@@ -215,12 +214,11 @@ class _EditionTile extends StatelessWidget {
 }
 
 class _SubscribeBanner extends StatelessWidget {
-  final Profile? profile;
-
-  const _SubscribeBanner({this.profile});
+  const _SubscribeBanner();
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
     return Card(
       margin: const EdgeInsets.all(12),
@@ -238,7 +236,7 @@ class _SubscribeBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Abonnez-vous a Fooyre Ɓamtaare',
+                    l10n.subscribeTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: scheme.onTertiaryContainer,
                           fontWeight: FontWeight.w700,
@@ -246,9 +244,7 @@ class _SubscribeBanner extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Pour lire toutes les editions, contactez l\'editeur pour '
-                    'un abonnement de 3 ou 5 mois (Bankily, Wave, virement...). '
-                    'Votre acces sera active des reception du paiement.',
+                    l10n.subscribeBody,
                     style: TextStyle(color: scheme.onTertiaryContainer),
                   ),
                 ],

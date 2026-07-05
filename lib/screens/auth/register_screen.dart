@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../services/auth_service.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -43,17 +44,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (mounted) {
         // Selon la config Supabase, une confirmation email peut etre
         // demandee avant la premiere connexion.
+        final l10n = AppLocalizations.of(context);
         Navigator.of(context).pop();
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Compte cree ! Verifiez votre email si demande.'),
-          ),
+          SnackBar(content: Text(l10n.accountCreated)),
         );
       }
     } on AuthException catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erreur : ${e.message}')),
+          SnackBar(
+            content:
+                Text(AppLocalizations.of(context).errorWithMessage(e.message)),
+          ),
         );
       }
     } finally {
@@ -63,8 +66,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Creer un compte')),
+      appBar: AppBar(title: Text(l10n.createAccount)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
@@ -75,45 +79,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 TextFormField(
                   controller: _nomController,
-                  decoration: const InputDecoration(
-                    labelText: 'Nom complet',
-                    prefixIcon: Icon(Icons.person_outline),
+                  decoration: InputDecoration(
+                    labelText: l10n.fullName,
+                    prefixIcon: const Icon(Icons.person_outline),
                   ),
                   validator: (v) =>
-                      v == null || v.trim().isEmpty ? 'Nom requis' : null,
+                      v == null || v.trim().isEmpty ? l10n.nameRequired : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _telephoneController,
                   keyboardType: TextInputType.phone,
-                  decoration: const InputDecoration(
-                    labelText: 'Telephone (optionnel)',
-                    helperText: 'Utile pour le paiement Bankily / Wave',
-                    prefixIcon: Icon(Icons.phone_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.phoneOptional,
+                    helperText: l10n.phoneHelper,
+                    prefixIcon: const Icon(Icons.phone_outlined),
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email_outlined),
+                  decoration: InputDecoration(
+                    labelText: l10n.email,
+                    prefixIcon: const Icon(Icons.email_outlined),
                   ),
                   validator: (v) =>
-                      v == null || !v.contains('@') ? 'Email invalide' : null,
+                      v == null || !v.contains('@') ? l10n.invalidEmail : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Mot de passe',
-                    prefixIcon: Icon(Icons.lock_outline),
+                  decoration: InputDecoration(
+                    labelText: l10n.password,
+                    prefixIcon: const Icon(Icons.lock_outline),
                   ),
-                  validator: (v) => v == null || v.length < 6
-                      ? 'Au moins 6 caracteres'
-                      : null,
+                  validator: (v) =>
+                      v == null || v.length < 6 ? l10n.passwordTooShort : null,
                 ),
                 const SizedBox(height: 24),
                 FilledButton(
@@ -124,7 +127,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('S\'inscrire'),
+                      : Text(l10n.signUp),
                 ),
               ],
             ),

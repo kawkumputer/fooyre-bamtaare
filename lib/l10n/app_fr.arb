@@ -1,0 +1,117 @@
+{
+  "@@locale": "fr",
+
+  "appSubtitle": "Journal mensuel en pulaar",
+
+  "email": "Email",
+  "password": "Mot de passe",
+  "login": "Se connecter",
+  "noAccountSignUp": "Pas de compte ? S'inscrire",
+  "invalidEmail": "Email invalide",
+  "passwordTooShort": "Au moins 6 caracteres",
+
+  "createAccount": "Creer un compte",
+  "fullName": "Nom complet",
+  "phoneOptional": "Telephone (optionnel)",
+  "phoneHelper": "Utile pour le paiement Bankily / Wave",
+  "signUp": "S'inscrire",
+  "nameRequired": "Nom requis",
+  "accountCreated": "Compte cree ! Verifiez votre email si demande.",
+
+  "subscribeTitle": "Abonnez-vous a Fooyre Ɓamtaare",
+  "subscribeBody": "Pour lire toutes les editions, contactez l'editeur pour un abonnement (Bankily, Wave, virement...). Votre acces sera active des reception du paiement.",
+  "free": "Gratuit",
+  "subscribers": "Abonnes",
+  "loadError": "Erreur de chargement.\nTirez vers le bas pour reessayer.",
+  "noEditions": "Aucune edition disponible pour le moment.",
+  "noFreeEditions": "Aucune edition gratuite disponible.\nAbonnez-vous pour acceder au journal.",
+
+  "downloadingEdition": "Telechargement de l'edition...",
+  "pdfOpenError": "Impossible d'ouvrir cette edition.\nVerifiez votre connexion ou votre abonnement.",
+  "retry": "Reessayer",
+
+  "myProfile": "Mon profil",
+  "noPhone": "Pas de telephone",
+  "noName": "(sans nom)",
+  "subActive": "Abonnement actif",
+  "subInactive": "Pas d'abonnement actif",
+  "subExpiresOn": "Expire le {date} ({days} jours restants)",
+  "@subExpiresOn": {
+    "placeholders": {
+      "date": { "type": "String" },
+      "days": { "type": "int" }
+    }
+  },
+  "subscribeContact": "Pour vous abonner, contactez l'editeur du journal (Bankily, Wave, virement...). Votre acces sera active des reception du paiement.",
+  "adminAccount": "Compte administrateur",
+  "adminUnlimited": "Acces illimite a toutes les editions",
+  "signOut": "Se deconnecter",
+  "language": "Langue",
+
+  "subscriptionOf": "Abonnement de {name}",
+  "@subscriptionOf": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "setEndDate": "Definir la date de fin...",
+  "editEndDate": "Modifier la date de fin...",
+  "deactivateAccess": "Desactiver l'acces",
+  "accessDeactivated": "Acces desactive.",
+  "endDateHelp": "Date de fin de l'abonnement",
+  "subUntil": "Abonnement actif jusqu'au {date}.",
+  "@subUntil": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "noSubscription": "Pas d'abonnement",
+  "expiresOn": "Expire {date}",
+  "@expiresOn": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "expiresSoon": "bientot !",
+
+  "publishEdition": "Publier une edition",
+  "editionNumber": "Numero de l'edition",
+  "editionNumberHint": "ex : 262",
+  "invalidNumber": "Numero invalide",
+  "title": "Titre",
+  "titleHint": "ex : Fooyre Ɓamtaare 262",
+  "titleRequired": "Titre requis",
+  "freeEdition": "Edition gratuite",
+  "freeEditionSubtitle": "Accessible a tous, meme sans abonnement",
+  "choosePdf": "Choisir le fichier PDF",
+  "publish": "Publier",
+  "publishing": "Publication...",
+  "chooseFileFirst": "Choisissez d'abord un fichier PDF.",
+  "editionPublished": "Edition publiee !",
+  "publishedEditions": "Editions publiees",
+  "deleteEditionTitle": "Supprimer cette edition ?",
+  "deleteEditionBody": "N°{numero} — {titre}\n\nLe fichier PDF et l'edition seront supprimes definitivement.",
+  "@deleteEditionBody": {
+    "placeholders": {
+      "numero": { "type": "int" },
+      "titre": { "type": "String" }
+    }
+  },
+  "cancel": "Annuler",
+  "delete": "Supprimer",
+  "editionDeleted": "Edition supprimee.",
+  "noEditionsYet": "Aucune edition publiee pour le moment.",
+  "loadErrorEditions": "Erreur de chargement des editions.",
+
+  "navEditions": "Editions",
+  "navSubscribers": "Abonnes",
+  "navPublish": "Publier",
+  "navProfile": "Profil",
+
+  "errorWithMessage": "Erreur : {message}",
+  "@errorWithMessage": {
+    "placeholders": {
+      "message": { "type": "String" }
+    }
+  }
+}

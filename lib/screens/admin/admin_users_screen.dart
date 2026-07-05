@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../l10n/app_localizations.dart';
 import '../../models/profile.dart';
 import '../../services/admin_service.dart';
 
@@ -29,23 +30,24 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   }
 
   Future<void> _showActivateDialog(Profile user) async {
+    final l10n = AppLocalizations.of(context);
     final action = await showDialog<String>(
       context: context,
       builder: (context) => SimpleDialog(
-        title:
-            Text('Abonnement de ${user.nom.isEmpty ? "(sans nom)" : user.nom}'),
+        title: Text(
+            l10n.subscriptionOf(user.nom.isEmpty ? l10n.noName : user.nom)),
         children: [
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context, 'date'),
             child: Text(user.hasActiveSubscription
-                ? 'Modifier la date de fin...'
-                : 'Definir la date de fin...'),
+                ? l10n.editEndDate
+                : l10n.setEndDate),
           ),
           if (user.hasActiveSubscription)
             SimpleDialogOption(
               onPressed: () => Navigator.pop(context, 'deactivate'),
               child: Text(
-                'Desactiver l\'acces',
+                l10n.deactivateAccess,
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
@@ -60,7 +62,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         await _refresh();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Acces desactive.')),
+            SnackBar(content: Text(l10n.accessDeactivated)),
           );
         }
         return;
@@ -76,7 +78,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         initialDate: initial,
         firstDate: now,
         lastDate: DateTime(now.year + 5),
-        helpText: 'Date de fin de l\'abonnement',
+        helpText: l10n.endDateHelp,
       );
       if (endDate == null) return;
 
@@ -89,27 +91,28 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              'Abonnement actif jusqu\'au '
-              '${DateFormat('dd/MM/yyyy').format(endDate)}.',
+              l10n.subUntil(DateFormat('dd/MM/yyyy').format(endDate)),
             ),
           ),
         );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Erreur : $e')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text(AppLocalizations.of(context).errorWithMessage('$e'))));
       }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final dateFormat = DateFormat('dd/MM/yyyy');
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Abonnes')),
+      appBar: AppBar(title: Text(l10n.subscribers)),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder<List<Profile>>(
@@ -120,11 +123,11 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
             }
             if (snapshot.hasError) {
               return ListView(
-                children: const [
+                children: [
                   Padding(
-                    padding: EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(24),
                     child: Text(
-                      'Erreur de chargement.\nTirez vers le bas pour reessayer.',
+                      l10n.loadError,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -168,15 +171,15 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                       color: avatarIconColor,
                     ),
                   ),
-                  title: Text(user.nom.isEmpty ? '(sans nom)' : user.nom),
+                  title: Text(user.nom.isEmpty ? l10n.noName : user.nom),
                   subtitle: Text(
                     [
                       if (user.telephone != null) user.telephone!,
                       if (user.hasActiveSubscription)
-                        'Expire ${dateFormat.format(user.subscriptionEnd!)}'
-                            '${expiringSoon ? " (bientot !)" : ""}'
+                        l10n.expiresOn(dateFormat.format(user.subscriptionEnd!)) +
+                            (expiringSoon ? ' (${l10n.expiresSoon})' : '')
                       else
-                        'Pas d\'abonnement',
+                        l10n.noSubscription,
                     ].join(' — '),
                   ),
                   trailing: const Icon(Icons.edit_outlined),
