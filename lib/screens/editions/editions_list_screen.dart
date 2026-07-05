@@ -36,8 +36,31 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
   Widget build(BuildContext context) {
     final hasSubscription = widget.profile?.hasActiveSubscription ?? false;
 
+    final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(title: const Text('Fooyre Tonngoode')),
+      appBar: AppBar(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [scheme.primary, scheme.primaryContainer],
+                ),
+              ),
+              child: Icon(Icons.menu_book_rounded,
+                  size: 18, color: scheme.onPrimary),
+            ),
+            const SizedBox(width: 10),
+            const Text('Fooyre Ɓamtaare'),
+          ],
+        ),
+      ),
       body: RefreshIndicator(
         onRefresh: _refresh,
         child: FutureBuilder<List<Edition>>(
@@ -83,6 +106,7 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
               );
             }
             return ListView.builder(
+              padding: const EdgeInsets.only(top: 4, bottom: 12),
               itemCount: editions.length + (hasSubscription ? 0 : 1),
               itemBuilder: (context, index) {
                 // Banniere d'invitation a s'abonner pour les non-abonnes.
@@ -108,28 +132,78 @@ class _EditionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     final dateStr =
         DateFormat('MMMM yyyy', 'fr').format(edition.datePublication);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-          child: Text('${edition.numero}'),
-        ),
-        title: Text(edition.titre),
-        subtitle: Text(dateStr),
-        trailing: edition.gratuit
-            ? Chip(
-                label: const Text('Gratuit'),
-                visualDensity: VisualDensity.compact,
-                backgroundColor:
-                    Theme.of(context).colorScheme.secondaryContainer,
-              )
-            : const Icon(Icons.chevron_right),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(16),
         onTap: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (_) => PdfViewerScreen(edition: edition),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [scheme.primary, scheme.primaryContainer],
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '${edition.numero}',
+                  style: TextStyle(
+                    color: scheme.onPrimary,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      edition.titre,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      dateStr,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: scheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              if (edition.gratuit)
+                Chip(
+                  label: const Text('Gratuit'),
+                  visualDensity: VisualDensity.compact,
+                  backgroundColor: scheme.secondaryContainer,
+                  labelStyle: TextStyle(
+                    color: scheme.onSecondaryContainer,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
+              else
+                Icon(Icons.chevron_right, color: scheme.outline),
+            ],
           ),
         ),
       ),
@@ -144,23 +218,38 @@ class _SubscribeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Card(
       margin: const EdgeInsets.all(12),
-      color: Theme.of(context).colorScheme.tertiaryContainer,
+      color: scheme.tertiaryContainer,
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Abonnez-vous a Fooyre Tonngoode',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Pour lire toutes les editions, contactez l\'editeur pour '
-              'un abonnement de 3 ou 5 mois (Bankily, Wave, virement...). '
-              'Votre acces sera active des reception du paiement.',
+            Icon(Icons.workspace_premium_outlined,
+                color: scheme.onTertiaryContainer),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Abonnez-vous a Fooyre Ɓamtaare',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          color: scheme.onTertiaryContainer,
+                          fontWeight: FontWeight.w700,
+                        ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Pour lire toutes les editions, contactez l\'editeur pour '
+                    'un abonnement de 3 ou 5 mois (Bankily, Wave, virement...). '
+                    'Votre acces sera active des reception du paiement.',
+                    style: TextStyle(color: scheme.onTertiaryContainer),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

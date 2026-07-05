@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../services/auth_service.dart';
+import '../../widgets/app_logo.dart';
 import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -58,29 +59,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Icon(
-                    Icons.menu_book_rounded,
-                    size: 72,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  const SizedBox(height: 12),
+                  const Center(child: AppLogo()),
+                  const SizedBox(height: 20),
                   Text(
-                    'Fooyre Tonngoode',
+                    'Fooyre Ɓamtaare',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.w800,
+                        ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     'Jaaynde lewru e pulaar',
                     textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 36),
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(
                       labelText: 'Email',
-                      border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.email_outlined),
                     ),
                     validator: (v) => v == null || !v.contains('@')
@@ -93,14 +95,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: true,
                     decoration: const InputDecoration(
                       labelText: 'Mot de passe',
-                      border: OutlineInputBorder(),
                       prefixIcon: Icon(Icons.lock_outline),
                     ),
                     validator: (v) => v == null || v.length < 6
                         ? 'Au moins 6 caracteres'
                         : null,
                   ),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 28),
                   FilledButton(
                     onPressed: _loading ? null : _signIn,
                     child: _loading

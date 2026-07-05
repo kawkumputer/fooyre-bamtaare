@@ -77,7 +77,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _nomController,
                   decoration: const InputDecoration(
                     labelText: 'Nom complet',
-                    border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person_outline),
                   ),
                   validator: (v) =>
@@ -90,7 +89,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   decoration: const InputDecoration(
                     labelText: 'Telephone (optionnel)',
                     helperText: 'Utile pour le paiement Bankily / Wave',
-                    border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.phone_outlined),
                   ),
                 ),
@@ -100,7 +98,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     labelText: 'Email',
-                    border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.email_outlined),
                   ),
                   validator: (v) =>
@@ -112,7 +109,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'Mot de passe',
-                    border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.lock_outline),
                   ),
                   validator: (v) => v == null || v.length < 6

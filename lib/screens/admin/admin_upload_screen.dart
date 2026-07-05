@@ -94,7 +94,6 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
                 decoration: const InputDecoration(
                   labelText: 'Numero de l\'edition',
                   hintText: 'ex : 262',
-                  border: OutlineInputBorder(),
                 ),
                 validator: (v) => v == null || int.tryParse(v.trim()) == null
                     ? 'Numero invalide'
@@ -105,8 +104,7 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
                 controller: _titreController,
                 decoration: const InputDecoration(
                   labelText: 'Titre',
-                  hintText: 'ex : Fooyre Tonngoode 262',
-                  border: OutlineInputBorder(),
+                  hintText: 'ex : Fooyre Ɓamtaare 262',
                 ),
                 validator: (v) =>
                     v == null || v.trim().isEmpty ? 'Titre requis' : null,

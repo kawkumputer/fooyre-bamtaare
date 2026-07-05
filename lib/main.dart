@@ -11,6 +11,7 @@ import 'screens/auth/login_screen.dart';
 import 'screens/editions/editions_list_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'services/auth_service.dart';
+import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,12 +29,11 @@ class FooyreApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fooyre Tonngoode',
+      title: 'Fooyre Ɓamtaare',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1B7340)),
-        useMaterial3: true,
-      ),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: ThemeMode.system,
       locale: const Locale('fr'),
       supportedLocales: const [Locale('fr')],
       localizationsDelegates: const [

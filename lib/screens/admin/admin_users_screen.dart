@@ -86,6 +86,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   @override
   Widget build(BuildContext context) {
     final dateFormat = DateFormat('dd/MM/yyyy');
+    final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Abonnes')),
@@ -127,18 +128,24 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                 final user = users[index];
                 final expiringSoon =
                     user.hasActiveSubscription && user.daysLeft <= 14;
+                final avatarColor = user.hasActiveSubscription
+                    ? (expiringSoon
+                        ? scheme.tertiaryContainer
+                        : scheme.primaryContainer)
+                    : scheme.surfaceContainerHighest;
+                final avatarIconColor = user.hasActiveSubscription
+                    ? (expiringSoon
+                        ? scheme.onTertiaryContainer
+                        : scheme.onPrimaryContainer)
+                    : scheme.onSurfaceVariant;
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: user.hasActiveSubscription
-                        ? (expiringSoon
-                            ? Colors.orange.shade200
-                            : Colors.green.shade200)
-                        : Colors.grey.shade300,
+                    backgroundColor: avatarColor,
                     child: Icon(
                       user.isAdmin
                           ? Icons.admin_panel_settings
                           : Icons.person,
-                      color: Colors.black54,
+                      color: avatarIconColor,
                     ),
                   ),
                   title: Text(user.nom.isEmpty ? '(sans nom)' : user.nom),
