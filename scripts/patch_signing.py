@@ -18,7 +18,7 @@ content = content.replace(
 # Le pattern unique: PRODUCT_BUNDLE_IDENTIFIER sans .RunnerTests suivi de PRODUCT_NAME
 content = content.replace(
     'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n\t\t\t\tPRODUCT_NAME',
-    'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "Fooyre Bamtaare App";\n\t\t\t\tPRODUCT_NAME',
+    'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "FooyreApp";\n\t\t\t\tPRODUCT_NAME',
 )
 
 # 4. TargetAttributes Runner: ajouter ProvisioningStyle = Manual

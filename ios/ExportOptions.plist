@@ -17,7 +17,7 @@
     <key>provisioningProfiles</key>
     <dict>
         <key>org.fbpm.fooyreApp</key>
-        <string>Fooyre Bamtaare App</string>
+        <string>FooyreApp</string>
     </dict>
 </dict>
 </plist>
