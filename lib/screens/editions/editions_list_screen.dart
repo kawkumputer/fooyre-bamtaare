@@ -34,7 +34,10 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final hasSubscription = widget.profile?.hasActiveSubscription ?? false;
+    // L'admin a acces a tout : on le traite comme un abonne (pas de
+    // banniere d'invitation a s'abonner).
+    final hasSubscription = (widget.profile?.hasActiveSubscription ?? false) ||
+        (widget.profile?.isAdmin ?? false);
 
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(

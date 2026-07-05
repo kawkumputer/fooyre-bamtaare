@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../config/supabase_config.dart';
+import '../models/edition.dart';
 import '../models/profile.dart';
 
 class AdminService {
@@ -17,19 +18,17 @@ class AdminService {
         .toList();
   }
 
-  /// Active ou prolonge l'abonnement d'un utilisateur.
-  ///
-  /// Si l'abonnement est encore actif, les mois s'ajoutent a la
-  /// date de fin actuelle ; sinon la periode démarre aujourd'hui.
-  Future<void> activateSubscription(Profile user, int months) async {
+  /// Active l'abonnement d'un utilisateur jusqu'a une date de fin choisie
+  /// par l'admin. La date de debut est conservee si l'abonnement etait
+  /// deja actif, sinon elle demarre aujourd'hui.
+  Future<void> activateSubscriptionUntil(
+      Profile user, DateTime endDate) async {
     final now = DateTime.now();
-    final base = user.hasActiveSubscription ? user.subscriptionEnd! : now;
-    final end = DateTime(base.year, base.month + months, base.day);
+    final start = user.subscriptionStart ?? now;
 
     await _client.from('profiles').update({
-      'subscription_start':
-          user.hasActiveSubscription ? null : now.toIso8601String(),
-      'subscription_end': end.toIso8601String(),
+      'subscription_start': start.toIso8601String(),
+      'subscription_end': endDate.toIso8601String(),
       'is_active': true,
     }).eq('id', user.id);
   }
@@ -71,5 +70,14 @@ class AdminService {
       'pdf_path': path,
       'date_publication': DateTime.now().toIso8601String().substring(0, 10),
     }, onConflict: 'numero');
+  }
+
+  /// Supprime une edition : le fichier PDF dans le Storage puis la ligne
+  /// dans la table editions (admin uniquement, via RLS).
+  Future<void> deleteEdition(Edition edition) async {
+    await _client.storage
+        .from(SupabaseConfig.editionsBucket)
+        .remove([edition.pdfPath]);
+    await _client.from('editions').delete().eq('id', edition.id);
   }
 }

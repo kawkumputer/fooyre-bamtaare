@@ -29,48 +29,68 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
   }
 
   Future<void> _showActivateDialog(Profile user) async {
-    final months = await showDialog<int>(
+    final action = await showDialog<String>(
       context: context,
       builder: (context) => SimpleDialog(
-        title: Text('Abonnement de ${user.nom.isEmpty ? "(sans nom)" : user.nom}'),
+        title:
+            Text('Abonnement de ${user.nom.isEmpty ? "(sans nom)" : user.nom}'),
         children: [
           SimpleDialogOption(
-            onPressed: () => Navigator.pop(context, 3),
-            child: const Text('Activer 3 mois'),
-          ),
-          SimpleDialogOption(
-            onPressed: () => Navigator.pop(context, 5),
-            child: const Text('Activer 5 mois'),
+            onPressed: () => Navigator.pop(context, 'date'),
+            child: Text(user.hasActiveSubscription
+                ? 'Modifier la date de fin...'
+                : 'Definir la date de fin...'),
           ),
           if (user.hasActiveSubscription)
             SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, -1),
+              onPressed: () => Navigator.pop(context, 'deactivate'),
               child: Text(
                 'Desactiver l\'acces',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.error,
-                ),
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
         ],
       ),
     );
-    if (months == null) return;
+    if (action == null || !mounted) return;
 
     try {
-      if (months == -1) {
+      if (action == 'deactivate') {
         await _adminService.deactivateSubscription(user);
-      } else {
-        await _adminService.activateSubscription(user, months);
+        await _refresh();
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Acces desactive.')),
+          );
+        }
+        return;
       }
+
+      // action == 'date' : choisir une date de fin.
+      final now = DateTime.now();
+      final initial = user.hasActiveSubscription && user.subscriptionEnd != null
+          ? user.subscriptionEnd!
+          : DateTime(now.year, now.month + 3, now.day);
+      final endDate = await showDatePicker(
+        context: context,
+        initialDate: initial,
+        firstDate: now,
+        lastDate: DateTime(now.year + 5),
+        helpText: 'Date de fin de l\'abonnement',
+      );
+      if (endDate == null) return;
+
+      // Fin de journee pour couvrir toute la date choisie.
+      final endOfDay =
+          DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
+      await _adminService.activateSubscriptionUntil(user, endOfDay);
       await _refresh();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              months == -1
-                  ? 'Acces desactive.'
-                  : 'Abonnement de $months mois active.',
+              'Abonnement actif jusqu\'au '
+              '${DateFormat('dd/MM/yyyy').format(endDate)}.',
             ),
           ),
         );
