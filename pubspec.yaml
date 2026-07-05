@@ -41,7 +41,7 @@ dependencies:
   supabase_flutter: ^2.8.0
 
   # Lecture des PDF des editions
-  pdfrx: ^1.0.94
+  pdfrx: ^2.4.4
 
   # Cache local des PDF pour lecture hors-ligne
   path_provider: ^2.1.4
