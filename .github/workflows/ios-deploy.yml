@@ -120,7 +120,14 @@ jobs:
             --apiKey "$APP_STORE_CONNECT_API_KEY_ID" \
             --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" \
             --verbose 2>&1 | tee /tmp/altool_upload.log
-          exit ${PIPESTATUS[0]}
+          ALTOOL_EXIT=${PIPESTATUS[0]}
+
+          # altool renvoie parfois 0 meme quand l'upload est refuse
+          # (ex: "bundle version already used") : on verifie aussi le log.
+          if [ "$ALTOOL_EXIT" -ne 0 ] || grep -q "ERROR:" /tmp/altool_upload.log; then
+            echo "ERROR: l'upload App Store Connect a echoue (voir le log ci-dessus)."
+            exit 1
+          fi
 
       - name: Clean up keychain
         if: ${{ always() }}
