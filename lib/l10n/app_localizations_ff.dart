@@ -9,25 +9,25 @@ class AppLocalizationsFf extends AppLocalizations {
   AppLocalizationsFf([String locale = 'ff']) : super(locale);
 
   @override
-  String get appSubtitle => 'Jaaynde lewru e pulaar';
+  String get appSubtitle => 'Jaaynde lewruure he pulaar';
 
   @override
-  String get email => 'Email';
+  String get email => 'Iimeel';
 
   @override
   String get password => 'Finnde';
 
   @override
-  String get login => 'Naatde';
+  String get login => 'Seŋaade';
 
   @override
   String get noAccountSignUp => 'Alaa konte? Winndito';
 
   @override
-  String get invalidEmail => 'Email moƴƴaani';
+  String get invalidEmail => 'iimeel moƴƴaani';
 
   @override
-  String get passwordTooShort => 'Ustaani 6 alkule';
+  String get passwordTooShort => 'Ko famɗi fof alkule 6';
 
   @override
   String get createAccount => 'Sosde konte';
@@ -36,10 +36,10 @@ class AppLocalizationsFf extends AppLocalizations {
   String get fullName => 'Innde timmunde';
 
   @override
-  String get phoneOptional => 'Telefon (suɓngal)';
+  String get phoneOptional => 'Telefon (waɗɗaaki)';
 
   @override
-  String get phoneHelper => 'Ina nafa ngam njoɓdi Bankily / Wave';
+  String get phoneHelper => 'Ina soklaa he njoɓdi Bankily / Wave';
 
   @override
   String get signUp => 'Winnditaade';
@@ -48,43 +48,43 @@ class AppLocalizationsFf extends AppLocalizations {
   String get nameRequired => 'Innde ina waɗɗii';
 
   @override
-  String get accountCreated => 'Konte sosaama! Ƴeew email maa so ina naamnaa.';
+  String get accountCreated => 'Konte sosaama! Ƴeewto iimel maa';
 
   @override
-  String get subscribeTitle => 'Winndito e Fooyre Ɓamtaare';
+  String get subscribeTitle => 'Lulno e Fooyre Ɓamtaare';
 
   @override
   String get subscribeBody =>
-      'Ngam janngude tonngooɗe ɗe fof, jokkondir e cukko ngam winnditagol (Bankily, Wave, virement...). Naatirde maa udditoyte caggal njoɓdi.';
+      'Ngam mbaawaa tarde tonngooɗe ɗee fof, jokkondir e caaktoowo oo mbele lulno-ɗaa (Bankily, Wave, rewrude e booñ...). Damal maa udditano ma caggal nde njoɓɗaa.';
 
   @override
-  String get free => 'Meere';
+  String get free => 'Alaa njoɓdi';
 
   @override
-  String get subscribers => 'Winnditiiɓe';
+  String get subscribers => 'Lulniiɓe';
 
   @override
-  String get loadError => 'Juumre e loowgol.\nFooɗ les ngam eto kadi.';
+  String get loadError => 'Juumre loowgol.\nFooɗir les ngam enndude kadi.';
 
   @override
-  String get noEditions => 'Alaa tonngoode goodnde jooni.';
+  String get noEditions => 'Alaa tonngoode woodi e oo sahaa.';
 
   @override
   String get noFreeEditions =>
-      'Alaa tonngoode meere goodnde.\nWinndito ngam janngude jaaynde ndee.';
+      'Alaa tonngoode nde yoɓetaake woodi.\nLulno heɓde jaaynde ndee.';
 
   @override
-  String get downloadingEdition => 'Aawtude tonngoode ndee...';
+  String get downloadingEdition => 'Gawtagol tonngoode ndee...';
 
   @override
   String get pdfOpenError =>
-      'Udditde tonngoode ndee waawaaka.\nƳeew jokkondiral maa walla winnditagol maa.';
+      'Ndee tonngoode uddittaako.\nYuurnito seŋorde maa walla lulnagol maa.';
 
   @override
-  String get retry => 'Eto kadi';
+  String get retry => 'Enndit';
 
   @override
-  String get myProfile => 'Profiil am';
+  String get myProfile => 'Heftinirde am';
 
   @override
   String get noPhone => 'Alaa telefon';
@@ -93,59 +93,59 @@ class AppLocalizationsFf extends AppLocalizations {
   String get noName => '(alaa innde)';
 
   @override
-  String get subActive => 'Winnditagol ina yahra';
+  String get subActive => 'Aɗa lulnii';
 
   @override
-  String get subInactive => 'Alaa winnditagol';
+  String get subInactive => 'A lulnaaki';
 
   @override
   String subExpiresOn(String date, int days) {
-    return 'Gasata $date (balɗe $days keddiiɗe)';
+    return 'Gasata ko ñalnde $date (balɗe $days keddii)';
   }
 
   @override
   String get subscribeContact =>
-      'Ngam winnditaade, jokkondir e cukko jaaynde ndee (Bankily, Wave, virement...). Naatirde maa udditoyte caggal njoɓdi.';
+      'Ngam lulnaade, jokkondir e caakto jaaynde ndee (Bankily, Wave, booñ...). Damal maa udditano ma so a yoɓii.';
 
   @override
-  String get adminAccount => 'Konte ardiiɗo';
+  String get adminAccount => 'Konte jiiloowo';
 
   @override
-  String get adminUnlimited => 'Naatgol e tonngooɗe ɗe fof, keeri alaa';
+  String get adminUnlimited => 'Keɓgol tonngooɗe ɗee fof';
 
   @override
-  String get signOut => 'Yaltude';
+  String get signOut => 'Seŋtaade';
 
   @override
   String get language => 'Ɗemngal';
 
   @override
   String subscriptionOf(String name) {
-    return 'Winnditagol $name';
+    return 'Lulnagol $name';
   }
 
   @override
-  String get setEndDate => 'Teelde ñalnde gasol...';
+  String get setEndDate => 'Toɗɗo lajal timmugol...';
 
   @override
-  String get editEndDate => 'Waylude ñalnde gasol...';
+  String get editEndDate => 'Waylu lajal timmugol...';
 
   @override
-  String get deactivateAccess => 'Ittude naatgol';
+  String get deactivateAccess => 'Sok damal';
 
   @override
-  String get accessDeactivated => 'Naatgol ittaama.';
+  String get accessDeactivated => 'Damal sokaama';
 
   @override
-  String get endDateHelp => 'Ñalnde gasol winnditagol';
+  String get endDateHelp => 'Lajal gasgol lulnde';
 
   @override
   String subUntil(String date) {
-    return 'Winnditagol ina yahra haa $date.';
+    return 'Aɗa lulnii haa $date.';
   }
 
   @override
-  String get noSubscription => 'Alaa winnditagol';
+  String get noSubscription => 'A lulnaaki';
 
   @override
   String expiresOn(String date) {
@@ -153,19 +153,19 @@ class AppLocalizationsFf extends AppLocalizations {
   }
 
   @override
-  String get expiresSoon => 'ina ɓadii!';
+  String get expiresSoon => 'ɓooyata !';
 
   @override
-  String get publishEdition => 'Yaltinde tonngoode';
+  String get publishEdition => 'Yollu tonngoode';
 
   @override
-  String get editionNumber => 'Limngal tonngoode';
+  String get editionNumber => 'Limoore tonngoode';
 
   @override
   String get editionNumberHint => 'yeru : 262';
 
   @override
-  String get invalidNumber => 'Limngal moƴƴaani';
+  String get invalidNumber => 'Tonngoode woodaani';
 
   @override
   String get title => 'Tiitoonde';
@@ -177,36 +177,35 @@ class AppLocalizationsFf extends AppLocalizations {
   String get titleRequired => 'Tiitoonde ina waɗɗii';
 
   @override
-  String get freeEdition => 'Tonngoode meere';
+  String get freeEdition => 'Tiitoonde yoɓetaake';
 
   @override
-  String get freeEditionSubtitle =>
-      'Heɓotoo ko yimɓe fof, hay so alaa winnditagol';
+  String get freeEditionSubtitle => 'Yimɓe fof ine keɓa nde, hay so lulnaaki';
 
   @override
   String get choosePdf => 'Suɓaade fiilde PDF';
 
   @override
-  String get publish => 'Yaltinde';
+  String get publish => 'Saaktude';
 
   @override
-  String get publishing => 'Ina yaltinee...';
+  String get publishing => 'Caaktugol...';
 
   @override
-  String get chooseFileFirst => 'Suɓo fiilde PDF adan.';
+  String get chooseFileFirst => 'Suɓo tawo fiilde PDF.';
 
   @override
-  String get editionPublished => 'Tonngoode yaltinaama!';
+  String get editionPublished => 'Tonngoode saaktaama!';
 
   @override
-  String get publishedEditions => 'Tonngooɗe yaltinaaɗe';
+  String get publishedEditions => 'Tonngooɗe caaktaaɗe';
 
   @override
-  String get deleteEditionTitle => 'Momtude tonngoode ndee?';
+  String get deleteEditionTitle => 'Momtude ndee tonngoode ?';
 
   @override
   String deleteEditionBody(int numero, String titre) {
-    return 'N°$numero — $titre\n\nFiilde PDF ndee e tonngoode ndee momtete haa poomaa.';
+    return 'Tŋ $numero — $titre\n\nFiilde PDF ndee e tonngoode ndee momtete haa bada.';
   }
 
   @override
@@ -219,22 +218,22 @@ class AppLocalizationsFf extends AppLocalizations {
   String get editionDeleted => 'Tonngoode momtaama.';
 
   @override
-  String get noEditionsYet => 'Alaa tonngoode yaltinaande jooni.';
+  String get noEditionsYet => 'Alaa tonngoode saaktaa e o sahaa.';
 
   @override
-  String get loadErrorEditions => 'Juumre e loowgol tonngooɗe.';
+  String get loadErrorEditions => 'Juumre loowgol tonngooɗe.';
 
   @override
   String get navEditions => 'Tonngooɗe';
 
   @override
-  String get navSubscribers => 'Winnditiiɓe';
+  String get navSubscribers => 'Lulniiɓe';
 
   @override
-  String get navPublish => 'Yaltinde';
+  String get navPublish => 'Saaktude';
 
   @override
-  String get navProfile => 'Profiil';
+  String get navProfile => 'Heftinirde';
 
   @override
   String errorWithMessage(String message) {
