@@ -218,7 +218,7 @@ class AppLocalizationsFf extends AppLocalizations {
   }
 
   @override
-  String get noSubscription => 'A lulnaaki';
+  String get noSubscription => 'Lulnaaki';
 
   @override
   String expiresOn(String date) {
@@ -244,7 +244,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get title => 'Tiitoonde';
 
   @override
-  String get titleHint => 'yeru : Fooyre Ɓamtaare 262';
+  String get titleHint => 'yeru : Tonngoode 262';
 
   @override
   String get titleRequired => 'Tiitoonde ina waɗɗii';

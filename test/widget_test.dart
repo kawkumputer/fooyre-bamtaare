@@ -71,7 +71,7 @@ void main() {
       final edition = Edition.fromJson({
         'id': 'e2',
         'numero': 262,
-        'titre': 'Fooyre Ɓamtaare 262',
+        'titre': 'Tonngoode 262',
         'date_publication': '2026-07-01',
         'pdf_complet': 'abonnes/fooyre_262.pdf',
       });

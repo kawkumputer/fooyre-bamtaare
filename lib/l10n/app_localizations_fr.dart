@@ -246,7 +246,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get title => 'Titre';
 
   @override
-  String get titleHint => 'ex : Fooyre Ɓamtaare 262';
+  String get titleHint => 'ex : Tonngoode 262';
 
   @override
   String get titleRequired => 'Titre requis';

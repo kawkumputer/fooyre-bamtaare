@@ -377,6 +377,7 @@ class _Cover extends StatelessWidget {
       child: Image.network(
         coverUrl!,
         fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
         width: double.infinity,
         loadingBuilder: (context, child, progress) {
           if (progress == null) return child;

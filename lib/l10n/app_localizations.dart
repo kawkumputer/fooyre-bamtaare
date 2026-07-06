@@ -539,7 +539,7 @@ abstract class AppLocalizations {
   /// No description provided for @titleHint.
   ///
   /// In fr, this message translates to:
-  /// **'ex : Fooyre Ɓamtaare 262'**
+  /// **'ex : Tonngoode 262'**
   String get titleHint;
 
   /// No description provided for @titleRequired.
