@@ -49,5 +49,16 @@
 	<string>L'application peut acceder a vos photos pour vous permettre de choisir un fichier a importer.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>L'application peut utiliser l'appareil photo pour importer un document.</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>io.fbpm.fooyre</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>io.fbpm.fooyre</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

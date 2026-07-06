@@ -122,6 +122,34 @@ class AppLocalizationsFr extends AppLocalizations {
   String get language => 'Langue';
 
   @override
+  String get deleteMyAccount => 'Supprimer mon compte';
+
+  @override
+  String get deleteMyAccountConfirmTitle =>
+      'Supprimer définitivement votre compte ?';
+
+  @override
+  String get deleteMyAccountConfirmBody =>
+      'Cette action est irréversible. Votre profil, votre abonnement et toutes vos données seront supprimés définitivement.';
+
+  @override
+  String get myAccountDeleted => 'Votre compte a été supprimé.';
+
+  @override
+  String get deleteUserAccount => 'Supprimer le compte';
+
+  @override
+  String get deleteUserConfirmTitle => 'Supprimer ce compte ?';
+
+  @override
+  String deleteUserConfirmBody(String name) {
+    return 'Le compte de $name sera supprimé définitivement, avec toutes ses données. Cette action est irréversible.';
+  }
+
+  @override
+  String get userAccountDeleted => 'Compte supprimé.';
+
+  @override
   String get editProfile => 'Modifier le profil';
 
   @override

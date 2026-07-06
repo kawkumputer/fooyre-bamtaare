@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../models/profile.dart';
@@ -58,6 +59,7 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
   Future<void> _showActivateDialog(Profile user) async {
     final l10n = AppLocalizations.of(context);
+    final currentUserId = Supabase.instance.client.auth.currentUser?.id;
     final action = await showDialog<String>(
       context: context,
       builder: (context) => SimpleDialog(
@@ -79,6 +81,15 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                 style: TextStyle(color: Theme.of(context).colorScheme.error),
               ),
             ),
+          // On ne permet pas a l'admin de se supprimer lui-meme ici.
+          if (user.id != currentUserId)
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(context, 'delete'),
+              child: Text(
+                l10n.deleteUserAccount,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
         ],
       ),
     );
@@ -92,6 +103,43 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text(l10n.accessDeactivated)));
+        }
+        return;
+      }
+
+      if (action == 'delete') {
+        final confirmed = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(l10n.deleteUserConfirmTitle),
+            content: Text(
+              l10n.deleteUserConfirmBody(
+                user.nom.isEmpty ? l10n.noName : user.nom,
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: Text(l10n.cancel),
+              ),
+              FilledButton(
+                style: FilledButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.error,
+                ),
+                onPressed: () => Navigator.pop(context, true),
+                child: Text(l10n.delete),
+              ),
+            ],
+          ),
+        );
+        if (confirmed != true || !mounted) return;
+
+        await _adminService.deleteUser(user.id);
+        await _refresh();
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.userAccountDeleted)));
         }
         return;
       }

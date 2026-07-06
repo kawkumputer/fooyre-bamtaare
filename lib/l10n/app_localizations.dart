@@ -308,6 +308,54 @@ abstract class AppLocalizations {
   /// **'Langue'**
   String get language;
 
+  /// No description provided for @deleteMyAccount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer mon compte'**
+  String get deleteMyAccount;
+
+  /// No description provided for @deleteMyAccountConfirmTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer définitivement votre compte ?'**
+  String get deleteMyAccountConfirmTitle;
+
+  /// No description provided for @deleteMyAccountConfirmBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette action est irréversible. Votre profil, votre abonnement et toutes vos données seront supprimés définitivement.'**
+  String get deleteMyAccountConfirmBody;
+
+  /// No description provided for @myAccountDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Votre compte a été supprimé.'**
+  String get myAccountDeleted;
+
+  /// No description provided for @deleteUserAccount.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer le compte'**
+  String get deleteUserAccount;
+
+  /// No description provided for @deleteUserConfirmTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer ce compte ?'**
+  String get deleteUserConfirmTitle;
+
+  /// No description provided for @deleteUserConfirmBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Le compte de {name} sera supprimé définitivement, avec toutes ses données. Cette action est irréversible.'**
+  String deleteUserConfirmBody(String name);
+
+  /// No description provided for @userAccountDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte supprimé.'**
+  String get userAccountDeleted;
+
   /// No description provided for @editProfile.
   ///
   /// In fr, this message translates to:

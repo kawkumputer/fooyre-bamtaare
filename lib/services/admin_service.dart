@@ -18,6 +18,13 @@ class AdminService {
         .toList();
   }
 
+  /// Supprime definitivement le compte d'un utilisateur (profil,
+  /// abonnement et acces auth), via une fonction RPC securisee
+  /// (verifie is_admin() cote base).
+  Future<void> deleteUser(String userId) async {
+    await _client.rpc('admin_delete_user', params: {'target_user_id': userId});
+  }
+
   /// Active l'abonnement d'un utilisateur jusqu'a une date de fin choisie
   /// par l'admin. La date de debut est conservee si l'abonnement etait
   /// deja actif, sinon elle demarre aujourd'hui.

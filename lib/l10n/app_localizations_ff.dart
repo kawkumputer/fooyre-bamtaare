@@ -120,6 +120,33 @@ class AppLocalizationsFf extends AppLocalizations {
   String get language => 'Ɗemngal';
 
   @override
+  String get deleteMyAccount => 'Momtude konte am';
+
+  @override
+  String get deleteMyAccountConfirmTitle => 'Momtude konte maa haa poomaa ?';
+
+  @override
+  String get deleteMyAccountConfirmBody =>
+      'Ngol golle waawaa firtireede. Heftinirde maa, lulnagol maa e kala keɓe maa momtete haa poomaa.';
+
+  @override
+  String get myAccountDeleted => 'Konte maa momtaama.';
+
+  @override
+  String get deleteUserAccount => 'Momtude konte';
+
+  @override
+  String get deleteUserConfirmTitle => 'Momtude ndee konte ?';
+
+  @override
+  String deleteUserConfirmBody(String name) {
+    return 'Konte $name momtete haa poomaa, e kala keɓe mum. Ngol golle waawaa firtireede.';
+  }
+
+  @override
+  String get userAccountDeleted => 'Konte momtaama.';
+
+  @override
   String get editProfile => 'Waylu heftinirde';
 
   @override

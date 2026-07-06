@@ -178,7 +178,42 @@ create policy "storage_editions_delete" on storage.objects
   for delete using (bucket_id = 'editions' and public.is_admin());
 
 -- ------------------------------------------------------------
--- 6. Pour promouvoir un utilisateur en admin (a faire une fois,
+-- 6. Suppression de compte (self-service + admin)
+--    Supprimer une ligne auth.users cascade vers public.profiles
+--    (on delete cascade). Ces fonctions "security definer" tournent
+--    avec les privileges du proprietaire (postgres), qui a acces au
+--    schema auth - permet de supprimer un compte sans exposer la
+--    cle service_role cote app.
+-- ------------------------------------------------------------
+create or replace function public.delete_my_account()
+returns void
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  delete from auth.users where id = auth.uid();
+end;
+$$;
+
+grant execute on function public.delete_my_account() to authenticated;
+
+create or replace function public.admin_delete_user(target_user_id uuid)
+returns void
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  if not public.is_admin() then
+    raise exception 'Not authorized';
+  end if;
+  delete from auth.users where id = target_user_id;
+end;
+$$;
+
+grant execute on function public.admin_delete_user(uuid) to authenticated;
+
+-- ------------------------------------------------------------
+-- 7. Pour promouvoir un utilisateur en admin (a faire une fois,
 --    manuellement, avec l'email de l'editeur) :
 --
 --   update public.profiles set role = 'admin'

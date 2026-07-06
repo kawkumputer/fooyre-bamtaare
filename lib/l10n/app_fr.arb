@@ -48,6 +48,21 @@
   "signOut": "Se déconnecter",
   "language": "Langue",
 
+  "deleteMyAccount": "Supprimer mon compte",
+  "deleteMyAccountConfirmTitle": "Supprimer définitivement votre compte ?",
+  "deleteMyAccountConfirmBody": "Cette action est irréversible. Votre profil, votre abonnement et toutes vos données seront supprimés définitivement.",
+  "myAccountDeleted": "Votre compte a été supprimé.",
+
+  "deleteUserAccount": "Supprimer le compte",
+  "deleteUserConfirmTitle": "Supprimer ce compte ?",
+  "deleteUserConfirmBody": "Le compte de {name} sera supprimé définitivement, avec toutes ses données. Cette action est irréversible.",
+  "@deleteUserConfirmBody": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "userAccountDeleted": "Compte supprimé.",
+
   "editProfile": "Modifier le profil",
   "save": "Enregistrer",
   "profileUpdated": "Profil mis à jour.",

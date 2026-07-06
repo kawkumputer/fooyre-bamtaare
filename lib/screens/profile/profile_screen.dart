@@ -150,9 +150,64 @@ class ProfileScreen extends StatelessWidget {
                     onSignedOut();
                   },
                 ),
+                const SizedBox(height: 12),
+                TextButton.icon(
+                  icon: Icon(
+                    Icons.delete_forever_outlined,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  label: Text(
+                    l10n.deleteMyAccount,
+                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                  ),
+                  onPressed: () => _confirmDeleteAccount(context, l10n),
+                ),
               ],
             ),
     );
+  }
+
+  Future<void> _confirmDeleteAccount(
+    BuildContext context,
+    AppLocalizations l10n,
+  ) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.deleteMyAccountConfirmTitle),
+        content: Text(l10n.deleteMyAccountConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+            ),
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.delete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    try {
+      await AuthService().deleteMyAccount();
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.myAccountDeleted)));
+        onSignedOut();
+      }
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorWithMessage('$e'))));
+      }
+    }
   }
 }
 

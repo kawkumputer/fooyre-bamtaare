@@ -35,6 +35,16 @@
   "adminUnlimited": "Keɓgol tonngooɗe ɗee fof",
   "signOut": "Seŋtaade",
   "language": "Ɗemngal",
+
+  "deleteMyAccount": "Momtude konte am",
+  "deleteMyAccountConfirmTitle": "Momtude konte maa haa poomaa ?",
+  "deleteMyAccountConfirmBody": "Ngol golle waawaa firtireede. Heftinirde maa, lulnagol maa e kala keɓe maa momtete haa poomaa.",
+  "myAccountDeleted": "Konte maa momtaama.",
+
+  "deleteUserAccount": "Momtude konte",
+  "deleteUserConfirmTitle": "Momtude ndee konte ?",
+  "deleteUserConfirmBody": "Konte {name} momtete haa poomaa, e kala keɓe mum. Ngol golle waawaa firtireede.",
+  "userAccountDeleted": "Konte momtaama.",
   "editProfile": "Waylu heftinirde",
   "save": "Danndu",
   "profileUpdated": "Heftinirde waylaama.",
