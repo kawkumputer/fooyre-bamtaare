@@ -24,6 +24,7 @@ class _EditionsData {
 
 class _EditionsListScreenState extends State<EditionsListScreen> {
   final _editionService = EditionService();
+  final _searchController = TextEditingController();
   late Future<_EditionsData> _future;
   String _query = '';
 
@@ -31,6 +32,18 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
   void initState() {
     super.initState();
     _future = _load();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() => _query = '');
+    FocusScope.of(context).unfocus();
   }
 
   Future<_EditionsData> _load() async {
@@ -49,9 +62,11 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
     final q = _query.trim().toLowerCase();
     if (q.isEmpty) return editions;
     return editions
-        .where((e) =>
-            e.numero.toString().contains(q) ||
-            e.titre.toLowerCase().contains(q))
+        .where(
+          (e) =>
+              e.numero.toString().contains(q) ||
+              e.titre.toLowerCase().contains(q),
+        )
         .toList();
   }
 
@@ -59,7 +74,8 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     // L'admin et les abonnes ont acces a la version complete.
-    final hasFullAccess = (widget.profile?.hasActiveSubscription ?? false) ||
+    final hasFullAccess =
+        (widget.profile?.hasActiveSubscription ?? false) ||
         (widget.profile?.isAdmin ?? false);
     final scheme = Theme.of(context).colorScheme;
 
@@ -79,8 +95,11 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
                   colors: [scheme.primary, scheme.primaryContainer],
                 ),
               ),
-              child: Icon(Icons.menu_book_rounded,
-                  size: 18, color: scheme.onPrimary),
+              child: Icon(
+                Icons.menu_book_rounded,
+                size: 18,
+                color: scheme.onPrimary,
+              ),
             ),
             const SizedBox(width: 10),
             const Text('Fooyre Ɓamtaare'),
@@ -92,77 +111,93 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
             child: TextField(
+              controller: _searchController,
               keyboardType: TextInputType.number,
+              textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: l10n.searchEditionHint,
                 prefixIcon: const Icon(Icons.search),
+                suffixIcon: _query.isEmpty
+                    ? null
+                    : IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: _clearSearch,
+                      ),
                 isDense: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               onChanged: (v) => setState(() => _query = v),
+              onSubmitted: (_) => FocusScope.of(context).unfocus(),
             ),
           ),
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refresh,
-              child: FutureBuilder<_EditionsData>(
-                future: _future,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Text(
-                            l10n.loadError,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: FutureBuilder<_EditionsData>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.hasError) {
+                      return ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Text(
+                              l10n.loadError,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    final data = snapshot.data!;
+                    final filtered = _filter(data.editions);
+                    if (filtered.isEmpty) {
+                      return ListView(
+                        children: [
+                          const SizedBox(height: 80),
+                          Icon(
+                            Icons.menu_book_outlined,
+                            size: 64,
+                            color: scheme.outline,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            data.editions.isEmpty
+                                ? l10n.noEditions
+                                : l10n.noSearchResult,
                             textAlign: TextAlign.center,
                             style: Theme.of(context).textTheme.bodyLarge,
                           ),
-                        ),
-                      ],
-                    );
-                  }
-                  final data = snapshot.data!;
-                  final filtered = _filter(data.editions);
-                  if (filtered.isEmpty) {
-                    return ListView(
-                      children: [
-                        const SizedBox(height: 80),
-                        Icon(Icons.menu_book_outlined,
-                            size: 64, color: scheme.outline),
-                        const SizedBox(height: 16),
-                        Text(
-                          data.editions.isEmpty
-                              ? l10n.noEditions
-                              : l10n.noSearchResult,
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    );
-                  }
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(top: 4, bottom: 12),
-                    itemCount: filtered.length + (hasFullAccess ? 0 : 1),
-                    itemBuilder: (context, index) {
-                      if (!hasFullAccess && index == 0) {
-                        return const _SubscribeBanner();
-                      }
-                      final edition =
-                          filtered[hasFullAccess ? index : index - 1];
-                      return _EditionCard(
-                        edition: edition,
-                        coverUrl: data.coverUrls[edition.id],
-                        hasFullAccess: hasFullAccess,
+                        ],
                       );
-                    },
-                  );
-                },
+                    }
+                    return ListView.builder(
+                      padding: const EdgeInsets.only(top: 4, bottom: 12),
+                      itemCount: filtered.length + (hasFullAccess ? 0 : 1),
+                      itemBuilder: (context, index) {
+                        if (!hasFullAccess && index == 0) {
+                          return const _SubscribeBanner();
+                        }
+                        final edition =
+                            filtered[hasFullAccess ? index : index - 1];
+                        return _EditionCard(
+                          edition: edition,
+                          coverUrl: data.coverUrls[edition.id],
+                          hasFullAccess: hasFullAccess,
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ),
@@ -186,20 +221,22 @@ class _EditionCard extends StatelessWidget {
   void _onTap(BuildContext context, AppLocalizations l10n) {
     // Abonne / admin : ouvre la version complete.
     if (hasFullAccess && edition.hasComplet) {
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (_) => PdfViewerScreen(
-          edition: edition,
-          pdfPath: edition.pdfComplet!,
-          cacheKey: '${edition.id}_complet',
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => PdfViewerScreen(
+            edition: edition,
+            pdfPath: edition.pdfComplet!,
+            cacheKey: '${edition.id}_complet',
+          ),
         ),
-      ));
+      );
       return;
     }
     // Abonne mais pas de PDF complet disponible.
     if (hasFullAccess && !edition.hasComplet) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.editionUnavailable)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.editionUnavailable)));
       return;
     }
     // Non-abonne : invitation a s'abonner + contacter l'editeur.
@@ -222,8 +259,10 @@ class _EditionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
-    final dateStr =
-        DateFormat('MMMM yyyy', 'fr').format(edition.datePublication);
+    final dateStr = DateFormat(
+      'MMMM yyyy',
+      'fr',
+    ).format(edition.datePublication);
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -246,32 +285,29 @@ class _EditionCard extends StatelessWidget {
                       children: [
                         Text(
                           edition.titre,
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
+                          style: Theme.of(context).textTheme.titleMedium
                               ?.copyWith(fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           dateStr,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
+                          style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: scheme.onSurfaceVariant),
                         ),
                         if (!hasFullAccess) ...[
                           const SizedBox(height: 6),
                           Row(
                             children: [
-                              Icon(Icons.lock_outline,
-                                  size: 14, color: scheme.tertiary),
+                              Icon(
+                                Icons.lock_outline,
+                                size: 14,
+                                color: scheme.tertiary,
+                              ),
                               const SizedBox(width: 4),
                               Expanded(
                                 child: Text(
                                   l10n.subscribeForFull,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
+                                  style: Theme.of(context).textTheme.bodySmall
                                       ?.copyWith(
                                         color: scheme.tertiary,
                                         fontWeight: FontWeight.w600,
@@ -311,27 +347,33 @@ class _Cover extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     if (coverUrl == null) {
       return AspectRatio(
-        aspectRatio: 3 / 4,
+        aspectRatio: 3 / 2,
         child: Container(
           color: scheme.surfaceContainerHighest,
           alignment: Alignment.center,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.image_not_supported_outlined,
-                  color: scheme.outline, size: 32),
+              Icon(
+                Icons.image_not_supported_outlined,
+                color: scheme.outline,
+                size: 32,
+              ),
               const SizedBox(height: 6),
-              Text('N°$numero',
-                  style: TextStyle(
-                      color: scheme.onSurfaceVariant,
-                      fontWeight: FontWeight.w700)),
+              Text(
+                'N°$numero',
+                style: TextStyle(
+                  color: scheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
             ],
           ),
         ),
       );
     }
     return AspectRatio(
-      aspectRatio: 3 / 4,
+      aspectRatio: 3 / 2,
       child: Image.network(
         coverUrl!,
         fit: BoxFit.cover,
@@ -345,8 +387,9 @@ class _Cover extends StatelessWidget {
         },
         errorBuilder: (context, error, stack) => Container(
           color: scheme.surfaceContainerHighest,
-          child:
-              Center(child: Icon(Icons.broken_image_outlined, color: scheme.outline)),
+          child: Center(
+            child: Icon(Icons.broken_image_outlined, color: scheme.outline),
+          ),
         ),
       ),
     );
@@ -368,8 +411,10 @@ class _SubscribeBanner extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.workspace_premium_outlined,
-                color: scheme.onTertiaryContainer),
+            Icon(
+              Icons.workspace_premium_outlined,
+              color: scheme.onTertiaryContainer,
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -378,9 +423,9 @@ class _SubscribeBanner extends StatelessWidget {
                   Text(
                     l10n.subscribeTitle,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: scheme.onTertiaryContainer,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      color: scheme.onTertiaryContainer,
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(

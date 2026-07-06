@@ -14,6 +14,7 @@ class AdminUsersScreen extends StatefulWidget {
 
 class _AdminUsersScreenState extends State<AdminUsersScreen> {
   final _adminService = AdminService();
+  final _searchController = TextEditingController();
   late Future<List<Profile>> _usersFuture;
   String _query = '';
 
@@ -23,14 +24,28 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     _usersFuture = _adminService.fetchAllUsers();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() => _query = '');
+    FocusScope.of(context).unfocus();
+  }
+
   /// Filtre par nom (ou prenom) ou telephone.
   List<Profile> _filter(List<Profile> users) {
     final q = _query.trim().toLowerCase();
     if (q.isEmpty) return users;
     return users
-        .where((u) =>
-            u.nom.toLowerCase().contains(q) ||
-            (u.telephone ?? '').toLowerCase().contains(q))
+        .where(
+          (u) =>
+              u.nom.toLowerCase().contains(q) ||
+              (u.telephone ?? '').toLowerCase().contains(q),
+        )
         .toList();
   }
 
@@ -47,13 +62,14 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       context: context,
       builder: (context) => SimpleDialog(
         title: Text(
-            l10n.subscriptionOf(user.nom.isEmpty ? l10n.noName : user.nom)),
+          l10n.subscriptionOf(user.nom.isEmpty ? l10n.noName : user.nom),
+        ),
         children: [
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context, 'date'),
-            child: Text(user.hasActiveSubscription
-                ? l10n.editEndDate
-                : l10n.setEndDate),
+            child: Text(
+              user.hasActiveSubscription ? l10n.editEndDate : l10n.setEndDate,
+            ),
           ),
           if (user.hasActiveSubscription)
             SimpleDialogOption(
@@ -73,9 +89,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         await _adminService.deactivateSubscription(user);
         await _refresh();
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(l10n.accessDeactivated)),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.accessDeactivated)));
         }
         return;
       }
@@ -95,8 +111,14 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       if (endDate == null) return;
 
       // Fin de journee pour couvrir toute la date choisie.
-      final endOfDay =
-          DateTime(endDate.year, endDate.month, endDate.day, 23, 59, 59);
+      final endOfDay = DateTime(
+        endDate.year,
+        endDate.month,
+        endDate.day,
+        23,
+        59,
+        59,
+      );
       await _adminService.activateSubscriptionUntil(user, endOfDay);
       await _refresh();
       if (mounted) {
@@ -110,9 +132,11 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content:
-                Text(AppLocalizations.of(context).errorWithMessage('$e'))));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context).errorWithMessage('$e')),
+          ),
+        );
       }
     }
   }
@@ -130,109 +154,128 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
             child: TextField(
+              controller: _searchController,
+              textInputAction: TextInputAction.done,
               decoration: InputDecoration(
                 hintText: l10n.searchUserHint,
                 prefixIcon: const Icon(Icons.search),
+                suffixIcon: _query.isEmpty
+                    ? null
+                    : IconButton(
+                        icon: const Icon(Icons.close),
+                        onPressed: _clearSearch,
+                      ),
                 isDense: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               onChanged: (v) => setState(() => _query = v),
+              onSubmitted: (_) => FocusScope.of(context).unfocus(),
             ),
           ),
           Expanded(
-            child: RefreshIndicator(
-              onRefresh: _refresh,
-              child: FutureBuilder<List<Profile>>(
-                future: _usersFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot.hasError) {
-                    return ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Text(
-                            l10n.loadError,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    );
-                  }
-                  final users = snapshot.data ?? [];
-                  // Les abonnements qui expirent bientot en premier.
-                  users.sort((a, b) {
-                    if (a.hasActiveSubscription != b.hasActiveSubscription) {
-                      return a.hasActiveSubscription ? -1 : 1;
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: FutureBuilder<List<Profile>>(
+                  future: _usersFuture,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
                     }
-                    if (a.subscriptionEnd == null ||
-                        b.subscriptionEnd == null) {
-                      return 0;
-                    }
-                    return a.subscriptionEnd!.compareTo(b.subscriptionEnd!);
-                  });
-                  final filtered = _filter(users);
-                  if (filtered.isEmpty) {
-                    return ListView(
-                      children: [
-                        const SizedBox(height: 80),
-                        Center(
-                          child: Text(
-                            users.isEmpty
-                                ? l10n.noEditions
-                                : l10n.noSearchResult,
+                    if (snapshot.hasError) {
+                      return ListView(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Text(
+                              l10n.loadError,
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      );
+                    }
+                    final users = snapshot.data ?? [];
+                    // Les abonnements qui expirent bientot en premier.
+                    users.sort((a, b) {
+                      if (a.hasActiveSubscription != b.hasActiveSubscription) {
+                        return a.hasActiveSubscription ? -1 : 1;
+                      }
+                      if (a.subscriptionEnd == null ||
+                          b.subscriptionEnd == null) {
+                        return 0;
+                      }
+                      return a.subscriptionEnd!.compareTo(b.subscriptionEnd!);
+                    });
+                    final filtered = _filter(users);
+                    if (filtered.isEmpty) {
+                      return ListView(
+                        children: [
+                          const SizedBox(height: 80),
+                          Center(
+                            child: Text(
+                              users.isEmpty
+                                  ? l10n.noEditions
+                                  : l10n.noSearchResult,
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: filtered.length,
+                      itemBuilder: (context, index) {
+                        final user = filtered[index];
+                        final expiringSoon =
+                            user.hasActiveSubscription && user.daysLeft <= 14;
+                        final avatarColor = user.hasActiveSubscription
+                            ? (expiringSoon
+                                  ? scheme.tertiaryContainer
+                                  : scheme.primaryContainer)
+                            : scheme.surfaceContainerHighest;
+                        final avatarIconColor = user.hasActiveSubscription
+                            ? (expiringSoon
+                                  ? scheme.onTertiaryContainer
+                                  : scheme.onPrimaryContainer)
+                            : scheme.onSurfaceVariant;
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: avatarColor,
+                            child: Icon(
+                              user.isAdmin
+                                  ? Icons.admin_panel_settings
+                                  : Icons.person,
+                              color: avatarIconColor,
+                            ),
+                          ),
+                          title: Text(
+                            user.nom.isEmpty ? l10n.noName : user.nom,
+                          ),
+                          subtitle: Text(
+                            [
+                              if (user.telephone != null) user.telephone!,
+                              if (user.hasActiveSubscription)
+                                l10n.expiresOn(
+                                      dateFormat.format(user.subscriptionEnd!),
+                                    ) +
+                                    (expiringSoon
+                                        ? ' (${l10n.expiresSoon})'
+                                        : '')
+                              else
+                                l10n.noSubscription,
+                            ].join(' — '),
+                          ),
+                          trailing: const Icon(Icons.edit_outlined),
+                          onTap: () => _showActivateDialog(user),
+                        );
+                      },
                     );
-                  }
-                  return ListView.builder(
-                    itemCount: filtered.length,
-                    itemBuilder: (context, index) {
-                      final user = filtered[index];
-                final expiringSoon =
-                    user.hasActiveSubscription && user.daysLeft <= 14;
-                final avatarColor = user.hasActiveSubscription
-                    ? (expiringSoon
-                        ? scheme.tertiaryContainer
-                        : scheme.primaryContainer)
-                    : scheme.surfaceContainerHighest;
-                final avatarIconColor = user.hasActiveSubscription
-                    ? (expiringSoon
-                        ? scheme.onTertiaryContainer
-                        : scheme.onPrimaryContainer)
-                    : scheme.onSurfaceVariant;
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: avatarColor,
-                    child: Icon(
-                      user.isAdmin
-                          ? Icons.admin_panel_settings
-                          : Icons.person,
-                      color: avatarIconColor,
-                    ),
-                  ),
-                  title: Text(user.nom.isEmpty ? l10n.noName : user.nom),
-                  subtitle: Text(
-                    [
-                      if (user.telephone != null) user.telephone!,
-                      if (user.hasActiveSubscription)
-                        l10n.expiresOn(dateFormat.format(user.subscriptionEnd!)) +
-                            (expiringSoon ? ' (${l10n.expiresSoon})' : '')
-                      else
-                        l10n.noSubscription,
-                    ].join(' — '),
-                  ),
-                  trailing: const Icon(Icons.edit_outlined),
-                  onTap: () => _showActivateDialog(user),
-                );
-                    },
-                  );
-                },
+                  },
+                ),
               ),
             ),
           ),
