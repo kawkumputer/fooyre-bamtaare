@@ -16,32 +16,41 @@ class EditionsListScreen extends StatefulWidget {
   State<EditionsListScreen> createState() => _EditionsListScreenState();
 }
 
+class _EditionsData {
+  final List<Edition> editions;
+  final Map<String, String> coverUrls;
+  const _EditionsData(this.editions, this.coverUrls);
+}
+
 class _EditionsListScreenState extends State<EditionsListScreen> {
   final _editionService = EditionService();
-  late Future<List<Edition>> _editionsFuture;
+  late Future<_EditionsData> _future;
 
   @override
   void initState() {
     super.initState();
-    _editionsFuture = _editionService.fetchEditions();
+    _future = _load();
+  }
+
+  Future<_EditionsData> _load() async {
+    final editions = await _editionService.fetchEditions();
+    final covers = await _editionService.coverSignedUrls(editions);
+    return _EditionsData(editions, covers);
   }
 
   Future<void> _refresh() async {
-    setState(() {
-      _editionsFuture = _editionService.fetchEditions();
-    });
-    await _editionsFuture;
+    setState(() => _future = _load());
+    await _future;
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    // L'admin a acces a tout : on le traite comme un abonne (pas de
-    // banniere d'invitation a s'abonner).
-    final hasSubscription = (widget.profile?.hasActiveSubscription ?? false) ||
+    // L'admin et les abonnes ont acces a la version complete.
+    final hasFullAccess = (widget.profile?.hasActiveSubscription ?? false) ||
         (widget.profile?.isAdmin ?? false);
-
     final scheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -68,8 +77,8 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
       ),
       body: RefreshIndicator(
         onRefresh: _refresh,
-        child: FutureBuilder<List<Edition>>(
-          future: _editionsFuture,
+        child: FutureBuilder<_EditionsData>(
+          future: _future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
@@ -88,19 +97,17 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
                 ],
               );
             }
-            final editions = snapshot.data ?? [];
+            final data = snapshot.data!;
+            final editions = data.editions;
             if (editions.isEmpty) {
               return ListView(
                 children: [
                   const SizedBox(height: 80),
-                  Icon(
-                    Icons.menu_book_outlined,
-                    size: 64,
-                    color: Theme.of(context).colorScheme.outline,
-                  ),
+                  Icon(Icons.menu_book_outlined,
+                      size: 64, color: scheme.outline),
                   const SizedBox(height: 16),
                   Text(
-                    hasSubscription ? l10n.noEditions : l10n.noFreeEditions,
+                    l10n.noEditions,
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
@@ -109,15 +116,17 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
             }
             return ListView.builder(
               padding: const EdgeInsets.only(top: 4, bottom: 12),
-              itemCount: editions.length + (hasSubscription ? 0 : 1),
+              itemCount: editions.length + (hasFullAccess ? 0 : 1),
               itemBuilder: (context, index) {
-                // Banniere d'invitation a s'abonner pour les non-abonnes.
-                if (!hasSubscription && index == 0) {
+                if (!hasFullAccess && index == 0) {
                   return const _SubscribeBanner();
                 }
-                final edition =
-                    editions[hasSubscription ? index : index - 1];
-                return _EditionTile(edition: edition);
+                final edition = editions[hasFullAccess ? index : index - 1];
+                return _EditionCard(
+                  edition: edition,
+                  coverUrl: data.coverUrls[edition.id],
+                  hasFullAccess: hasFullAccess,
+                );
               },
             );
           },
@@ -127,85 +136,178 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
   }
 }
 
-class _EditionTile extends StatelessWidget {
+class _EditionCard extends StatelessWidget {
   final Edition edition;
+  final String? coverUrl;
+  final bool hasFullAccess;
 
-  const _EditionTile({required this.edition});
+  const _EditionCard({
+    required this.edition,
+    required this.coverUrl,
+    required this.hasFullAccess,
+  });
+
+  void _onTap(BuildContext context, AppLocalizations l10n) {
+    // Abonne / admin : ouvre la version complete.
+    if (hasFullAccess && edition.hasComplet) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => PdfViewerScreen(
+          edition: edition,
+          pdfPath: edition.pdfComplet!,
+          cacheKey: '${edition.id}_complet',
+        ),
+      ));
+      return;
+    }
+    // Abonne mais pas de PDF complet disponible.
+    if (hasFullAccess && !edition.hasComplet) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.editionUnavailable)),
+      );
+      return;
+    }
+    // Non-abonne : invitation a s'abonner + contacter l'editeur.
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.subscribeDialogTitle),
+        content: Text(l10n.subscribeDialogBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.close),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final dateStr =
+        DateFormat('MMMM yyyy', 'fr').format(edition.datePublication);
+
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: InkWell(
+        onTap: () => _onTap(context, l10n),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Affiche / la une.
+            _Cover(coverUrl: coverUrl, numero: edition.numero),
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          edition.titre,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontWeight: FontWeight.w700),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          dateStr,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(color: scheme.onSurfaceVariant),
+                        ),
+                        if (!hasFullAccess) ...[
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              Icon(Icons.lock_outline,
+                                  size: 14, color: scheme.tertiary),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  l10n.subscribeForFull,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: scheme.tertiary,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  Icon(
+                    hasFullAccess ? Icons.chevron_right : Icons.lock_outline,
+                    color: scheme.outline,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Affiche l'image de couverture, ou un aplat avec le numero a defaut.
+class _Cover extends StatelessWidget {
+  final String? coverUrl;
+  final int numero;
+
+  const _Cover({required this.coverUrl, required this.numero});
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    final dateStr =
-        DateFormat('MMMM yyyy', 'fr').format(edition.datePublication);
-    return Card(
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(16),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => PdfViewerScreen(edition: edition),
-          ),
+    if (coverUrl == null) {
+      return Container(
+        height: 140,
+        color: scheme.surfaceContainerHighest,
+        alignment: Alignment.center,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.image_not_supported_outlined,
+                color: scheme.outline, size: 32),
+            const SizedBox(height: 6),
+            Text('N°$numero',
+                style: TextStyle(
+                    color: scheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w700)),
+          ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [scheme.primary, scheme.primaryContainer],
-                  ),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  '${edition.numero}',
-                  style: TextStyle(
-                    color: scheme.onPrimary,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      edition.titre,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      dateStr,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: scheme.onSurfaceVariant,
-                          ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 8),
-              if (edition.gratuit)
-                Chip(
-                  label: Text(AppLocalizations.of(context).free),
-                  visualDensity: VisualDensity.compact,
-                  backgroundColor: scheme.secondaryContainer,
-                  labelStyle: TextStyle(
-                    color: scheme.onSecondaryContainer,
-                    fontWeight: FontWeight.w600,
-                  ),
-                )
-              else
-                Icon(Icons.chevron_right, color: scheme.outline),
-            ],
+      );
+    }
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 320),
+      color: scheme.surfaceContainerHighest,
+      width: double.infinity,
+      child: Image.network(
+        coverUrl!,
+        fit: BoxFit.contain,
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) return child;
+          return const SizedBox(
+            height: 200,
+            child: Center(child: CircularProgressIndicator()),
+          );
+        },
+        errorBuilder: (context, error, stack) => SizedBox(
+          height: 140,
+          child: Center(
+            child: Icon(Icons.broken_image_outlined, color: scheme.outline),
           ),
         ),
       ),

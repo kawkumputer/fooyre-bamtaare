@@ -21,8 +21,8 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
   final _adminService = AdminService();
   final _editionService = EditionService();
 
-  PlatformFile? _pickedFile;
-  bool _gratuit = false;
+  PlatformFile? _coverFile;
+  PlatformFile? _pdfFile;
   bool _uploading = false;
   late Future<List<Edition>> _editionsFuture;
 
@@ -45,24 +45,24 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
     });
   }
 
-  Future<void> _pickPdf() async {
+  Future<PlatformFile?> _pickFile(List<String> extensions) async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf'],
+      allowedExtensions: extensions,
       withData: true,
     );
     if (result != null && result.files.isNotEmpty) {
-      setState(() => _pickedFile = result.files.first);
+      return result.files.first;
     }
+    return null;
   }
 
   Future<void> _publish() async {
     final l10n = AppLocalizations.of(context);
     if (!_formKey.currentState!.validate()) return;
-    final file = _pickedFile;
-    if (file == null || file.bytes == null) {
+    if (_coverFile == null && _pdfFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(l10n.chooseFileFirst)),
+        SnackBar(content: Text(l10n.coverAndPdfRequired)),
       );
       return;
     }
@@ -72,18 +72,19 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
       await _adminService.publishEdition(
         numero: int.parse(_numeroController.text.trim()),
         titre: _titreController.text.trim(),
-        gratuit: _gratuit,
-        pdfBytes: file.bytes!,
+        coverBytes: _coverFile?.bytes,
+        coverExt: _coverFile?.extension,
+        completBytes: _pdfFile?.bytes,
       );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(l10n.editionPublished)),
         );
         setState(() {
-          _pickedFile = null;
+          _coverFile = null;
+          _pdfFile = null;
           _numeroController.clear();
           _titreController.clear();
-          _gratuit = false;
         });
         _reloadEditions();
       }
@@ -179,20 +180,46 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
                         v == null || v.trim().isEmpty ? l10n.titleRequired : null,
                   ),
                   const SizedBox(height: 16),
-                  SwitchListTile(
-                    title: Text(l10n.freeEdition),
-                    subtitle: Text(l10n.freeEditionSubtitle),
-                    value: _gratuit,
-                    onChanged: (v) => setState(() => _gratuit = v),
-                  ),
-                  const SizedBox(height: 16),
                   OutlinedButton.icon(
-                    icon: const Icon(Icons.attach_file),
+                    icon: const Icon(Icons.image_outlined),
                     label: Text(
-                      _pickedFile == null ? l10n.choosePdf : _pickedFile!.name,
+                      _coverFile == null
+                          ? l10n.chooseCoverImage
+                          : _coverFile!.name,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    onPressed: _uploading ? null : _pickPdf,
+                    onPressed: _uploading
+                        ? null
+                        : () async {
+                            final f = await _pickFile(
+                                ['jpg', 'jpeg', 'png', 'webp']);
+                            if (f != null) setState(() => _coverFile = f);
+                          },
+                  ),
+                  if (_coverFile?.bytes != null) ...[
+                    const SizedBox(height: 12),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.memory(
+                        _coverFile!.bytes!,
+                        height: 160,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ],
+                  const SizedBox(height: 12),
+                  OutlinedButton.icon(
+                    icon: const Icon(Icons.picture_as_pdf_outlined),
+                    label: Text(
+                      _pdfFile == null ? l10n.chooseFullPdf : _pdfFile!.name,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    onPressed: _uploading
+                        ? null
+                        : () async {
+                            final f = await _pickFile(['pdf']);
+                            if (f != null) setState(() => _pdfFile = f);
+                          },
                   ),
                   const SizedBox(height: 24),
                   FilledButton.icon(
@@ -284,7 +311,11 @@ class _EditionsAdminList extends StatelessWidget {
                 ),
                 title: Text(edition.titre),
                 subtitle: Text(
-                  '$dateStr — ${edition.gratuit ? l10n.free : l10n.subscribers}',
+                  '$dateStr — '
+                  '${[
+                    if (edition.hasCover) l10n.coverLabel,
+                    if (edition.hasComplet) l10n.editionComplete,
+                  ].join(' + ')}',
                 ),
                 trailing: IconButton(
                   icon: Icon(

@@ -9,8 +9,15 @@ import '../../services/edition_service.dart';
 
 class PdfViewerScreen extends StatefulWidget {
   final Edition edition;
+  final String pdfPath;
+  final String cacheKey;
 
-  const PdfViewerScreen({super.key, required this.edition});
+  const PdfViewerScreen({
+    super.key,
+    required this.edition,
+    required this.pdfPath,
+    required this.cacheKey,
+  });
 
   @override
   State<PdfViewerScreen> createState() => _PdfViewerScreenState();
@@ -23,7 +30,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
   @override
   void initState() {
     super.initState();
-    _pdfFuture = _editionService.getLocalPdf(widget.edition);
+    _pdfFuture = _editionService.getLocalPdf(
+      pdfPath: widget.pdfPath,
+      cacheKey: widget.cacheKey,
+    );
   }
 
   @override
@@ -64,8 +74,10 @@ class _PdfViewerScreenState extends State<PdfViewerScreen> {
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: () => setState(() {
-                        _pdfFuture =
-                            _editionService.getLocalPdf(widget.edition);
+                        _pdfFuture = _editionService.getLocalPdf(
+                          pdfPath: widget.pdfPath,
+                          cacheKey: widget.cacheKey,
+                        );
                       }),
                       child: Text(l10n.retry),
                     ),

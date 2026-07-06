@@ -44,4 +44,9 @@ class AuthService {
         .from('profiles')
         .update({'nom': nom, 'telephone': telephone}).eq('id', user.id);
   }
+
+  /// Change le mot de passe de l'utilisateur connecte.
+  Future<void> updatePassword(String newPassword) async {
+    await _client.auth.updateUser(UserAttributes(password: newPassword));
+  }
 }

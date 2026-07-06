@@ -5,15 +5,19 @@ import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
 import '../../models/profile.dart';
 import '../../services/auth_service.dart';
+import 'change_password_screen.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   final Profile? profile;
   final VoidCallback onSignedOut;
+  final VoidCallback onProfileUpdated;
 
   const ProfileScreen({
     super.key,
     required this.profile,
     required this.onSignedOut,
+    required this.onProfileUpdated,
   });
 
   @override
@@ -34,6 +38,21 @@ class ProfileScreen extends StatelessWidget {
                     leading: const Icon(Icons.person_outline),
                     title: Text(p.nom.isEmpty ? l10n.noName : p.nom),
                     subtitle: Text(p.telephone ?? l10n.noPhone),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit_outlined),
+                      tooltip: l10n.editProfile,
+                      onPressed: () async {
+                        final updated = await Navigator.of(context).push<bool>(
+                          MaterialPageRoute(
+                            builder: (_) => EditProfileScreen(
+                              profile: p,
+                              email: AuthService().currentUser?.email,
+                            ),
+                          ),
+                        );
+                        if (updated == true) onProfileUpdated();
+                      },
+                    ),
                   ),
                 ),
                 if (!p.isAdmin) ...[
@@ -90,6 +109,19 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+                const SizedBox(height: 8),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.lock_reset_outlined),
+                    title: Text(l10n.changePassword),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const ChangePasswordScreen(),
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 8),
                 _LanguageCard(l10n: l10n),
                 const SizedBox(height: 24),

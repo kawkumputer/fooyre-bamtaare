@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// No description provided for @email.
   ///
   /// In fr, this message translates to:
-  /// **'Email'**
+  /// **'E-mail'**
   String get email;
 
   /// No description provided for @password.
@@ -131,19 +131,19 @@ abstract class AppLocalizations {
   /// No description provided for @invalidEmail.
   ///
   /// In fr, this message translates to:
-  /// **'Email invalide'**
+  /// **'E-mail invalide'**
   String get invalidEmail;
 
   /// No description provided for @passwordTooShort.
   ///
   /// In fr, this message translates to:
-  /// **'Au moins 6 caracteres'**
+  /// **'Au moins 6 caractères'**
   String get passwordTooShort;
 
   /// No description provided for @createAccount.
   ///
   /// In fr, this message translates to:
-  /// **'Creer un compte'**
+  /// **'Créer un compte'**
   String get createAccount;
 
   /// No description provided for @fullName.
@@ -155,7 +155,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneOptional.
   ///
   /// In fr, this message translates to:
-  /// **'Telephone (optionnel)'**
+  /// **'Téléphone (optionnel)'**
   String get phoneOptional;
 
   /// No description provided for @phoneHelper.
@@ -179,19 +179,19 @@ abstract class AppLocalizations {
   /// No description provided for @accountCreated.
   ///
   /// In fr, this message translates to:
-  /// **'Compte cree ! Verifiez votre email si demande.'**
+  /// **'Compte créé ! Vérifiez votre e-mail si demandé.'**
   String get accountCreated;
 
   /// No description provided for @subscribeTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Abonnez-vous a Fooyre Ɓamtaare'**
+  /// **'Abonnez-vous à Fooyre Ɓamtaare'**
   String get subscribeTitle;
 
   /// No description provided for @subscribeBody.
   ///
   /// In fr, this message translates to:
-  /// **'Pour lire toutes les editions, contactez l\'editeur pour un abonnement (Bankily, Wave, virement...). Votre acces sera active des reception du paiement.'**
+  /// **'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.'**
   String get subscribeBody;
 
   /// No description provided for @free.
@@ -203,43 +203,43 @@ abstract class AppLocalizations {
   /// No description provided for @subscribers.
   ///
   /// In fr, this message translates to:
-  /// **'Abonnes'**
+  /// **'Abonnés'**
   String get subscribers;
 
   /// No description provided for @loadError.
   ///
   /// In fr, this message translates to:
-  /// **'Erreur de chargement.\nTirez vers le bas pour reessayer.'**
+  /// **'Erreur de chargement.\nTirez vers le bas pour réessayer.'**
   String get loadError;
 
   /// No description provided for @noEditions.
   ///
   /// In fr, this message translates to:
-  /// **'Aucune edition disponible pour le moment.'**
+  /// **'Aucune édition disponible pour le moment.'**
   String get noEditions;
 
   /// No description provided for @noFreeEditions.
   ///
   /// In fr, this message translates to:
-  /// **'Aucune edition gratuite disponible.\nAbonnez-vous pour acceder au journal.'**
+  /// **'Aucune édition gratuite disponible.\nAbonnez-vous pour accéder au journal.'**
   String get noFreeEditions;
 
   /// No description provided for @downloadingEdition.
   ///
   /// In fr, this message translates to:
-  /// **'Telechargement de l\'edition...'**
+  /// **'Téléchargement de l\'édition...'**
   String get downloadingEdition;
 
   /// No description provided for @pdfOpenError.
   ///
   /// In fr, this message translates to:
-  /// **'Impossible d\'ouvrir cette edition.\nVerifiez votre connexion ou votre abonnement.'**
+  /// **'Impossible d\'ouvrir cette édition.\nVérifiez votre connexion ou votre abonnement.'**
   String get pdfOpenError;
 
   /// No description provided for @retry.
   ///
   /// In fr, this message translates to:
-  /// **'Reessayer'**
+  /// **'Réessayer'**
   String get retry;
 
   /// No description provided for @myProfile.
@@ -251,7 +251,7 @@ abstract class AppLocalizations {
   /// No description provided for @noPhone.
   ///
   /// In fr, this message translates to:
-  /// **'Pas de telephone'**
+  /// **'Pas de téléphone'**
   String get noPhone;
 
   /// No description provided for @noName.
@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeContact.
   ///
   /// In fr, this message translates to:
-  /// **'Pour vous abonner, contactez l\'editeur du journal (Bankily, Wave, virement...). Votre acces sera active des reception du paiement.'**
+  /// **'Pour vous abonner, contactez l\'éditeur du journal (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.'**
   String get subscribeContact;
 
   /// No description provided for @adminAccount.
@@ -293,13 +293,13 @@ abstract class AppLocalizations {
   /// No description provided for @adminUnlimited.
   ///
   /// In fr, this message translates to:
-  /// **'Acces illimite a toutes les editions'**
+  /// **'Accès illimité à toutes les éditions'**
   String get adminUnlimited;
 
   /// No description provided for @signOut.
   ///
   /// In fr, this message translates to:
-  /// **'Se deconnecter'**
+  /// **'Se déconnecter'**
   String get signOut;
 
   /// No description provided for @language.
@@ -307,6 +307,120 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Langue'**
   String get language;
+
+  /// No description provided for @editProfile.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier le profil'**
+  String get editProfile;
+
+  /// No description provided for @save.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get save;
+
+  /// No description provided for @profileUpdated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil mis à jour.'**
+  String get profileUpdated;
+
+  /// No description provided for @emailNotEditable.
+  ///
+  /// In fr, this message translates to:
+  /// **'L\'e-mail ne peut pas être modifié.'**
+  String get emailNotEditable;
+
+  /// No description provided for @changePassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer le mot de passe'**
+  String get changePassword;
+
+  /// No description provided for @newPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau mot de passe'**
+  String get newPassword;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer le mot de passe'**
+  String get confirmPassword;
+
+  /// No description provided for @passwordsDontMatch.
+  ///
+  /// In fr, this message translates to:
+  /// **'Les mots de passe ne correspondent pas'**
+  String get passwordsDontMatch;
+
+  /// No description provided for @passwordUpdated.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe mis à jour.'**
+  String get passwordUpdated;
+
+  /// No description provided for @subscribeForFull.
+  ///
+  /// In fr, this message translates to:
+  /// **'Abonnez-vous pour lire l\'édition complète'**
+  String get subscribeForFull;
+
+  /// No description provided for @editionComplete.
+  ///
+  /// In fr, this message translates to:
+  /// **'Édition complète'**
+  String get editionComplete;
+
+  /// No description provided for @chooseFullPdf.
+  ///
+  /// In fr, this message translates to:
+  /// **'PDF complet (abonnés)'**
+  String get chooseFullPdf;
+
+  /// No description provided for @chooseCoverImage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Affiche (image de la une)'**
+  String get chooseCoverImage;
+
+  /// No description provided for @coverLabel.
+  ///
+  /// In fr, this message translates to:
+  /// **'Affiche'**
+  String get coverLabel;
+
+  /// No description provided for @coverAndPdfRequired.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajoutez l\'affiche et/ou le PDF complet.'**
+  String get coverAndPdfRequired;
+
+  /// No description provided for @subscribeDialogTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Édition complète'**
+  String get subscribeDialogTitle;
+
+  /// No description provided for @subscribeDialogBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès (Bankily, Wave, virement...).'**
+  String get subscribeDialogBody;
+
+  /// No description provided for @close.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fermer'**
+  String get close;
+
+  /// No description provided for @editionUnavailable.
+  ///
+  /// In fr, this message translates to:
+  /// **'Édition indisponible pour le moment.'**
+  String get editionUnavailable;
 
   /// No description provided for @subscriptionOf.
   ///
@@ -317,7 +431,7 @@ abstract class AppLocalizations {
   /// No description provided for @setEndDate.
   ///
   /// In fr, this message translates to:
-  /// **'Definir la date de fin...'**
+  /// **'Définir la date de fin...'**
   String get setEndDate;
 
   /// No description provided for @editEndDate.
@@ -329,13 +443,13 @@ abstract class AppLocalizations {
   /// No description provided for @deactivateAccess.
   ///
   /// In fr, this message translates to:
-  /// **'Desactiver l\'acces'**
+  /// **'Désactiver l\'accès'**
   String get deactivateAccess;
 
   /// No description provided for @accessDeactivated.
   ///
   /// In fr, this message translates to:
-  /// **'Acces desactive.'**
+  /// **'Accès désactivé.'**
   String get accessDeactivated;
 
   /// No description provided for @endDateHelp.
@@ -359,25 +473,25 @@ abstract class AppLocalizations {
   /// No description provided for @expiresOn.
   ///
   /// In fr, this message translates to:
-  /// **'Expire {date}'**
+  /// **'Expire le {date}'**
   String expiresOn(String date);
 
   /// No description provided for @expiresSoon.
   ///
   /// In fr, this message translates to:
-  /// **'bientot !'**
+  /// **'bientôt !'**
   String get expiresSoon;
 
   /// No description provided for @publishEdition.
   ///
   /// In fr, this message translates to:
-  /// **'Publier une edition'**
+  /// **'Publier une édition'**
   String get publishEdition;
 
   /// No description provided for @editionNumber.
   ///
   /// In fr, this message translates to:
-  /// **'Numero de l\'edition'**
+  /// **'Numéro de l\'édition'**
   String get editionNumber;
 
   /// No description provided for @editionNumberHint.
@@ -389,7 +503,7 @@ abstract class AppLocalizations {
   /// No description provided for @invalidNumber.
   ///
   /// In fr, this message translates to:
-  /// **'Numero invalide'**
+  /// **'Numéro invalide'**
   String get invalidNumber;
 
   /// No description provided for @title.
@@ -413,13 +527,13 @@ abstract class AppLocalizations {
   /// No description provided for @freeEdition.
   ///
   /// In fr, this message translates to:
-  /// **'Edition gratuite'**
+  /// **'Édition gratuite'**
   String get freeEdition;
 
   /// No description provided for @freeEditionSubtitle.
   ///
   /// In fr, this message translates to:
-  /// **'Accessible a tous, meme sans abonnement'**
+  /// **'Accessible à tous, même sans abonnement'**
   String get freeEditionSubtitle;
 
   /// No description provided for @choosePdf.
@@ -449,25 +563,25 @@ abstract class AppLocalizations {
   /// No description provided for @editionPublished.
   ///
   /// In fr, this message translates to:
-  /// **'Edition publiee !'**
+  /// **'Édition publiée !'**
   String get editionPublished;
 
   /// No description provided for @publishedEditions.
   ///
   /// In fr, this message translates to:
-  /// **'Editions publiees'**
+  /// **'Éditions publiées'**
   String get publishedEditions;
 
   /// No description provided for @deleteEditionTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Supprimer cette edition ?'**
+  /// **'Supprimer cette édition ?'**
   String get deleteEditionTitle;
 
   /// No description provided for @deleteEditionBody.
   ///
   /// In fr, this message translates to:
-  /// **'N°{numero} — {titre}\n\nLe fichier PDF et l\'edition seront supprimes definitivement.'**
+  /// **'N°{numero} — {titre}\n\nLe fichier PDF et l\'édition seront supprimés définitivement.'**
   String deleteEditionBody(int numero, String titre);
 
   /// No description provided for @cancel.
@@ -485,31 +599,31 @@ abstract class AppLocalizations {
   /// No description provided for @editionDeleted.
   ///
   /// In fr, this message translates to:
-  /// **'Edition supprimee.'**
+  /// **'Édition supprimée.'**
   String get editionDeleted;
 
   /// No description provided for @noEditionsYet.
   ///
   /// In fr, this message translates to:
-  /// **'Aucune edition publiee pour le moment.'**
+  /// **'Aucune édition publiée pour le moment.'**
   String get noEditionsYet;
 
   /// No description provided for @loadErrorEditions.
   ///
   /// In fr, this message translates to:
-  /// **'Erreur de chargement des editions.'**
+  /// **'Erreur de chargement des éditions.'**
   String get loadErrorEditions;
 
   /// No description provided for @navEditions.
   ///
   /// In fr, this message translates to:
-  /// **'Editions'**
+  /// **'Éditions'**
   String get navEditions;
 
   /// No description provided for @navSubscribers.
   ///
   /// In fr, this message translates to:
-  /// **'Abonnes'**
+  /// **'Abonnés'**
   String get navSubscribers;
 
   /// No description provided for @navPublish.

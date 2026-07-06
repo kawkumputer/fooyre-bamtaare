@@ -43,41 +43,78 @@ class AdminService {
 
   /// Publie une nouvelle edition : upload du PDF puis insertion
   /// de la ligne dans la table editions.
+  ///
+  /// Un numero comporte :
+  ///  - [coverBytes] : affiche / la une (image), dossier gratuit/, visible
+  ///    par tous. [coverExt] = extension image (jpg, png, ...).
+  ///  - [completBytes] : edition complete (PDF), dossier abonnes/, reservee
+  ///    aux abonnes.
+  /// Les deux sont optionnels a la mise a jour, mais au moins un fourni.
   Future<void> publishEdition({
     required int numero,
     required String titre,
-    required bool gratuit,
-    required Uint8List pdfBytes,
+    Uint8List? coverBytes,
+    String? coverExt,
+    Uint8List? completBytes,
   }) async {
-    // Les PDF gratuits vont dans le dossier "gratuit/" : la policy
-    // Storage s'appuie sur ce prefixe pour autoriser la lecture.
-    final folder = gratuit ? 'gratuit' : 'abonnes';
-    final path = '$folder/fooyre_$numero.pdf';
+    if (coverBytes == null && completBytes == null) {
+      throw Exception('Fournir au moins l\'affiche ou le PDF complet.');
+    }
 
-    await _client.storage.from(SupabaseConfig.editionsBucket).uploadBinary(
-          path,
-          pdfBytes,
-          fileOptions: const FileOptions(
-            contentType: 'application/pdf',
-            upsert: true,
-          ),
-        );
-
-    await _client.from('editions').upsert({
+    final row = <String, dynamic>{
       'numero': numero,
       'titre': titre,
-      'gratuit': gratuit,
-      'pdf_path': path,
       'date_publication': DateTime.now().toIso8601String().substring(0, 10),
-    }, onConflict: 'numero');
+    };
+
+    if (coverBytes != null) {
+      // Dossier gratuit/ : lisible par tous (policy Storage).
+      final ext = (coverExt ?? 'jpg').toLowerCase();
+      final path = 'gratuit/cover_$numero.$ext';
+      await _upload(path, coverBytes, _imageContentType(ext));
+      row['cover_path'] = path;
+    }
+    if (completBytes != null) {
+      // Dossier abonnes/ : lisible par les abonnes / admin.
+      final path = 'abonnes/fooyre_$numero.pdf';
+      await _upload(path, completBytes, 'application/pdf');
+      row['pdf_complet'] = path;
+    }
+
+    await _client.from('editions').upsert(row, onConflict: 'numero');
   }
 
-  /// Supprime une edition : le fichier PDF dans le Storage puis la ligne
-  /// dans la table editions (admin uniquement, via RLS).
+  String _imageContentType(String ext) {
+    switch (ext) {
+      case 'png':
+        return 'image/png';
+      case 'webp':
+        return 'image/webp';
+      case 'jpg':
+      case 'jpeg':
+      default:
+        return 'image/jpeg';
+    }
+  }
+
+  Future<void> _upload(String path, Uint8List bytes, String contentType) async {
+    await _client.storage.from(SupabaseConfig.editionsBucket).uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(contentType: contentType, upsert: true),
+        );
+  }
+
+  /// Supprime une edition : l'affiche et le PDF complet dans le Storage
+  /// puis la ligne dans la table editions (admin via RLS).
   Future<void> deleteEdition(Edition edition) async {
-    await _client.storage
-        .from(SupabaseConfig.editionsBucket)
-        .remove([edition.pdfPath]);
+    final paths = <String>[
+      if (edition.hasCover) edition.coverPath!,
+      if (edition.hasComplet) edition.pdfComplet!,
+    ];
+    if (paths.isNotEmpty) {
+      await _client.storage.from(SupabaseConfig.editionsBucket).remove(paths);
+    }
     await _client.from('editions').delete().eq('id', edition.id);
   }
 }

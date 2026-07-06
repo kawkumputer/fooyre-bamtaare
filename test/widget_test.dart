@@ -53,17 +53,30 @@ void main() {
   });
 
   group('Edition', () {
-    test('fromJson analyse une edition', () {
+    test('fromJson analyse une edition avec affiche et complet', () {
       final edition = Edition.fromJson({
         'id': 'e1',
         'numero': 261,
-        'titre': 'Fooyre Tonngoode 261',
+        'titre': 'Fooyre Ɓamtaare 261',
         'date_publication': '2026-06-01',
-        'pdf_path': 'abonnes/fooyre_261.pdf',
-        'gratuit': false,
+        'cover_path': 'gratuit/cover_261.jpg',
+        'pdf_complet': 'abonnes/fooyre_261.pdf',
       });
       expect(edition.numero, 261);
-      expect(edition.gratuit, isFalse);
+      expect(edition.hasCover, isTrue);
+      expect(edition.hasComplet, isTrue);
+    });
+
+    test('fromJson : edition sans affiche', () {
+      final edition = Edition.fromJson({
+        'id': 'e2',
+        'numero': 262,
+        'titre': 'Fooyre Ɓamtaare 262',
+        'date_publication': '2026-07-01',
+        'pdf_complet': 'abonnes/fooyre_262.pdf',
+      });
+      expect(edition.hasCover, isFalse);
+      expect(edition.hasComplet, isTrue);
     });
   });
 }

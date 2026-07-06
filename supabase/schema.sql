@@ -47,8 +47,10 @@ create table if not exists public.editions (
   numero int not null unique,
   titre text not null,
   date_publication date not null default current_date,
-  pdf_path text not null,          -- chemin dans le bucket Storage
-  gratuit boolean not null default false,
+  pdf_path text,                   -- legacy (remplace par cover/complet)
+  cover_path text,                 -- affiche / la une (image) : dossier gratuit/
+  pdf_complet text,                -- edition complete (abonnes) : dossier abonnes/
+  gratuit boolean not null default false,  -- legacy
   created_at timestamptz not null default now()
 );
 
@@ -124,14 +126,12 @@ create trigger protect_subscription
   before update on public.profiles
   for each row execute function public.protect_subscription_columns();
 
--- Editions : visibles si gratuites, abonnement actif, ou admin
+-- Editions : metadonnees visibles par tous (la une / apercu + invitation
+-- a s'abonner). L'acces aux FICHIERS reste protege par les policies
+-- Storage (dossier gratuit/ accessible a tous, abonnes/ aux abonnes).
 drop policy if exists "editions_select" on public.editions;
 create policy "editions_select" on public.editions
-  for select using (
-    gratuit = true
-    or public.has_active_subscription()
-    or public.is_admin()
-  );
+  for select using (true);
 
 -- Editions : seul l'admin cree / modifie / supprime
 drop policy if exists "editions_admin_insert" on public.editions;

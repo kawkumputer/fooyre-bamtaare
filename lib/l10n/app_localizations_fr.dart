@@ -12,7 +12,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get appSubtitle => 'Journal mensuel en pulaar';
 
   @override
-  String get email => 'Email';
+  String get email => 'E-mail';
 
   @override
   String get password => 'Mot de passe';
@@ -24,19 +24,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noAccountSignUp => 'Pas de compte ? S\'inscrire';
 
   @override
-  String get invalidEmail => 'Email invalide';
+  String get invalidEmail => 'E-mail invalide';
 
   @override
-  String get passwordTooShort => 'Au moins 6 caracteres';
+  String get passwordTooShort => 'Au moins 6 caractères';
 
   @override
-  String get createAccount => 'Creer un compte';
+  String get createAccount => 'Créer un compte';
 
   @override
   String get fullName => 'Nom complet';
 
   @override
-  String get phoneOptional => 'Telephone (optionnel)';
+  String get phoneOptional => 'Téléphone (optionnel)';
 
   @override
   String get phoneHelper => 'Utile pour le paiement Bankily / Wave';
@@ -48,47 +48,48 @@ class AppLocalizationsFr extends AppLocalizations {
   String get nameRequired => 'Nom requis';
 
   @override
-  String get accountCreated => 'Compte cree ! Verifiez votre email si demande.';
+  String get accountCreated =>
+      'Compte créé ! Vérifiez votre e-mail si demandé.';
 
   @override
-  String get subscribeTitle => 'Abonnez-vous a Fooyre Ɓamtaare';
+  String get subscribeTitle => 'Abonnez-vous à Fooyre Ɓamtaare';
 
   @override
   String get subscribeBody =>
-      'Pour lire toutes les editions, contactez l\'editeur pour un abonnement (Bankily, Wave, virement...). Votre acces sera active des reception du paiement.';
+      'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.';
 
   @override
   String get free => 'Gratuit';
 
   @override
-  String get subscribers => 'Abonnes';
+  String get subscribers => 'Abonnés';
 
   @override
   String get loadError =>
-      'Erreur de chargement.\nTirez vers le bas pour reessayer.';
+      'Erreur de chargement.\nTirez vers le bas pour réessayer.';
 
   @override
-  String get noEditions => 'Aucune edition disponible pour le moment.';
+  String get noEditions => 'Aucune édition disponible pour le moment.';
 
   @override
   String get noFreeEditions =>
-      'Aucune edition gratuite disponible.\nAbonnez-vous pour acceder au journal.';
+      'Aucune édition gratuite disponible.\nAbonnez-vous pour accéder au journal.';
 
   @override
-  String get downloadingEdition => 'Telechargement de l\'edition...';
+  String get downloadingEdition => 'Téléchargement de l\'édition...';
 
   @override
   String get pdfOpenError =>
-      'Impossible d\'ouvrir cette edition.\nVerifiez votre connexion ou votre abonnement.';
+      'Impossible d\'ouvrir cette édition.\nVérifiez votre connexion ou votre abonnement.';
 
   @override
-  String get retry => 'Reessayer';
+  String get retry => 'Réessayer';
 
   @override
   String get myProfile => 'Mon profil';
 
   @override
-  String get noPhone => 'Pas de telephone';
+  String get noPhone => 'Pas de téléphone';
 
   @override
   String get noName => '(sans nom)';
@@ -106,19 +107,77 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscribeContact =>
-      'Pour vous abonner, contactez l\'editeur du journal (Bankily, Wave, virement...). Votre acces sera active des reception du paiement.';
+      'Pour vous abonner, contactez l\'éditeur du journal (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.';
 
   @override
   String get adminAccount => 'Compte administrateur';
 
   @override
-  String get adminUnlimited => 'Acces illimite a toutes les editions';
+  String get adminUnlimited => 'Accès illimité à toutes les éditions';
 
   @override
-  String get signOut => 'Se deconnecter';
+  String get signOut => 'Se déconnecter';
 
   @override
   String get language => 'Langue';
+
+  @override
+  String get editProfile => 'Modifier le profil';
+
+  @override
+  String get save => 'Enregistrer';
+
+  @override
+  String get profileUpdated => 'Profil mis à jour.';
+
+  @override
+  String get emailNotEditable => 'L\'e-mail ne peut pas être modifié.';
+
+  @override
+  String get changePassword => 'Changer le mot de passe';
+
+  @override
+  String get newPassword => 'Nouveau mot de passe';
+
+  @override
+  String get confirmPassword => 'Confirmer le mot de passe';
+
+  @override
+  String get passwordsDontMatch => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get passwordUpdated => 'Mot de passe mis à jour.';
+
+  @override
+  String get subscribeForFull => 'Abonnez-vous pour lire l\'édition complète';
+
+  @override
+  String get editionComplete => 'Édition complète';
+
+  @override
+  String get chooseFullPdf => 'PDF complet (abonnés)';
+
+  @override
+  String get chooseCoverImage => 'Affiche (image de la une)';
+
+  @override
+  String get coverLabel => 'Affiche';
+
+  @override
+  String get coverAndPdfRequired => 'Ajoutez l\'affiche et/ou le PDF complet.';
+
+  @override
+  String get subscribeDialogTitle => 'Édition complète';
+
+  @override
+  String get subscribeDialogBody =>
+      'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès (Bankily, Wave, virement...).';
+
+  @override
+  String get close => 'Fermer';
+
+  @override
+  String get editionUnavailable => 'Édition indisponible pour le moment.';
 
   @override
   String subscriptionOf(String name) {
@@ -126,16 +185,16 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get setEndDate => 'Definir la date de fin...';
+  String get setEndDate => 'Définir la date de fin...';
 
   @override
   String get editEndDate => 'Modifier la date de fin...';
 
   @override
-  String get deactivateAccess => 'Desactiver l\'acces';
+  String get deactivateAccess => 'Désactiver l\'accès';
 
   @override
-  String get accessDeactivated => 'Acces desactive.';
+  String get accessDeactivated => 'Accès désactivé.';
 
   @override
   String get endDateHelp => 'Date de fin de l\'abonnement';
@@ -150,23 +209,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String expiresOn(String date) {
-    return 'Expire $date';
+    return 'Expire le $date';
   }
 
   @override
-  String get expiresSoon => 'bientot !';
+  String get expiresSoon => 'bientôt !';
 
   @override
-  String get publishEdition => 'Publier une edition';
+  String get publishEdition => 'Publier une édition';
 
   @override
-  String get editionNumber => 'Numero de l\'edition';
+  String get editionNumber => 'Numéro de l\'édition';
 
   @override
   String get editionNumberHint => 'ex : 262';
 
   @override
-  String get invalidNumber => 'Numero invalide';
+  String get invalidNumber => 'Numéro invalide';
 
   @override
   String get title => 'Titre';
@@ -178,10 +237,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get titleRequired => 'Titre requis';
 
   @override
-  String get freeEdition => 'Edition gratuite';
+  String get freeEdition => 'Édition gratuite';
 
   @override
-  String get freeEditionSubtitle => 'Accessible a tous, meme sans abonnement';
+  String get freeEditionSubtitle => 'Accessible à tous, même sans abonnement';
 
   @override
   String get choosePdf => 'Choisir le fichier PDF';
@@ -196,17 +255,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get chooseFileFirst => 'Choisissez d\'abord un fichier PDF.';
 
   @override
-  String get editionPublished => 'Edition publiee !';
+  String get editionPublished => 'Édition publiée !';
 
   @override
-  String get publishedEditions => 'Editions publiees';
+  String get publishedEditions => 'Éditions publiées';
 
   @override
-  String get deleteEditionTitle => 'Supprimer cette edition ?';
+  String get deleteEditionTitle => 'Supprimer cette édition ?';
 
   @override
   String deleteEditionBody(int numero, String titre) {
-    return 'N°$numero — $titre\n\nLe fichier PDF et l\'edition seront supprimes definitivement.';
+    return 'N°$numero — $titre\n\nLe fichier PDF et l\'édition seront supprimés définitivement.';
   }
 
   @override
@@ -216,19 +275,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get delete => 'Supprimer';
 
   @override
-  String get editionDeleted => 'Edition supprimee.';
+  String get editionDeleted => 'Édition supprimée.';
 
   @override
-  String get noEditionsYet => 'Aucune edition publiee pour le moment.';
+  String get noEditionsYet => 'Aucune édition publiée pour le moment.';
 
   @override
-  String get loadErrorEditions => 'Erreur de chargement des editions.';
+  String get loadErrorEditions => 'Erreur de chargement des éditions.';
 
   @override
-  String get navEditions => 'Editions';
+  String get navEditions => 'Éditions';
 
   @override
-  String get navSubscribers => 'Abonnes';
+  String get navSubscribers => 'Abonnés';
 
   @override
   String get navPublish => 'Publier';

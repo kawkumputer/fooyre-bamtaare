@@ -1,3 +1,6 @@
+// createSignedUrls (batch) est marque deprecated par storage_client mais
+// reste la methode adaptee ici (les chemins existent toujours).
+// ignore_for_file: deprecated_member_use
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -10,9 +13,8 @@ import '../models/edition.dart';
 class EditionService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  /// Liste des editions visibles pour l'utilisateur courant.
-  /// La RLS filtre automatiquement : un lecteur sans abonnement
-  /// ne recoit que les editions gratuites.
+  /// Liste des editions. La RLS rend les metadonnees visibles a tous ;
+  /// l'acces aux fichiers (apercu vs complet) est gere au telechargement.
   Future<List<Edition>> fetchEditions() async {
     final data = await _client
         .from('editions')
@@ -23,16 +25,40 @@ class EditionService {
         .toList();
   }
 
-  /// Retourne le fichier PDF local, en le telechargeant si besoin
-  /// (cache pour la lecture hors-ligne).
-  Future<File> getLocalPdf(Edition edition) async {
+  /// URLs signees (1h) des affiches, en une seule requete.
+  /// Retourne une map id_edition -> url image. Les editions sans affiche
+  /// sont absentes de la map.
+  Future<Map<String, String>> coverSignedUrls(List<Edition> editions) async {
+    final withCover = editions.where((e) => e.hasCover).toList();
+    if (withCover.isEmpty) return {};
+
+    final paths = withCover.map((e) => e.coverPath!).toList();
+    final signed = await _client.storage
+        .from(SupabaseConfig.editionsBucket)
+        .createSignedUrls(paths, 3600);
+
+    final urlByPath = {for (final s in signed) s.path: s.signedUrl};
+    final result = <String, String>{};
+    for (final e in withCover) {
+      final url = urlByPath[e.coverPath];
+      if (url != null) result[e.id] = url;
+    }
+    return result;
+  }
+
+  /// Telecharge (et met en cache) un PDF depuis son chemin Storage.
+  /// [cacheKey] distingue les fichiers en cache (ex: apercu vs complet).
+  Future<File> getLocalPdf({
+    required String pdfPath,
+    required String cacheKey,
+  }) async {
     final dir = await getApplicationDocumentsDirectory();
-    final file = File('${dir.path}/editions/${edition.id}.pdf');
+    final file = File('${dir.path}/editions/$cacheKey.pdf');
     if (await file.exists()) return file;
 
     final signedUrl = await _client.storage
         .from(SupabaseConfig.editionsBucket)
-        .createSignedUrl(edition.pdfPath, 3600);
+        .createSignedUrl(pdfPath, 3600);
 
     final response = await http.get(Uri.parse(signedUrl));
     if (response.statusCode != 200) {
@@ -41,11 +67,5 @@ class EditionService {
     await file.parent.create(recursive: true);
     await file.writeAsBytes(response.bodyBytes);
     return file;
-  }
-
-  /// Verifie si une edition est deja disponible hors-ligne.
-  Future<bool> isDownloaded(Edition edition) async {
-    final dir = await getApplicationDocumentsDirectory();
-    return File('${dir.path}/editions/${edition.id}.pdf').exists();
   }
 }

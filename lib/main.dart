@@ -135,6 +135,7 @@ class _HomeShellState extends State<HomeShell> {
       if (isAdmin) const AdminUploadScreen(),
       ProfileScreen(
         profile: _profile,
+        onProfileUpdated: _loadProfile,
         onSignedOut: () {
           // AuthGate reagit au changement d'etat et affiche LoginScreen.
         },

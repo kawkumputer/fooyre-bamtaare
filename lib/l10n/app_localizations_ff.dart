@@ -120,6 +120,64 @@ class AppLocalizationsFf extends AppLocalizations {
   String get language => 'Ɗemngal';
 
   @override
+  String get editProfile => 'Waylu heftinirde';
+
+  @override
+  String get save => 'Danndu';
+
+  @override
+  String get profileUpdated => 'Heftinirde waylaama.';
+
+  @override
+  String get emailNotEditable => 'Iimeel waawaa wayleede.';
+
+  @override
+  String get changePassword => 'Waylu finnde';
+
+  @override
+  String get newPassword => 'Finnde hesere';
+
+  @override
+  String get confirmPassword => 'Teeŋtin finnde ndee';
+
+  @override
+  String get passwordsDontMatch => 'Finndeeji ɗii nanndaani';
+
+  @override
+  String get passwordUpdated => 'Finnde waylaama.';
+
+  @override
+  String get subscribeForFull => 'Lulno ngam tarde tonngoode timmunde';
+
+  @override
+  String get editionComplete => 'Tonngoode timmunde';
+
+  @override
+  String get chooseFullPdf => 'PDF timmuɗo (lulniiɓe)';
+
+  @override
+  String get chooseCoverImage => 'Natal ngal (yeeso tonngoode)';
+
+  @override
+  String get coverLabel => 'Natal';
+
+  @override
+  String get coverAndPdfRequired => 'Ɓeydu natal ngal walla PDF timmuɗo oo.';
+
+  @override
+  String get subscribeDialogTitle => 'Tonngoode timmunde';
+
+  @override
+  String get subscribeDialogBody =>
+      'Ngam tarde tonngoode timmunde, aɗa foti lulnaade. Jokkondir e caakto jaaynde ndee ngam heɓde damal (Bankily, Wave, booñ...).';
+
+  @override
+  String get close => 'Uddu';
+
+  @override
+  String get editionUnavailable => 'Tonngoode ndee alaa e oo sahaa.';
+
+  @override
   String subscriptionOf(String name) {
     return 'Lulnagol $name';
   }
