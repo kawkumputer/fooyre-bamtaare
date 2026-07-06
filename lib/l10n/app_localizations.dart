@@ -386,6 +386,18 @@ abstract class AppLocalizations {
   /// **'Affiche (image de la une)'**
   String get chooseCoverImage;
 
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir depuis la galerie'**
+  String get chooseFromGallery;
+
+  /// No description provided for @chooseFromFiles.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir depuis les fichiers'**
+  String get chooseFromFiles;
+
   /// No description provided for @coverLabel.
   ///
   /// In fr, this message translates to:
@@ -395,8 +407,20 @@ abstract class AppLocalizations {
   /// No description provided for @coverAndPdfRequired.
   ///
   /// In fr, this message translates to:
-  /// **'Ajoutez l\'affiche et/ou le PDF complet.'**
+  /// **'L\'affiche et le PDF complet sont tous les deux obligatoires.'**
   String get coverAndPdfRequired;
+
+  /// No description provided for @publicationDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de parution'**
+  String get publicationDate;
+
+  /// No description provided for @publishedOn.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paru le {date}'**
+  String publishedOn(String date);
 
   /// No description provided for @subscribeDialogTitle.
   ///

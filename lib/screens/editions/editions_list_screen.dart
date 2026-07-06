@@ -260,7 +260,7 @@ class _EditionCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final scheme = Theme.of(context).colorScheme;
     final dateStr = DateFormat(
-      'MMMM yyyy',
+      'd MMMM yyyy',
       'fr',
     ).format(edition.datePublication);
 
@@ -290,7 +290,7 @@ class _EditionCard extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          dateStr,
+                          l10n.publishedOn(dateStr),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: scheme.onSurfaceVariant),
                         ),

@@ -49,37 +49,31 @@ class AdminService {
   ///    par tous. [coverExt] = extension image (jpg, png, ...).
   ///  - [completBytes] : edition complete (PDF), dossier abonnes/, reservee
   ///    aux abonnes.
-  /// Les deux sont optionnels a la mise a jour, mais au moins un fourni.
+  /// Les deux sont obligatoires.
   Future<void> publishEdition({
     required int numero,
     required String titre,
-    Uint8List? coverBytes,
-    String? coverExt,
-    Uint8List? completBytes,
+    required DateTime datePublication,
+    required Uint8List coverBytes,
+    required String? coverExt,
+    required Uint8List completBytes,
   }) async {
-    if (coverBytes == null && completBytes == null) {
-      throw Exception('Fournir au moins l\'affiche ou le PDF complet.');
-    }
-
     final row = <String, dynamic>{
       'numero': numero,
       'titre': titre,
-      'date_publication': DateTime.now().toIso8601String().substring(0, 10),
+      'date_publication': datePublication.toIso8601String().substring(0, 10),
     };
 
-    if (coverBytes != null) {
-      // Dossier gratuit/ : lisible par tous (policy Storage).
-      final ext = (coverExt ?? 'jpg').toLowerCase();
-      final path = 'gratuit/cover_$numero.$ext';
-      await _upload(path, coverBytes, _imageContentType(ext));
-      row['cover_path'] = path;
-    }
-    if (completBytes != null) {
-      // Dossier abonnes/ : lisible par les abonnes / admin.
-      final path = 'abonnes/fooyre_$numero.pdf';
-      await _upload(path, completBytes, 'application/pdf');
-      row['pdf_complet'] = path;
-    }
+    // Dossier gratuit/ : lisible par tous (policy Storage).
+    final ext = (coverExt ?? 'jpg').toLowerCase();
+    final coverPath = 'gratuit/cover_$numero.$ext';
+    await _upload(coverPath, coverBytes, _imageContentType(ext));
+    row['cover_path'] = coverPath;
+
+    // Dossier abonnes/ : lisible par les abonnes / admin.
+    final pdfPath = 'abonnes/fooyre_$numero.pdf';
+    await _upload(pdfPath, completBytes, 'application/pdf');
+    row['pdf_complet'] = pdfPath;
 
     await _client.from('editions').upsert(row, onConflict: 'numero');
   }

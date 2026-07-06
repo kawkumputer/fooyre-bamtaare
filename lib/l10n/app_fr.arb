@@ -62,8 +62,17 @@
   "editionComplete": "Édition complète",
   "chooseFullPdf": "PDF complet (abonnés)",
   "chooseCoverImage": "Affiche (image de la une)",
+  "chooseFromGallery": "Choisir depuis la galerie",
+  "chooseFromFiles": "Choisir depuis les fichiers",
   "coverLabel": "Affiche",
-  "coverAndPdfRequired": "Ajoutez l'affiche et/ou le PDF complet.",
+  "coverAndPdfRequired": "L'affiche et le PDF complet sont tous les deux obligatoires.",
+  "publicationDate": "Date de parution",
+  "publishedOn": "Paru le {date}",
+  "@publishedOn": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
   "subscribeDialogTitle": "Édition complète",
   "subscribeDialogBody": "Pour lire l'édition complète, vous devez être abonné. Contactez l'éditeur pour obtenir l'accès (Bankily, Wave, virement...).",
   "close": "Fermer",

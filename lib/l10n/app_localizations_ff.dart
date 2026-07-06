@@ -159,10 +159,25 @@ class AppLocalizationsFf extends AppLocalizations {
   String get chooseCoverImage => 'Natal ngal (yeeso tonngoode)';
 
   @override
+  String get chooseFromGallery => 'Suɓaade e nataleeji';
+
+  @override
+  String get chooseFromFiles => 'Suɓaade e fiilde';
+
+  @override
   String get coverLabel => 'Natal';
 
   @override
-  String get coverAndPdfRequired => 'Ɓeydu natal ngal walla PDF timmuɗo oo.';
+  String get coverAndPdfRequired =>
+      'Natal ngal e PDF timmuɗo ɗiɗi fof ina waɗɗii.';
+
+  @override
+  String get publicationDate => 'Ñalnde yaltugol';
+
+  @override
+  String publishedOn(String date) {
+    return 'Yaltii ñalnde $date';
+  }
 
   @override
   String get subscribeDialogTitle => 'Tonngoode timmunde';

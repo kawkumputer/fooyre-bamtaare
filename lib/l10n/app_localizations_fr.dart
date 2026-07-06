@@ -161,10 +161,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get chooseCoverImage => 'Affiche (image de la une)';
 
   @override
+  String get chooseFromGallery => 'Choisir depuis la galerie';
+
+  @override
+  String get chooseFromFiles => 'Choisir depuis les fichiers';
+
+  @override
   String get coverLabel => 'Affiche';
 
   @override
-  String get coverAndPdfRequired => 'Ajoutez l\'affiche et/ou le PDF complet.';
+  String get coverAndPdfRequired =>
+      'L\'affiche et le PDF complet sont tous les deux obligatoires.';
+
+  @override
+  String get publicationDate => 'Date de parution';
+
+  @override
+  String publishedOn(String date) {
+    return 'Paru le $date';
+  }
 
   @override
   String get subscribeDialogTitle => 'Édition complète';
