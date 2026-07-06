@@ -15,11 +15,23 @@ class AdminUsersScreen extends StatefulWidget {
 class _AdminUsersScreenState extends State<AdminUsersScreen> {
   final _adminService = AdminService();
   late Future<List<Profile>> _usersFuture;
+  String _query = '';
 
   @override
   void initState() {
     super.initState();
     _usersFuture = _adminService.fetchAllUsers();
+  }
+
+  /// Filtre par nom (ou prenom) ou telephone.
+  List<Profile> _filter(List<Profile> users) {
+    final q = _query.trim().toLowerCase();
+    if (q.isEmpty) return users;
+    return users
+        .where((u) =>
+            u.nom.toLowerCase().contains(q) ||
+            (u.telephone ?? '').toLowerCase().contains(q))
+        .toList();
   }
 
   Future<void> _refresh() async {
@@ -113,42 +125,75 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.subscribers)),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: FutureBuilder<List<Profile>>(
-          future: _usersFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Text(
-                      l10n.loadError,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              );
-            }
-            final users = snapshot.data ?? [];
-            // Les abonnements qui expirent bientot en premier.
-            users.sort((a, b) {
-              if (a.hasActiveSubscription != b.hasActiveSubscription) {
-                return a.hasActiveSubscription ? -1 : 1;
-              }
-              if (a.subscriptionEnd == null || b.subscriptionEnd == null) {
-                return 0;
-              }
-              return a.subscriptionEnd!.compareTo(b.subscriptionEnd!);
-            });
-            return ListView.builder(
-              itemCount: users.length,
-              itemBuilder: (context, index) {
-                final user = users[index];
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: l10n.searchUserHint,
+                prefixIcon: const Icon(Icons.search),
+                isDense: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _refresh,
+              child: FutureBuilder<List<Profile>>(
+                future: _usersFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Text(
+                            l10n.loadError,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  final users = snapshot.data ?? [];
+                  // Les abonnements qui expirent bientot en premier.
+                  users.sort((a, b) {
+                    if (a.hasActiveSubscription != b.hasActiveSubscription) {
+                      return a.hasActiveSubscription ? -1 : 1;
+                    }
+                    if (a.subscriptionEnd == null ||
+                        b.subscriptionEnd == null) {
+                      return 0;
+                    }
+                    return a.subscriptionEnd!.compareTo(b.subscriptionEnd!);
+                  });
+                  final filtered = _filter(users);
+                  if (filtered.isEmpty) {
+                    return ListView(
+                      children: [
+                        const SizedBox(height: 80),
+                        Center(
+                          child: Text(
+                            users.isEmpty
+                                ? l10n.noEditions
+                                : l10n.noSearchResult,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final user = filtered[index];
                 final expiringSoon =
                     user.hasActiveSubscription && user.daysLeft <= 14;
                 final avatarColor = user.hasActiveSubscription
@@ -185,10 +230,13 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                   trailing: const Icon(Icons.edit_outlined),
                   onTap: () => _showActivateDialog(user),
                 );
-              },
-            );
-          },
-        ),
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

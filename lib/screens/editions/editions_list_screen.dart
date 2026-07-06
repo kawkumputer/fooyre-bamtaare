@@ -25,6 +25,7 @@ class _EditionsData {
 class _EditionsListScreenState extends State<EditionsListScreen> {
   final _editionService = EditionService();
   late Future<_EditionsData> _future;
+  String _query = '';
 
   @override
   void initState() {
@@ -41,6 +42,17 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
   Future<void> _refresh() async {
     setState(() => _future = _load());
     await _future;
+  }
+
+  /// Filtre par numero ou titre.
+  List<Edition> _filter(List<Edition> editions) {
+    final q = _query.trim().toLowerCase();
+    if (q.isEmpty) return editions;
+    return editions
+        .where((e) =>
+            e.numero.toString().contains(q) ||
+            e.titre.toLowerCase().contains(q))
+        .toList();
   }
 
   @override
@@ -75,62 +87,86 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
           ],
         ),
       ),
-      body: RefreshIndicator(
-        onRefresh: _refresh,
-        child: FutureBuilder<_EditionsData>(
-          future: _future,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return ListView(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(24),
-                    child: Text(
-                      l10n.loadError,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                ],
-              );
-            }
-            final data = snapshot.data!;
-            final editions = data.editions;
-            if (editions.isEmpty) {
-              return ListView(
-                children: [
-                  const SizedBox(height: 80),
-                  Icon(Icons.menu_book_outlined,
-                      size: 64, color: scheme.outline),
-                  const SizedBox(height: 16),
-                  Text(
-                    l10n.noEditions,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
-              );
-            }
-            return ListView.builder(
-              padding: const EdgeInsets.only(top: 4, bottom: 12),
-              itemCount: editions.length + (hasFullAccess ? 0 : 1),
-              itemBuilder: (context, index) {
-                if (!hasFullAccess && index == 0) {
-                  return const _SubscribeBanner();
-                }
-                final edition = editions[hasFullAccess ? index : index - 1];
-                return _EditionCard(
-                  edition: edition,
-                  coverUrl: data.coverUrls[edition.id],
-                  hasFullAccess: hasFullAccess,
-                );
-              },
-            );
-          },
-        ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: l10n.searchEditionHint,
+                prefixIcon: const Icon(Icons.search),
+                isDense: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              onChanged: (v) => setState(() => _query = v),
+            ),
+          ),
+          Expanded(
+            child: RefreshIndicator(
+              onRefresh: _refresh,
+              child: FutureBuilder<_EditionsData>(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return ListView(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Text(
+                            l10n.loadError,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+                  final data = snapshot.data!;
+                  final filtered = _filter(data.editions);
+                  if (filtered.isEmpty) {
+                    return ListView(
+                      children: [
+                        const SizedBox(height: 80),
+                        Icon(Icons.menu_book_outlined,
+                            size: 64, color: scheme.outline),
+                        const SizedBox(height: 16),
+                        Text(
+                          data.editions.isEmpty
+                              ? l10n.noEditions
+                              : l10n.noSearchResult,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                      ],
+                    );
+                  }
+                  return ListView.builder(
+                    padding: const EdgeInsets.only(top: 4, bottom: 12),
+                    itemCount: filtered.length + (hasFullAccess ? 0 : 1),
+                    itemBuilder: (context, index) {
+                      if (!hasFullAccess && index == 0) {
+                        return const _SubscribeBanner();
+                      }
+                      final edition =
+                          filtered[hasFullAccess ? index : index - 1];
+                      return _EditionCard(
+                        edition: edition,
+                        coverUrl: data.coverUrls[edition.id],
+                        hasFullAccess: hasFullAccess,
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -191,7 +227,8 @@ class _EditionCard extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      shape: const RoundedRectangleBorder(),
+      margin: const EdgeInsets.only(bottom: 12),
       child: InkWell(
         onTap: () => _onTap(context, l10n),
         child: Column(
@@ -261,7 +298,8 @@ class _EditionCard extends StatelessWidget {
   }
 }
 
-/// Affiche l'image de couverture, ou un aplat avec le numero a defaut.
+/// Affiche l'image de couverture en plein cadre (bord a bord, sans bande
+/// grise), ou un aplat avec le numero a defaut.
 class _Cover extends StatelessWidget {
   final String? coverUrl;
   final int numero;
@@ -272,43 +310,43 @@ class _Cover extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     if (coverUrl == null) {
-      return Container(
-        height: 140,
-        color: scheme.surfaceContainerHighest,
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.image_not_supported_outlined,
-                color: scheme.outline, size: 32),
-            const SizedBox(height: 6),
-            Text('N°$numero',
-                style: TextStyle(
-                    color: scheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w700)),
-          ],
+      return AspectRatio(
+        aspectRatio: 3 / 4,
+        child: Container(
+          color: scheme.surfaceContainerHighest,
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.image_not_supported_outlined,
+                  color: scheme.outline, size: 32),
+              const SizedBox(height: 6),
+              Text('N°$numero',
+                  style: TextStyle(
+                      color: scheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w700)),
+            ],
+          ),
         ),
       );
     }
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 320),
-      color: scheme.surfaceContainerHighest,
-      width: double.infinity,
+    return AspectRatio(
+      aspectRatio: 3 / 4,
       child: Image.network(
         coverUrl!,
-        fit: BoxFit.contain,
+        fit: BoxFit.cover,
+        width: double.infinity,
         loadingBuilder: (context, child, progress) {
           if (progress == null) return child;
-          return const SizedBox(
-            height: 200,
-            child: Center(child: CircularProgressIndicator()),
+          return Container(
+            color: scheme.surfaceContainerHighest,
+            child: const Center(child: CircularProgressIndicator()),
           );
         },
-        errorBuilder: (context, error, stack) => SizedBox(
-          height: 140,
-          child: Center(
-            child: Icon(Icons.broken_image_outlined, color: scheme.outline),
-          ),
+        errorBuilder: (context, error, stack) => Container(
+          color: scheme.surfaceContainerHighest,
+          child:
+              Center(child: Icon(Icons.broken_image_outlined, color: scheme.outline)),
         ),
       ),
     );

@@ -614,6 +614,24 @@ abstract class AppLocalizations {
   /// **'Erreur de chargement des éditions.'**
   String get loadErrorEditions;
 
+  /// No description provided for @searchEditionHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher par numéro'**
+  String get searchEditionHint;
+
+  /// No description provided for @searchUserHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher par nom ou téléphone'**
+  String get searchUserHint;
+
+  /// No description provided for @noSearchResult.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun résultat.'**
+  String get noSearchResult;
+
   /// No description provided for @navEditions.
   ///
   /// In fr, this message translates to:

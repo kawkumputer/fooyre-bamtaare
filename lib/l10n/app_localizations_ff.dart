@@ -282,6 +282,15 @@ class AppLocalizationsFf extends AppLocalizations {
   String get loadErrorEditions => 'Juumre loowgol tonngooɗe.';
 
   @override
+  String get searchEditionHint => 'Yiylo limoore tonngoode';
+
+  @override
+  String get searchUserHint => 'Yiylo innde walla telefon';
+
+  @override
+  String get noSearchResult => 'Alaa ko heɓaa.';
+
+  @override
   String get navEditions => 'Tonngooɗe';
 
   @override

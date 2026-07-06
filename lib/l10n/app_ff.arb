@@ -86,6 +86,10 @@
   "editionDeleted": "Tonngoode momtaama.",
   "noEditionsYet": "Alaa tonngoode saaktaa e o sahaa.",
   "loadErrorEditions": "Juumre loowgol tonngooɗe.",
+  "searchEditionHint": "Yiylo limoore tonngoode",
+  "searchUserHint": "Yiylo innde walla telefon",
+  "noSearchResult": "Alaa ko heɓaa.",
+
   "navEditions": "Tonngooɗe",
   "navSubscribers": "Lulniiɓe",
   "navPublish": "Saaktude",

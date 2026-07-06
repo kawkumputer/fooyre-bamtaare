@@ -124,6 +124,10 @@
   "noEditionsYet": "Aucune édition publiée pour le moment.",
   "loadErrorEditions": "Erreur de chargement des éditions.",
 
+  "searchEditionHint": "Rechercher par numéro",
+  "searchUserHint": "Rechercher par nom ou téléphone",
+  "noSearchResult": "Aucun résultat.",
+
   "navEditions": "Éditions",
   "navSubscribers": "Abonnés",
   "navPublish": "Publier",

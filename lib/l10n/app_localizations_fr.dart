@@ -284,6 +284,15 @@ class AppLocalizationsFr extends AppLocalizations {
   String get loadErrorEditions => 'Erreur de chargement des éditions.';
 
   @override
+  String get searchEditionHint => 'Rechercher par numéro';
+
+  @override
+  String get searchUserHint => 'Rechercher par nom ou téléphone';
+
+  @override
+  String get noSearchResult => 'Aucun résultat.';
+
+  @override
   String get navEditions => 'Éditions';
 
   @override
