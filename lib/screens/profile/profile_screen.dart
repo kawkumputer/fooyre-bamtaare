@@ -5,6 +5,7 @@ import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
 import '../../models/profile.dart';
 import '../../services/auth_service.dart';
+import '../../widgets/subscribe_contact_actions.dart';
 import 'change_password_screen.dart';
 import 'edit_profile_screen.dart';
 
@@ -110,6 +111,8 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ] else ...[
                             Text(l10n.subscribeContact),
+                            const SizedBox(height: 12),
+                            const SubscribeContactActions(),
                           ],
                         ],
                       ),

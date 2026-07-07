@@ -5,6 +5,7 @@ import '../../l10n/app_localizations.dart';
 import '../../models/edition.dart';
 import '../../models/profile.dart';
 import '../../services/edition_service.dart';
+import '../../widgets/subscribe_contact_actions.dart';
 import 'pdf_viewer_screen.dart';
 
 class EditionsListScreen extends StatefulWidget {
@@ -244,7 +245,15 @@ class _EditionCard extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         title: Text(l10n.subscribeDialogTitle),
-        content: Text(l10n.subscribeDialogBody),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l10n.subscribeDialogBody),
+            const SizedBox(height: 16),
+            const SubscribeContactActions(),
+          ],
+        ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -433,6 +442,8 @@ class _SubscribeBanner extends StatelessWidget {
                     l10n.subscribeBody,
                     style: TextStyle(color: scheme.onTertiaryContainer),
                   ),
+                  const SizedBox(height: 12),
+                  const SubscribeContactActions(),
                 ],
               ),
             ),
