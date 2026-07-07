@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fooyre Ɓamtaare — Confirmation</title>
+  <style>
+    body {
+      font-family: -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #F7FBF6;
+      color: #1a1a1a;
+      text-align: center;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+    .card { max-width: 360px; }
+    h1 { font-size: 18px; color: #1B7340; margin-bottom: 8px; }
+    p { font-size: 15px; line-height: 1.5; }
+    a {
+      display: inline-block;
+      margin-top: 16px;
+      background-color: #1B7340;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Fooyre Ɓamtaare</h1>
+    <p id="msg">Redirection vers l'application...</p>
+    <a id="fallback" href="#">Ouvrir l'application</a>
+  </div>
+
+  <script>
+    // Cette page sert de relais HTTPS pour les liens de confirmation
+    // d'email : certains clients mail (Gmail notamment) reecrivent les
+    // liens via leur propre redirecteur, qui echoue silencieusement sur
+    // un schema personnalise (io.fbpm.fooyre://). Une page https normale
+    // fonctionne toujours avec ces redirecteurs ; c'est seulement une
+    // fois chargee dans le vrai navigateur du telephone qu'on redirige
+    // vers l'app, via JavaScript execute localement.
+    //
+    // Les jetons (access_token, refresh_token, code...) transitent en
+    // query string et/ou fragment d'URL : ils ne sont jamais envoyes a
+    // un serveur (le fragment n'est meme jamais transmis sur le reseau),
+    // donc aucune donnee sensible ne passe par GitHub Pages.
+    var target = 'io.fbpm.fooyre://login-callback' + window.location.search + window.location.hash;
+    document.getElementById('fallback').href = target;
+    window.location.replace(target);
+  </script>
+</body>
+</html>

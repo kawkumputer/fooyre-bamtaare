@@ -5,11 +5,20 @@ import '../models/profile.dart';
 class AuthService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  /// Schema d'URL personnalise pour ramener l'utilisateur dans l'app
-  /// apres confirmation d'email. Doit correspondre a ce qui est
-  /// enregistre dans Supabase (Authentication > URL Configuration >
-  /// Redirect URLs) et dans les manifestes iOS/Android.
-  static const String emailRedirectTo = 'io.fbpm.fooyre://login-callback';
+  /// Page de rebond HTTPS (GitHub Pages) utilisee comme redirection
+  /// apres confirmation d'email, avant de renvoyer vers l'app via le
+  /// schema personnalise io.fbpm.fooyre://login-callback.
+  ///
+  /// Necessaire car certains clients mail (Gmail) reecrivent les liens
+  /// avec leur propre redirecteur, qui echoue silencieusement sur un
+  /// schema d'URL personnalise. Une page https classique passe sans
+  /// probleme ; c'est elle qui redirige ensuite vers l'app en JS, une
+  /// fois chargee dans le vrai navigateur du telephone.
+  ///
+  /// Doit correspondre a ce qui est enregistre dans Supabase
+  /// (Authentication > URL Configuration > Redirect URLs).
+  static const String emailRedirectTo =
+      'https://kawkumputer.github.io/fooyre-bamtaare/confirm.html';
 
   User? get currentUser => _client.auth.currentUser;
 
