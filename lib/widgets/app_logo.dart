@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-/// Marque visuelle de Fooyre Ɓamtaare : cercle degrade vert avec un
-/// livre ouvert, reprise sur l'ecran de connexion et l'en-tete du journal.
+/// Marque visuelle de Fooyre Ɓamtaare : le logo officiel de l'app
+/// (soleil + livre ouvert), repris sur l'ecran de connexion et
+/// l'en-tete du journal.
 class AppLogo extends StatelessWidget {
   final double size;
 
@@ -14,12 +15,7 @@ class AppLogo extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [scheme.primary, scheme.primaryContainer],
-        ),
+        borderRadius: BorderRadius.circular(size * 0.22),
         boxShadow: [
           BoxShadow(
             color: scheme.primary.withValues(alpha: 0.25),
@@ -28,10 +24,14 @@ class AppLogo extends StatelessWidget {
           ),
         ],
       ),
-      child: Icon(
-        Icons.menu_book_rounded,
-        size: size * 0.5,
-        color: scheme.onPrimary,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(size * 0.22),
+        child: Image.asset(
+          'assets/icon/app_icon.png',
+          width: size,
+          height: size,
+          fit: BoxFit.cover,
+        ),
       ),
     );
   }

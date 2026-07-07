@@ -5,6 +5,8 @@ import '../../l10n/app_localizations.dart';
 import '../../models/edition.dart';
 import '../../models/profile.dart';
 import '../../services/edition_service.dart';
+import '../../widgets/app_logo.dart';
+import '../../widgets/language_toggle_button.dart';
 import '../../widgets/subscribe_contact_actions.dart';
 import 'pdf_viewer_screen.dart';
 
@@ -82,30 +84,15 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [scheme.primary, scheme.primaryContainer],
-                ),
-              ),
-              child: Icon(
-                Icons.menu_book_rounded,
-                size: 18,
-                color: scheme.onPrimary,
-              ),
-            ),
-            const SizedBox(width: 10),
-            const Text('Fooyre Ɓamtaare'),
+            AppLogo(size: 32),
+            SizedBox(width: 10),
+            Text('Fooyre Ɓamtaare'),
           ],
         ),
+        actions: const [LanguageToggleButton()],
       ),
       body: Column(
         children: [
