@@ -213,7 +213,38 @@ $$;
 grant execute on function public.admin_delete_user(uuid) to authenticated;
 
 -- ------------------------------------------------------------
--- 7. Pour promouvoir un utilisateur en admin (a faire une fois,
+-- 7. Confirmation d'email manuelle par l'admin (contournement pour
+--    les cas ou le lien de confirmation ne fonctionne pas cote
+--    client mail, ex: Gmail sur iOS).
+-- ------------------------------------------------------------
+create or replace view public.admin_users_view as
+select p.*, u.email, (u.email_confirmed_at is not null) as email_confirmed
+from public.profiles p
+join auth.users u on u.id = p.id
+where public.is_admin();
+
+grant select on public.admin_users_view to authenticated;
+
+create or replace function public.admin_confirm_user_email(target_user_id uuid)
+returns void
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  if not public.is_admin() then
+    raise exception 'Not authorized';
+  end if;
+  update auth.users
+     set email_confirmed_at = now()
+   where id = target_user_id
+     and email_confirmed_at is null;
+end;
+$$;
+
+grant execute on function public.admin_confirm_user_email(uuid) to authenticated;
+
+-- ------------------------------------------------------------
+-- 8. Pour promouvoir un utilisateur en admin (a faire une fois,
 --    manuellement, avec l'email de l'editeur) :
 --
 --   update public.profiles set role = 'admin'

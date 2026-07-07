@@ -48,7 +48,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get nameRequired => 'Innde ina waɗɗii';
 
   @override
-  String get accountCreated => 'Konte sosaama! Ƴeewto iimel maa';
+  String get accountCreated => 'Konte sosaama! A waawi naatde jooni.';
 
   @override
   String get subscribeTitle => 'Lulno e Fooyre Ɓamtaare';
@@ -131,6 +131,15 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get myAccountDeleted => 'Konte maa momtaama.';
+
+  @override
+  String get confirmUserEmail => 'Teeŋtin iimeel';
+
+  @override
+  String get userEmailConfirmed => 'Iimeel teeŋtinaama.';
+
+  @override
+  String get emailNotConfirmed => 'Iimeel teeŋtinaaka';
 
   @override
   String get deleteUserAccount => 'Momtude konte';

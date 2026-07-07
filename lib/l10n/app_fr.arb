@@ -16,7 +16,7 @@
   "phoneHelper": "Utile pour le paiement Bankily / Wave",
   "signUp": "S'inscrire",
   "nameRequired": "Nom requis",
-  "accountCreated": "Compte créé ! Vérifiez votre e-mail si demandé.",
+  "accountCreated": "Compte créé ! Vous pouvez vous connecter dès maintenant.",
 
   "subscribeTitle": "Abonnez-vous à Fooyre Ɓamtaare",
   "subscribeBody": "Pour lire toutes les éditions, contactez l'éditeur pour un abonnement (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.",
@@ -52,6 +52,10 @@
   "deleteMyAccountConfirmTitle": "Supprimer définitivement votre compte ?",
   "deleteMyAccountConfirmBody": "Cette action est irréversible. Votre profil, votre abonnement et toutes vos données seront supprimés définitivement.",
   "myAccountDeleted": "Votre compte a été supprimé.",
+
+  "confirmUserEmail": "Confirmer l'e-mail",
+  "userEmailConfirmed": "E-mail confirmé.",
+  "emailNotConfirmed": "E-mail non confirmé",
 
   "deleteUserAccount": "Supprimer le compte",
   "deleteUserConfirmTitle": "Supprimer ce compte ?",

@@ -9,10 +9,11 @@ import '../models/profile.dart';
 class AdminService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  /// Tous les utilisateurs inscrits (RLS : admin uniquement).
+  /// Tous les utilisateurs inscrits, avec statut de confirmation email
+  /// (vue admin_users_view : admin uniquement).
   Future<List<Profile>> fetchAllUsers() async {
     final data =
-        await _client.from('profiles').select().order('created_at');
+        await _client.from('admin_users_view').select().order('created_at');
     return (data as List)
         .map((e) => Profile.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -23,6 +24,16 @@ class AdminService {
   /// (verifie is_admin() cote base).
   Future<void> deleteUser(String userId) async {
     await _client.rpc('admin_delete_user', params: {'target_user_id': userId});
+  }
+
+  /// Confirme manuellement l'email d'un utilisateur (contournement pour
+  /// les cas ou le lien de confirmation ne fonctionne pas, ex: Gmail
+  /// sur iOS).
+  Future<void> confirmUserEmail(String userId) async {
+    await _client.rpc(
+      'admin_confirm_user_email',
+      params: {'target_user_id': userId},
+    );
   }
 
   /// Active l'abonnement d'un utilisateur jusqu'a une date de fin choisie

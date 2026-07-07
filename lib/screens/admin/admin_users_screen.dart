@@ -67,6 +67,11 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           l10n.subscriptionOf(user.nom.isEmpty ? l10n.noName : user.nom),
         ),
         children: [
+          if (user.emailConfirmed == false)
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(context, 'confirm_email'),
+              child: Text(l10n.confirmUserEmail),
+            ),
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context, 'date'),
             child: Text(
@@ -96,6 +101,17 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     if (action == null || !mounted) return;
 
     try {
+      if (action == 'confirm_email') {
+        await _adminService.confirmUserEmail(user.id);
+        await _refresh();
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(l10n.userEmailConfirmed)));
+        }
+        return;
+      }
+
       if (action == 'deactivate') {
         await _adminService.deactivateSubscription(user);
         await _refresh();
@@ -306,6 +322,8 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                           subtitle: Text(
                             [
                               if (user.telephone != null) user.telephone!,
+                              if (user.emailConfirmed == false)
+                                l10n.emailNotConfirmed,
                               if (user.hasActiveSubscription)
                                 l10n.expiresOn(
                                       dateFormat.format(user.subscriptionEnd!),

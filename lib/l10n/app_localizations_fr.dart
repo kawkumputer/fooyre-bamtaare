@@ -49,7 +49,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get accountCreated =>
-      'Compte créé ! Vérifiez votre e-mail si demandé.';
+      'Compte créé ! Vous pouvez vous connecter dès maintenant.';
 
   @override
   String get subscribeTitle => 'Abonnez-vous à Fooyre Ɓamtaare';
@@ -134,6 +134,15 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get myAccountDeleted => 'Votre compte a été supprimé.';
+
+  @override
+  String get confirmUserEmail => 'Confirmer l\'e-mail';
+
+  @override
+  String get userEmailConfirmed => 'E-mail confirmé.';
+
+  @override
+  String get emailNotConfirmed => 'E-mail non confirmé';
 
   @override
   String get deleteUserAccount => 'Supprimer le compte';

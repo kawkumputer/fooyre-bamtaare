@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// No description provided for @accountCreated.
   ///
   /// In fr, this message translates to:
-  /// **'Compte créé ! Vérifiez votre e-mail si demandé.'**
+  /// **'Compte créé ! Vous pouvez vous connecter dès maintenant.'**
   String get accountCreated;
 
   /// No description provided for @subscribeTitle.
@@ -331,6 +331,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Votre compte a été supprimé.'**
   String get myAccountDeleted;
+
+  /// No description provided for @confirmUserEmail.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer l\'e-mail'**
+  String get confirmUserEmail;
+
+  /// No description provided for @userEmailConfirmed.
+  ///
+  /// In fr, this message translates to:
+  /// **'E-mail confirmé.'**
+  String get userEmailConfirmed;
+
+  /// No description provided for @emailNotConfirmed.
+  ///
+  /// In fr, this message translates to:
+  /// **'E-mail non confirmé'**
+  String get emailNotConfirmed;
 
   /// No description provided for @deleteUserAccount.
   ///

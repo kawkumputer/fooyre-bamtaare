@@ -42,13 +42,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
             : _telephoneController.text.trim(),
       );
       if (mounted) {
-        // Selon la config Supabase, une confirmation email peut etre
-        // demandee avant la premiere connexion.
-        final l10n = AppLocalizations.of(context);
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l10n.accountCreated)),
-        );
+        // Le message de bienvenue (compte cree, abonnement a activer
+        // par l'editeur) est affiche par LoginScreen a la reception
+        // de ce resultat, sous forme de bandeau persistant.
+        Navigator.of(context).pop(true);
       }
     } on AuthException catch (e) {
       if (mounted) {

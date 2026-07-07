@@ -7,6 +7,12 @@ class Profile {
   final DateTime? subscriptionEnd;
   final bool isActive;
 
+  /// Renseignes uniquement lorsque le profil provient de la vue admin
+  /// (admin_users_view) : null pour un profil recupere via
+  /// fetchMyProfile (self).
+  final String? email;
+  final bool? emailConfirmed;
+
   const Profile({
     required this.id,
     required this.nom,
@@ -15,6 +21,8 @@ class Profile {
     this.subscriptionStart,
     this.subscriptionEnd,
     required this.isActive,
+    this.email,
+    this.emailConfirmed,
   });
 
   bool get isAdmin => role == 'admin';
@@ -42,5 +50,7 @@ class Profile {
             ? DateTime.parse(json['subscription_end'] as String)
             : null,
         isActive: (json['is_active'] as bool?) ?? false,
+        email: json['email'] as String?,
+        emailConfirmed: json['email_confirmed'] as bool?,
       );
 }
