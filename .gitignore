@@ -1,3 +1,10 @@
+# Secrets / credentials (ne jamais committer)
+google-services.json
+GoogleService-Info.plist
+*firebase-adminsdk*.json
+*.p8
+*.p12
+
 # Miscellaneous
 *.class
 *.log

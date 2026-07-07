@@ -1,9 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'config/supabase_config.dart';
+import 'firebase_options.dart';
 import 'l10n/app_localizations.dart';
 import 'l10n/fallback_localizations.dart';
 import 'models/profile.dart';
@@ -14,6 +16,7 @@ import 'screens/editions/editions_list_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'services/auth_service.dart';
 import 'services/locale_controller.dart';
+import 'services/notification_service.dart';
 import 'theme/app_theme.dart';
 
 /// Controleur de langue global (pulaar/francais), accessible partout.
@@ -25,6 +28,7 @@ Future<void> main() async {
   // le francais dans les deux langues.
   await initializeDateFormatting('fr');
   await localeController.load();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Supabase.initialize(
     url: SupabaseConfig.url,
     publishableKey: SupabaseConfig.anonKey,
@@ -102,6 +106,8 @@ class _HomeShellState extends State<HomeShell> {
   void initState() {
     super.initState();
     _loadProfile();
+    // Demande de permission + abonnement notifications, non bloquant.
+    NotificationService().initialize();
   }
 
   Future<void> _loadProfile() async {

@@ -15,10 +15,13 @@ content = content.replace(
 )
 
 # 3. PROVISIONING_PROFILE_SPECIFIER — inserer dans les configs Runner (pas RunnerTests)
-# Le pattern unique: PRODUCT_BUNDLE_IDENTIFIER sans .RunnerTests suivi de PRODUCT_NAME
+# Le pattern unique: PRODUCT_BUNDLE_IDENTIFIER sans .RunnerTests suivi de
+# CODE_SIGN_ENTITLEMENTS (present depuis l'ajout des entitlements Push).
 content = content.replace(
-    'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n\t\t\t\tPRODUCT_NAME',
-    'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "Fooyre App";\n\t\t\t\tPRODUCT_NAME',
+    'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n\t\t\t\tCODE_SIGN_ENTITLEMENTS',
+    'PRODUCT_BUNDLE_IDENTIFIER = org.fbpm.fooyreApp;\n'
+    '\t\t\t\tPROVISIONING_PROFILE_SPECIFIER = "Fooyre App";\n'
+    '\t\t\t\tCODE_SIGN_ENTITLEMENTS',
 )
 
 # 4. TargetAttributes Runner: ajouter ProvisioningStyle = Manual
