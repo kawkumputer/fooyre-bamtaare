@@ -40,4 +40,9 @@ class NotificationService {
       debugPrint('NotificationService: abonnement topic echoue: $e');
     }
   }
+
+  /// Diagnostic temporaire : jeton FCM de cet appareil, a coller dans
+  /// Firebase Console > Cloud Messaging > "Envoyer un message de test"
+  /// pour verifier la reception push independamment de l'abonnement topic.
+  Future<String?> debugFcmToken() => FirebaseMessaging.instance.getToken();
 }

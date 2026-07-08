@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
 import '../../models/profile.dart';
 import '../../services/auth_service.dart';
+import '../../services/notification_service.dart';
 import '../../widgets/subscribe_contact_actions.dart';
 import 'change_password_screen.dart';
 import 'edit_profile_screen.dart';
@@ -128,6 +130,16 @@ class ProfileScreen extends StatelessWidget {
                       subtitle: Text(l10n.adminUnlimited),
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.bug_report_outlined),
+                      title: const Text('Debug : jeton notifications (FCM)'),
+                      subtitle: const Text('Diagnostic temporaire push iOS'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => _showFcmTokenDialog(context),
+                    ),
+                  ),
                 ],
                 const SizedBox(height: 8),
                 Card(
@@ -211,6 +223,47 @@ class ProfileScreen extends StatelessWidget {
         ).showSnackBar(SnackBar(content: Text(l10n.errorWithMessage('$e'))));
       }
     }
+  }
+
+  Future<void> _showFcmTokenDialog(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Jeton FCM de cet appareil'),
+        content: FutureBuilder<String?>(
+          future: NotificationService().debugFcmToken(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return const SizedBox(
+                height: 60,
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            final token = snapshot.data;
+            if (token == null) {
+              return const Text('Jeton indisponible.');
+            }
+            return SelectableText(token, style: const TextStyle(fontSize: 12));
+          },
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Fermer'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              final token = await NotificationService().debugFcmToken();
+              if (token != null) {
+                await Clipboard.setData(ClipboardData(text: token));
+              }
+              if (context.mounted) Navigator.pop(context);
+            },
+            child: const Text('Copier'),
+          ),
+        ],
+      ),
+    );
   }
 }
 
