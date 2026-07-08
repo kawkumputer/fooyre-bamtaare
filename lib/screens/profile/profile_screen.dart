@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
@@ -225,13 +226,25 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
+  Future<String> _collectNotificationDebugInfo() async {
+    final fcmToken = await NotificationService().debugFcmToken();
+    final prefs = await SharedPreferences.getInstance();
+    final apnsToken = prefs.getString('apns_debug_token');
+    final apnsError = prefs.getString('apns_debug_error');
+    return [
+      'FCM token: ${fcmToken ?? "(indisponible)"}',
+      'APNs token natif: ${(apnsToken == null || apnsToken.isEmpty) ? "(indisponible)" : apnsToken}',
+      'APNs erreur native: ${(apnsError == null || apnsError.isEmpty) ? "(aucune)" : apnsError}',
+    ].join('\n\n');
+  }
+
   Future<void> _showFcmTokenDialog(BuildContext context) async {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Jeton FCM de cet appareil'),
-        content: FutureBuilder<String?>(
-          future: NotificationService().debugFcmToken(),
+        title: const Text('Diagnostic notifications (FCM/APNs)'),
+        content: FutureBuilder<String>(
+          future: _collectNotificationDebugInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return const SizedBox(
@@ -239,11 +252,10 @@ class ProfileScreen extends StatelessWidget {
                 child: Center(child: CircularProgressIndicator()),
               );
             }
-            final token = snapshot.data;
-            if (token == null) {
-              return const Text('Jeton indisponible.');
-            }
-            return SelectableText(token, style: const TextStyle(fontSize: 12));
+            return SelectableText(
+              snapshot.data ?? '',
+              style: const TextStyle(fontSize: 12),
+            );
           },
         ),
         actions: [
@@ -253,10 +265,8 @@ class ProfileScreen extends StatelessWidget {
           ),
           FilledButton(
             onPressed: () async {
-              final token = await NotificationService().debugFcmToken();
-              if (token != null) {
-                await Clipboard.setData(ClipboardData(text: token));
-              }
+              final info = await _collectNotificationDebugInfo();
+              await Clipboard.setData(ClipboardData(text: info));
               if (context.mounted) Navigator.pop(context);
             },
             child: const Text('Copier'),
