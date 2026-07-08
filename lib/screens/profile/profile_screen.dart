@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
 import '../../models/profile.dart';
 import '../../services/auth_service.dart';
-import '../../services/notification_service.dart';
 import '../../widgets/subscribe_contact_actions.dart';
 import 'change_password_screen.dart';
 import 'edit_profile_screen.dart';
@@ -131,16 +128,6 @@ class ProfileScreen extends StatelessWidget {
                       subtitle: Text(l10n.adminUnlimited),
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Card(
-                    child: ListTile(
-                      leading: const Icon(Icons.bug_report_outlined),
-                      title: const Text('Debug : jeton notifications (FCM)'),
-                      subtitle: const Text('Diagnostic temporaire push iOS'),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: () => _showFcmTokenDialog(context),
-                    ),
-                  ),
                 ],
                 const SizedBox(height: 8),
                 Card(
@@ -226,55 +213,6 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
-  Future<String> _collectNotificationDebugInfo() async {
-    final fcmToken = await NotificationService().debugFcmToken();
-    final prefs = await SharedPreferences.getInstance();
-    final apnsToken = prefs.getString('apns_debug_token');
-    final apnsError = prefs.getString('apns_debug_error');
-    return [
-      'FCM token: ${fcmToken ?? "(indisponible)"}',
-      'APNs token natif: ${(apnsToken == null || apnsToken.isEmpty) ? "(indisponible)" : apnsToken}',
-      'APNs erreur native: ${(apnsError == null || apnsError.isEmpty) ? "(aucune)" : apnsError}',
-    ].join('\n\n');
-  }
-
-  Future<void> _showFcmTokenDialog(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Diagnostic notifications (FCM/APNs)'),
-        content: FutureBuilder<String>(
-          future: _collectNotificationDebugInfo(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return const SizedBox(
-                height: 60,
-                child: Center(child: CircularProgressIndicator()),
-              );
-            }
-            return SelectableText(
-              snapshot.data ?? '',
-              style: const TextStyle(fontSize: 12),
-            );
-          },
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Fermer'),
-          ),
-          FilledButton(
-            onPressed: () async {
-              final info = await _collectNotificationDebugInfo();
-              await Clipboard.setData(ClipboardData(text: info));
-              if (context.mounted) Navigator.pop(context);
-            },
-            child: const Text('Copier'),
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 /// Carte de choix de langue (pulaar / francais), avec bascule a chaud.
