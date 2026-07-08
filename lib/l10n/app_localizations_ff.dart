@@ -127,29 +127,29 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get deleteMyAccountConfirmBody =>
-      'Ngol golle waawaa firtireede. Heftinirde maa, lulnagol maa e kala keɓe maa momtete haa poomaa.';
+      'Ngal gollal waawaa rutteede. Heftinirde maa, lulnagol maa e kala keɓe maa momtete haa laaɓa.';
 
   @override
   String get myAccountDeleted => 'Konte maa momtaama.';
 
   @override
-  String get confirmUserEmail => 'Teeŋtin iimeel';
+  String get confirmUserEmail => 'Teeŋtin konte';
 
   @override
-  String get userEmailConfirmed => 'Iimeel teeŋtinaama.';
+  String get userEmailConfirmed => 'Konte teeŋtinaama.';
 
   @override
-  String get emailNotConfirmed => 'Iimeel teeŋtinaaka';
+  String get emailNotConfirmed => 'Konte teeŋtinaaka';
 
   @override
   String get deleteUserAccount => 'Momtude konte';
 
   @override
-  String get deleteUserConfirmTitle => 'Momtude ndee konte ?';
+  String get deleteUserConfirmTitle => 'Momtude ɗee konte ?';
 
   @override
   String deleteUserConfirmBody(String name) {
-    return 'Konte $name momtete haa poomaa, e kala keɓe mum. Ngol golle waawaa firtireede.';
+    return 'Konte $name momtete haa laaɓa, e kala keɓe mum. Ngal gollal waawaa rutteede.';
   }
 
   @override
@@ -177,7 +177,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get confirmPassword => 'Teeŋtin finnde ndee';
 
   @override
-  String get passwordsDontMatch => 'Finndeeji ɗii nanndaani';
+  String get passwordsDontMatch => 'Pinle ɗee nanndaani';
 
   @override
   String get passwordUpdated => 'Finnde waylaama.';
@@ -195,7 +195,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get chooseCoverImage => 'Natal ngal (yeeso tonngoode)';
 
   @override
-  String get chooseFromGallery => 'Suɓaade e nataleeji';
+  String get chooseFromGallery => 'Suɓaade e nate';
 
   @override
   String get chooseFromFiles => 'Suɓaade e fiilde';
@@ -208,7 +208,7 @@ class AppLocalizationsFf extends AppLocalizations {
       'Natal ngal e PDF timmuɗo ɗiɗi fof ina waɗɗii.';
 
   @override
-  String get publicationDate => 'Ñalnde yaltugol';
+  String get publicationDate => 'Ñalnde jaltugol';
 
   @override
   String publishedOn(String date) {
@@ -262,7 +262,7 @@ class AppLocalizationsFf extends AppLocalizations {
   }
 
   @override
-  String get expiresSoon => 'ɓooyata !';
+  String get expiresSoon => 'ɓooyata!';
 
   @override
   String get publishEdition => 'Yollu tonngoode';
