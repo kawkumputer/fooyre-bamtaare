@@ -265,6 +265,45 @@ class AppLocalizationsFf extends AppLocalizations {
   String get expiresSoon => 'ɓooyata!';
 
   @override
+  String get manageSubscription => 'Wattitde lulnagol';
+
+  @override
+  String get subscriptionPeriods => 'Yontaaji lulnagol';
+
+  @override
+  String get addPeriod => 'Ɓeydu yonta';
+
+  @override
+  String get periodStartDate => 'Ñalnde fuɗɗagol';
+
+  @override
+  String get periodEndDate => 'Ñalnde gasgol';
+
+  @override
+  String get noPeriodsYet => 'Alaa yonta lulnagol windaa.';
+
+  @override
+  String get deletePeriodConfirmTitle => 'Momtude ngol yonta ?';
+
+  @override
+  String deletePeriodConfirmBody(String start, String end) {
+    return 'Immorde $start haa $end. Lulnaaɗo oo waawataa taƴde tonngooɗe yaltuɗe e ngol yonta.';
+  }
+
+  @override
+  String get periodAdded => 'Yonta ɓeydaama.';
+
+  @override
+  String get periodDeleted => 'Yonta momtaama.';
+
+  @override
+  String get invalidPeriodRange =>
+      'Ñalnde gasgol foti wonde caggal ñalnde fuɗɗagol.';
+
+  @override
+  String get activePeriodBadge => 'hannde';
+
+  @override
   String get publishEdition => 'Yollu tonngoode';
 
   @override

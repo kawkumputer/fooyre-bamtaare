@@ -1,6 +1,7 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../models/profile.dart';
+import '../models/subscription_period.dart';
 
 class AuthService {
   final SupabaseClient _client = Supabase.instance.client;
@@ -50,7 +51,14 @@ class AuthService {
     final data =
         await _client.from('profiles').select().eq('id', user.id).maybeSingle();
     if (data == null) return null;
-    return Profile.fromJson(data);
+    final periodsData = await _client
+        .from('subscription_periods')
+        .select()
+        .eq('user_id', user.id);
+    final periods = (periodsData as List)
+        .map((e) => SubscriptionPeriod.fromJson(e as Map<String, dynamic>))
+        .toList();
+    return Profile.fromJson(data).copyWith(periods: periods);
   }
 
   Future<void> updateMyProfile({required String nom, String? telephone}) async {

@@ -2,42 +2,75 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:fooyre_app/models/edition.dart';
 import 'package:fooyre_app/models/profile.dart';
+import 'package:fooyre_app/models/subscription_period.dart';
+
+SubscriptionPeriod _period(String id, DateTime start, DateTime end) =>
+    SubscriptionPeriod(id: id, userId: 'u1', startDate: start, endDate: end);
 
 void main() {
   group('Profile', () {
-    test('abonnement actif quand la date de fin est future', () {
+    test('abonnement actif quand une periode couvre aujourd\'hui', () {
       final profile = Profile(
         id: 'u1',
         nom: 'Test',
         role: 'reader',
-        subscriptionEnd: DateTime.now().add(const Duration(days: 30)),
-        isActive: true,
+        periods: [
+          _period(
+            'p1',
+            DateTime.now().subtract(const Duration(days: 10)),
+            DateTime.now().add(const Duration(days: 30)),
+          ),
+        ],
       );
       expect(profile.hasActiveSubscription, isTrue);
       expect(profile.daysLeft, greaterThan(0));
     });
 
-    test('abonnement expire quand la date de fin est passee', () {
+    test('abonnement expire quand toutes les periodes sont passees', () {
       final profile = Profile(
         id: 'u1',
         nom: 'Test',
         role: 'reader',
-        subscriptionEnd: DateTime.now().subtract(const Duration(days: 1)),
-        isActive: true,
+        periods: [
+          _period(
+            'p1',
+            DateTime.now().subtract(const Duration(days: 30)),
+            DateTime.now().subtract(const Duration(days: 1)),
+          ),
+        ],
       );
       expect(profile.hasActiveSubscription, isFalse);
       expect(profile.daysLeft, 0);
     });
 
-    test('abonnement inactif meme avec date future si is_active=false', () {
+    test('acces archive conserve a une edition parue durant une periode '
+        'passee, meme sans abonnement actif', () {
+      final juillet = DateTime(2026, 7, 15);
+      final septembre = DateTime(2026, 9, 15);
       final profile = Profile(
         id: 'u1',
         nom: 'Test',
         role: 'reader',
-        subscriptionEnd: DateTime.now().add(const Duration(days: 30)),
-        isActive: false,
+        periods: [_period('p1', DateTime(2026, 7, 1), DateTime(2026, 9, 30))],
       );
-      expect(profile.hasActiveSubscription, isFalse);
+      expect(profile.canAccessDate(juillet), isTrue);
+      expect(profile.canAccessDate(septembre), isTrue);
+    });
+
+    test('periodes non contigues : pas d\'acces dans le trou entre deux '
+        'abonnements', () {
+      final profile = Profile(
+        id: 'u1',
+        nom: 'Test',
+        role: 'reader',
+        periods: [
+          _period('p1', DateTime(2026, 7, 1), DateTime(2026, 9, 30)),
+          _period('p2', DateTime(2026, 12, 1), DateTime(2027, 5, 31)),
+        ],
+      );
+      expect(profile.canAccessDate(DateTime(2026, 8, 15)), isTrue);
+      expect(profile.canAccessDate(DateTime(2026, 10, 15)), isFalse);
+      expect(profile.canAccessDate(DateTime(2027, 1, 15)), isTrue);
     });
 
     test('fromJson analyse le role admin', () {
@@ -45,7 +78,6 @@ void main() {
         'id': 'u2',
         'nom': 'Editeur',
         'role': 'admin',
-        'is_active': false,
       });
       expect(profile.isAdmin, isTrue);
       expect(profile.hasActiveSubscription, isFalse);

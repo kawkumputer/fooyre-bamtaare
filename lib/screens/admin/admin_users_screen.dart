@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/profile.dart';
 import '../../services/admin_service.dart';
+import 'admin_subscription_screen.dart';
 
 class AdminUsersScreen extends StatefulWidget {
   const AdminUsersScreen({super.key});
@@ -73,19 +74,9 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
               child: Text(l10n.confirmUserEmail),
             ),
           SimpleDialogOption(
-            onPressed: () => Navigator.pop(context, 'date'),
-            child: Text(
-              user.hasActiveSubscription ? l10n.editEndDate : l10n.setEndDate,
-            ),
+            onPressed: () => Navigator.pop(context, 'manage_subscription'),
+            child: Text(l10n.manageSubscription),
           ),
-          if (user.hasActiveSubscription)
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, 'deactivate'),
-              child: Text(
-                l10n.deactivateAccess,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            ),
           // On ne permet pas a l'admin de se supprimer lui-meme ici.
           if (user.id != currentUserId)
             SimpleDialogOption(
@@ -112,14 +103,13 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         return;
       }
 
-      if (action == 'deactivate') {
-        await _adminService.deactivateSubscription(user);
+      if (action == 'manage_subscription') {
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => AdminSubscriptionScreen(user: user),
+          ),
+        );
         await _refresh();
-        if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(l10n.accessDeactivated)));
-        }
         return;
       }
 
@@ -158,41 +148,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           ).showSnackBar(SnackBar(content: Text(l10n.userAccountDeleted)));
         }
         return;
-      }
-
-      // action == 'date' : choisir une date de fin.
-      final now = DateTime.now();
-      final initial = user.hasActiveSubscription && user.subscriptionEnd != null
-          ? user.subscriptionEnd!
-          : DateTime(now.year, now.month + 3, now.day);
-      final endDate = await showDatePicker(
-        context: context,
-        initialDate: initial,
-        firstDate: now,
-        lastDate: DateTime(now.year + 5),
-        helpText: l10n.endDateHelp,
-      );
-      if (endDate == null) return;
-
-      // Fin de journee pour couvrir toute la date choisie.
-      final endOfDay = DateTime(
-        endDate.year,
-        endDate.month,
-        endDate.day,
-        23,
-        59,
-        59,
-      );
-      await _adminService.activateSubscriptionUntil(user, endOfDay);
-      await _refresh();
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n.subUntil(DateFormat('dd/MM/yyyy').format(endDate)),
-            ),
-          ),
-        );
       }
     } catch (e) {
       if (mounted) {

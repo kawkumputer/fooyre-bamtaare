@@ -572,6 +572,78 @@ abstract class AppLocalizations {
   /// **'bientôt !'**
   String get expiresSoon;
 
+  /// No description provided for @manageSubscription.
+  ///
+  /// In fr, this message translates to:
+  /// **'Gérer l\'abonnement'**
+  String get manageSubscription;
+
+  /// No description provided for @subscriptionPeriods.
+  ///
+  /// In fr, this message translates to:
+  /// **'Périodes d\'abonnement'**
+  String get subscriptionPeriods;
+
+  /// No description provided for @addPeriod.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter une période'**
+  String get addPeriod;
+
+  /// No description provided for @periodStartDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de début'**
+  String get periodStartDate;
+
+  /// No description provided for @periodEndDate.
+  ///
+  /// In fr, this message translates to:
+  /// **'Date de fin'**
+  String get periodEndDate;
+
+  /// No description provided for @noPeriodsYet.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune période d\'abonnement enregistrée.'**
+  String get noPeriodsYet;
+
+  /// No description provided for @deletePeriodConfirmTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer cette période ?'**
+  String get deletePeriodConfirmTitle;
+
+  /// No description provided for @deletePeriodConfirmBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Du {start} au {end}. Le lecteur perdra l\'accès aux éditions parues durant cette période.'**
+  String deletePeriodConfirmBody(String start, String end);
+
+  /// No description provided for @periodAdded.
+  ///
+  /// In fr, this message translates to:
+  /// **'Période ajoutée.'**
+  String get periodAdded;
+
+  /// No description provided for @periodDeleted.
+  ///
+  /// In fr, this message translates to:
+  /// **'Période supprimée.'**
+  String get periodDeleted;
+
+  /// No description provided for @invalidPeriodRange.
+  ///
+  /// In fr, this message translates to:
+  /// **'La date de fin doit être après la date de début.'**
+  String get invalidPeriodRange;
+
+  /// No description provided for @activePeriodBadge.
+  ///
+  /// In fr, this message translates to:
+  /// **'en cours'**
+  String get activePeriodBadge;
+
   /// No description provided for @publishEdition.
   ///
   /// In fr, this message translates to:

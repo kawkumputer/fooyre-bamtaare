@@ -5,18 +5,27 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../config/supabase_config.dart';
 import '../models/edition.dart';
 import '../models/profile.dart';
+import '../models/subscription_period.dart';
 
 class AdminService {
   final SupabaseClient _client = Supabase.instance.client;
 
   /// Tous les utilisateurs inscrits, avec statut de confirmation email
-  /// (vue admin_users_view : admin uniquement).
+  /// (vue admin_users_view : admin uniquement) et leurs periodes
+  /// d'abonnement (passees et en cours).
   Future<List<Profile>> fetchAllUsers() async {
     final data =
         await _client.from('admin_users_view').select().order('created_at');
-    return (data as List)
-        .map((e) => Profile.fromJson(e as Map<String, dynamic>))
-        .toList();
+    final periodsData = await _client.from('subscription_periods').select();
+    final periodsByUser = <String, List<SubscriptionPeriod>>{};
+    for (final row in periodsData as List) {
+      final period = SubscriptionPeriod.fromJson(row as Map<String, dynamic>);
+      periodsByUser.putIfAbsent(period.userId, () => []).add(period);
+    }
+    return (data as List).map((e) {
+      final profile = Profile.fromJson(e as Map<String, dynamic>);
+      return profile.copyWith(periods: periodsByUser[profile.id] ?? []);
+    }).toList();
   }
 
   /// Supprime definitivement le compte d'un utilisateur (profil,
@@ -36,28 +45,36 @@ class AdminService {
     );
   }
 
-  /// Active l'abonnement d'un utilisateur jusqu'a une date de fin choisie
-  /// par l'admin. La date de debut est conservee si l'abonnement etait
-  /// deja actif, sinon elle demarre aujourd'hui.
-  Future<void> activateSubscriptionUntil(
-      Profile user, DateTime endDate) async {
-    final now = DateTime.now();
-    final start = user.subscriptionStart ?? now;
-
-    await _client.from('profiles').update({
-      'subscription_start': start.toIso8601String(),
-      'subscription_end': endDate.toIso8601String(),
-      'is_active': true,
-    }).eq('id', user.id);
+  /// Ajoute une nouvelle periode d'abonnement pour un utilisateur.
+  /// Independante des periodes existantes : permet des abonnements
+  /// non contigus (ex: juillet-septembre, puis decembre-mai).
+  Future<void> addSubscriptionPeriod(
+    String userId,
+    DateTime startDate,
+    DateTime endDate,
+  ) async {
+    await _client.from('subscription_periods').insert({
+      'user_id': userId,
+      'start_date': _dateOnly(startDate),
+      'end_date': _dateOnly(endDate),
+    });
   }
 
-  /// Desactive l'acces d'un utilisateur immediatement.
-  Future<void> deactivateSubscription(Profile user) async {
-    await _client.from('profiles').update({
-      'is_active': false,
-      'subscription_end': DateTime.now().toIso8601String(),
-    }).eq('id', user.id);
+  /// Supprime une periode d'abonnement (ex: erreur de saisie de l'admin).
+  Future<void> deleteSubscriptionPeriod(String periodId) async {
+    await _client.from('subscription_periods').delete().eq('id', periodId);
   }
+
+  /// Met fin des aujourd'hui a la periode en cours d'un utilisateur
+  /// (raccourcit sa date de fin a hier), sans supprimer l'historique.
+  Future<void> endActivePeriodNow(SubscriptionPeriod period) async {
+    final yesterday = DateTime.now().subtract(const Duration(days: 1));
+    await _client
+        .from('subscription_periods')
+        .update({'end_date': _dateOnly(yesterday)}).eq('id', period.id);
+  }
+
+  String _dateOnly(DateTime d) => d.toIso8601String().substring(0, 10);
 
   /// Publie une nouvelle edition : upload du PDF puis insertion
   /// de la ligne dans la table editions.

@@ -73,13 +73,23 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
         .toList();
   }
 
+  /// Acces a UNE edition donnee : l'admin voit tout, un lecteur a acces
+  /// si sa date de parution tombe dans au moins une de ses periodes
+  /// d'abonnement (passee ou en cours) - acces archive conserve.
+  bool _hasAccess(Edition edition) {
+    final profile = widget.profile;
+    if (profile == null) return false;
+    return profile.isAdmin || profile.canAccessDate(edition.datePublication);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    // L'admin et les abonnes ont acces a la version complete.
-    final hasFullAccess =
-        (widget.profile?.hasActiveSubscription ?? false) ||
-        (widget.profile?.isAdmin ?? false);
+    // Banniere d'abonnement : affichee si pas d'abonnement actif
+    // AUJOURD'HUI (independamment de l'acces archive aux anciens numeros).
+    final showSubscribeBanner =
+        !(widget.profile?.hasActiveSubscription ?? false) &&
+        !(widget.profile?.isAdmin ?? false);
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
@@ -170,17 +180,18 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
                     }
                     return ListView.builder(
                       padding: const EdgeInsets.only(top: 4, bottom: 12),
-                      itemCount: filtered.length + (hasFullAccess ? 0 : 1),
+                      itemCount:
+                          filtered.length + (showSubscribeBanner ? 1 : 0),
                       itemBuilder: (context, index) {
-                        if (!hasFullAccess && index == 0) {
+                        if (showSubscribeBanner && index == 0) {
                           return const _SubscribeBanner();
                         }
                         final edition =
-                            filtered[hasFullAccess ? index : index - 1];
+                            filtered[showSubscribeBanner ? index - 1 : index];
                         return _EditionCard(
                           edition: edition,
                           coverUrl: data.coverUrls[edition.id],
-                          hasFullAccess: hasFullAccess,
+                          hasFullAccess: _hasAccess(edition),
                         );
                       },
                     );

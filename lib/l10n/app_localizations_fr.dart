@@ -268,6 +268,45 @@ class AppLocalizationsFr extends AppLocalizations {
   String get expiresSoon => 'bientôt !';
 
   @override
+  String get manageSubscription => 'Gérer l\'abonnement';
+
+  @override
+  String get subscriptionPeriods => 'Périodes d\'abonnement';
+
+  @override
+  String get addPeriod => 'Ajouter une période';
+
+  @override
+  String get periodStartDate => 'Date de début';
+
+  @override
+  String get periodEndDate => 'Date de fin';
+
+  @override
+  String get noPeriodsYet => 'Aucune période d\'abonnement enregistrée.';
+
+  @override
+  String get deletePeriodConfirmTitle => 'Supprimer cette période ?';
+
+  @override
+  String deletePeriodConfirmBody(String start, String end) {
+    return 'Du $start au $end. Le lecteur perdra l\'accès aux éditions parues durant cette période.';
+  }
+
+  @override
+  String get periodAdded => 'Période ajoutée.';
+
+  @override
+  String get periodDeleted => 'Période supprimée.';
+
+  @override
+  String get invalidPeriodRange =>
+      'La date de fin doit être après la date de début.';
+
+  @override
+  String get activePeriodBadge => 'en cours';
+
+  @override
   String get publishEdition => 'Publier une édition';
 
   @override

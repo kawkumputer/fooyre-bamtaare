@@ -123,6 +123,25 @@
   },
   "expiresSoon": "bientôt !",
 
+  "manageSubscription": "Gérer l'abonnement",
+  "subscriptionPeriods": "Périodes d'abonnement",
+  "addPeriod": "Ajouter une période",
+  "periodStartDate": "Date de début",
+  "periodEndDate": "Date de fin",
+  "noPeriodsYet": "Aucune période d'abonnement enregistrée.",
+  "deletePeriodConfirmTitle": "Supprimer cette période ?",
+  "deletePeriodConfirmBody": "Du {start} au {end}. Le lecteur perdra l'accès aux éditions parues durant cette période.",
+  "@deletePeriodConfirmBody": {
+    "placeholders": {
+      "start": { "type": "String" },
+      "end": { "type": "String" }
+    }
+  },
+  "periodAdded": "Période ajoutée.",
+  "periodDeleted": "Période supprimée.",
+  "invalidPeriodRange": "La date de fin doit être après la date de début.",
+  "activePeriodBadge": "en cours",
+
   "publishEdition": "Publier une édition",
   "editionNumber": "Numéro de l'édition",
   "editionNumberHint": "ex : 262",
