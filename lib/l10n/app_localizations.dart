@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneHelper.
   ///
   /// In fr, this message translates to:
-  /// **'Utile pour le paiement Bankily / Wave'**
+  /// **'Utile'**
   String get phoneHelper;
 
   /// No description provided for @signUp.
@@ -191,7 +191,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeBody.
   ///
   /// In fr, this message translates to:
-  /// **'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.'**
+  /// **'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement.'**
   String get subscribeBody;
 
   /// No description provided for @free.
@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeContact.
   ///
   /// In fr, this message translates to:
-  /// **'Pour vous abonner, contactez l\'éditeur du journal (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.'**
+  /// **'Pour vous abonner, contactez l\'éditeur du journal.'**
   String get subscribeContact;
 
   /// No description provided for @adminAccount.
@@ -497,7 +497,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeDialogBody.
   ///
   /// In fr, this message translates to:
-  /// **'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès (Bankily, Wave, virement...).'**
+  /// **'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès.'**
   String get subscribeDialogBody;
 
   /// No description provided for @close.
@@ -643,6 +643,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'en cours'**
   String get activePeriodBadge;
+
+  /// No description provided for @subscriptionHistory.
+  ///
+  /// In fr, this message translates to:
+  /// **'Historique des abonnements'**
+  String get subscriptionHistory;
 
   /// No description provided for @publishEdition.
   ///

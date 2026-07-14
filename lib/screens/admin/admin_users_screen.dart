@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../models/profile.dart';
@@ -60,7 +59,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
 
   Future<void> _showActivateDialog(Profile user) async {
     final l10n = AppLocalizations.of(context);
-    final currentUserId = Supabase.instance.client.auth.currentUser?.id;
     final action = await showDialog<String>(
       context: context,
       builder: (context) => SimpleDialog(
@@ -77,15 +75,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
             onPressed: () => Navigator.pop(context, 'manage_subscription'),
             child: Text(l10n.manageSubscription),
           ),
-          // On ne permet pas a l'admin de se supprimer lui-meme ici.
-          if (user.id != currentUserId)
-            SimpleDialogOption(
-              onPressed: () => Navigator.pop(context, 'delete'),
-              child: Text(
-                l10n.deleteUserAccount,
-                style: TextStyle(color: Theme.of(context).colorScheme.error),
-              ),
-            ),
         ],
       ),
     );
@@ -110,43 +99,6 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
           ),
         );
         await _refresh();
-        return;
-      }
-
-      if (action == 'delete') {
-        final confirmed = await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(l10n.deleteUserConfirmTitle),
-            content: Text(
-              l10n.deleteUserConfirmBody(
-                user.nom.isEmpty ? l10n.noName : user.nom,
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: Text(l10n.cancel),
-              ),
-              FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.error,
-                ),
-                onPressed: () => Navigator.pop(context, true),
-                child: Text(l10n.delete),
-              ),
-            ],
-          ),
-        );
-        if (confirmed != true || !mounted) return;
-
-        await _adminService.deleteUser(user.id);
-        await _refresh();
-        if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(l10n.userAccountDeleted)));
-        }
         return;
       }
     } catch (e) {
@@ -274,21 +226,34 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
                           title: Text(
                             user.nom.isEmpty ? l10n.noName : user.nom,
                           ),
-                          subtitle: Text(
-                            [
-                              if (user.telephone != null) user.telephone!,
-                              if (user.emailConfirmed == false)
-                                l10n.emailNotConfirmed,
-                              if (user.hasActiveSubscription)
-                                l10n.expiresOn(
-                                      dateFormat.format(user.subscriptionEnd!),
-                                    ) +
-                                    (expiringSoon
-                                        ? ' (${l10n.expiresSoon})'
-                                        : '')
-                              else
-                                l10n.noSubscription,
-                            ].join(' — '),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                [
+                                  if (user.telephone != null) user.telephone!,
+                                  if (user.email != null) user.email!,
+                                ].join(' — '),
+                              ),
+                              Text(
+                                [
+                                  if (user.emailConfirmed == false)
+                                    l10n.emailNotConfirmed,
+                                  if (user.hasActiveSubscription)
+                                    l10n.expiresOn(
+                                          dateFormat.format(
+                                            user.subscriptionEnd!,
+                                          ),
+                                        ) +
+                                        (expiringSoon
+                                            ? ' (${l10n.expiresSoon})'
+                                            : '')
+                                  else
+                                    l10n.noSubscription,
+                                ].join(' — '),
+                              ),
+                            ],
                           ),
                           trailing: const Icon(Icons.edit_outlined),
                           onTap: () => _showActivateDialog(user),

@@ -13,13 +13,13 @@
   "createAccount": "Créer un compte",
   "fullName": "Nom complet",
   "phoneOptional": "Téléphone (optionnel)",
-  "phoneHelper": "Utile pour le paiement Bankily / Wave",
+  "phoneHelper": "Utile",
   "signUp": "S'inscrire",
   "nameRequired": "Nom requis",
   "accountCreated": "Compte créé ! Vous pouvez vous connecter dès maintenant.",
 
   "subscribeTitle": "Abonnez-vous à Fooyre Ɓamtaare",
-  "subscribeBody": "Pour lire toutes les éditions, contactez l'éditeur pour un abonnement (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.",
+  "subscribeBody": "Pour lire toutes les éditions, contactez l'éditeur pour un abonnement.",
   "free": "Gratuit",
   "subscribers": "Abonnés",
   "loadError": "Erreur de chargement.\nTirez vers le bas pour réessayer.",
@@ -42,7 +42,7 @@
       "days": { "type": "int" }
     }
   },
-  "subscribeContact": "Pour vous abonner, contactez l'éditeur du journal (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.",
+  "subscribeContact": "Pour vous abonner, contactez l'éditeur du journal.",
   "adminAccount": "Compte administrateur",
   "adminUnlimited": "Accès illimité à toutes les éditions",
   "signOut": "Se déconnecter",
@@ -93,7 +93,7 @@
     }
   },
   "subscribeDialogTitle": "Édition complète",
-  "subscribeDialogBody": "Pour lire l'édition complète, vous devez être abonné. Contactez l'éditeur pour obtenir l'accès (Bankily, Wave, virement...).",
+  "subscribeDialogBody": "Pour lire l'édition complète, vous devez être abonné. Contactez l'éditeur pour obtenir l'accès.",
   "close": "Fermer",
   "editionUnavailable": "Édition indisponible pour le moment.",
 
@@ -141,6 +141,7 @@
   "periodDeleted": "Période supprimée.",
   "invalidPeriodRange": "La date de fin doit être après la date de début.",
   "activePeriodBadge": "en cours",
+  "subscriptionHistory": "Historique des abonnements",
 
   "publishEdition": "Publier une édition",
   "editionNumber": "Numéro de l'édition",

@@ -39,7 +39,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get phoneOptional => 'Telefon (waɗɗaaki)';
 
   @override
-  String get phoneHelper => 'Ina soklaa he njoɓdi Bankily / Wave';
+  String get phoneHelper => 'Ina soklaa';
 
   @override
   String get signUp => 'Winnditaade';
@@ -55,7 +55,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get subscribeBody =>
-      'Ngam mbaawaa tarde tonngooɗe ɗee fof, jokkondir e caaktoowo oo mbele lulno-ɗaa (Bankily, Wave, rewrude e booñ...). Damal maa udditano ma caggal nde njoɓɗaa.';
+      'Ngam mbaawaa tarde tonngooɗe ɗee fof, jokkondir e caaktoowo oo mbele lulno-ɗaa.';
 
   @override
   String get free => 'Alaa njoɓdi';
@@ -105,7 +105,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get subscribeContact =>
-      'Ngam lulnaade, jokkondir e caakto jaaynde ndee (Bankily, Wave, booñ...). Damal maa udditano ma so a yoɓii.';
+      'Ngam lulnaade, jokkondir e caakto jaaynde ndee.';
 
   @override
   String get adminAccount => 'Konte jiiloowo';
@@ -220,7 +220,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get subscribeDialogBody =>
-      'Ngam tarde tonngoode timmunde, aɗa foti lulnaade. Jokkondir e caakto jaaynde ndee ngam heɓde damal (Bankily, Wave, booñ...).';
+      'Ngam tarde tonngoode timmunde, aɗa foti lulnaade. Jokkondir e caakto jaaynde ndee ngam heɓde damal.';
 
   @override
   String get close => 'Uddu';
@@ -302,6 +302,9 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get activePeriodBadge => 'hannde';
+
+  @override
+  String get subscriptionHistory => 'Diiwaan lulnaagu';
 
   @override
   String get publishEdition => 'Yollu tonngoode';

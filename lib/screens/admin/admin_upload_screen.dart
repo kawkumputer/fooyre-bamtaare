@@ -118,9 +118,9 @@ class _AdminUploadScreenState extends State<AdminUploadScreen> {
     final now = DateTime.now();
     final picked = await showDatePicker(
       context: context,
-      initialDate: _datePublication,
+      initialDate: _datePublication.isAfter(now) ? now : _datePublication,
       firstDate: DateTime(now.year - 2),
-      lastDate: DateTime(now.year + 1),
+      lastDate: now,
       helpText: AppLocalizations.of(context).publicationDate,
     );
     if (picked != null) setState(() => _datePublication = picked);

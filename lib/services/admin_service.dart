@@ -28,13 +28,6 @@ class AdminService {
     }).toList();
   }
 
-  /// Supprime definitivement le compte d'un utilisateur (profil,
-  /// abonnement et acces auth), via une fonction RPC securisee
-  /// (verifie is_admin() cote base).
-  Future<void> deleteUser(String userId) async {
-    await _client.rpc('admin_delete_user', params: {'target_user_id': userId});
-  }
-
   /// Confirme manuellement l'email d'un utilisateur (contournement pour
   /// les cas ou le lien de confirmation ne fonctionne pas, ex: Gmail
   /// sur iOS).

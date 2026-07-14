@@ -39,7 +39,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get phoneOptional => 'Téléphone (optionnel)';
 
   @override
-  String get phoneHelper => 'Utile pour le paiement Bankily / Wave';
+  String get phoneHelper => 'Utile';
 
   @override
   String get signUp => 'S\'inscrire';
@@ -56,7 +56,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscribeBody =>
-      'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.';
+      'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement.';
 
   @override
   String get free => 'Gratuit';
@@ -107,7 +107,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscribeContact =>
-      'Pour vous abonner, contactez l\'éditeur du journal (Bankily, Wave, virement...). Votre accès sera activé dès réception du paiement.';
+      'Pour vous abonner, contactez l\'éditeur du journal.';
 
   @override
   String get adminAccount => 'Compte administrateur';
@@ -223,7 +223,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscribeDialogBody =>
-      'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès (Bankily, Wave, virement...).';
+      'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès.';
 
   @override
   String get close => 'Fermer';
@@ -305,6 +305,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get activePeriodBadge => 'en cours';
+
+  @override
+  String get subscriptionHistory => 'Historique des abonnements';
 
   @override
   String get publishEdition => 'Publier une édition';

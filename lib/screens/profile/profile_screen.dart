@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
 import '../../models/profile.dart';
+import '../../models/subscription_period.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/subscribe_contact_actions.dart';
 import 'change_password_screen.dart';
@@ -118,6 +119,14 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  if (p.periods.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    _SubscriptionHistoryCard(
+                      periods: p.periods,
+                      dateFormat: dateFormat,
+                      l10n: l10n,
+                    ),
+                  ],
                 ],
                 if (p.isAdmin) ...[
                   const SizedBox(height: 8),
@@ -213,6 +222,77 @@ class ProfileScreen extends StatelessWidget {
     }
   }
 
+}
+
+/// Historique des periodes d'abonnement (passees et en cours), les plus
+/// recentes en premier.
+class _SubscriptionHistoryCard extends StatelessWidget {
+  final List<SubscriptionPeriod> periods;
+  final DateFormat dateFormat;
+  final AppLocalizations l10n;
+
+  const _SubscriptionHistoryCard({
+    required this.periods,
+    required this.dateFormat,
+    required this.l10n,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final now = DateTime.now();
+    final sorted = List.of(periods)
+      ..sort((a, b) => b.startDate.compareTo(a.startDate));
+
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.history),
+                const SizedBox(width: 8),
+                Text(
+                  l10n.subscriptionHistory,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            ...sorted.map((period) {
+              final isActive = period.covers(now);
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.event_available_outlined,
+                      size: 18,
+                      color: isActive ? scheme.primary : scheme.outline,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      '${dateFormat.format(period.startDate)} '
+                      '→ ${dateFormat.format(period.endDate)}',
+                    ),
+                    if (isActive) ...[
+                      const SizedBox(width: 8),
+                      Text(
+                        '(${l10n.activePeriodBadge})',
+                        style: TextStyle(color: scheme.primary),
+                      ),
+                    ],
+                  ],
+                ),
+              );
+            }),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 /// Carte de choix de langue (pulaar / francais), avec bascule a chaud.
