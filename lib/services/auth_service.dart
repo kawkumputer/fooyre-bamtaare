@@ -43,6 +43,15 @@ class AuthService {
     await _client.auth.signInWithPassword(email: email, password: password);
   }
 
+  /// Envoie un e-mail de reinitialisation de mot de passe. Reutilise la
+  /// meme page de rebond (deep link) que la confirmation d'inscription :
+  /// l'ouverture du lien authentifie temporairement l'utilisateur
+  /// (evenement AuthChangeEvent.passwordRecovery, gere par AuthGate dans
+  /// main.dart) pour lui permettre de choisir un nouveau mot de passe.
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _client.auth.resetPasswordForEmail(email, redirectTo: emailRedirectTo);
+  }
+
   Future<void> signOut() => _client.auth.signOut();
 
   Future<Profile?> fetchMyProfile() async {

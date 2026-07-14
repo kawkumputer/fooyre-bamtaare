@@ -77,6 +77,14 @@
   "passwordsDontMatch": "Les mots de passe ne correspondent pas",
   "passwordUpdated": "Mot de passe mis à jour.",
 
+  "forgotPassword": "Mot de passe oublié ?",
+  "resetPasswordDialogTitle": "Réinitialiser le mot de passe",
+  "resetPasswordDialogBody": "Saisissez votre e-mail pour recevoir un lien de réinitialisation.",
+  "sendResetLink": "Envoyer le lien",
+  "resetLinkSent": "E-mail envoyé. Vérifiez votre boîte de réception.",
+  "resetPasswordScreenTitle": "Nouveau mot de passe",
+  "resetPasswordScreenBody": "Choisissez un nouveau mot de passe pour votre compte.",
+
   "subscribeForFull": "Abonnez-vous pour lire l'édition complète",
   "editionComplete": "Édition complète",
   "chooseFullPdf": "PDF complet (abonnés)",

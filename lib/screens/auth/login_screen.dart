@@ -53,6 +53,79 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _showForgotPasswordDialog() async {
+    final l10n = AppLocalizations.of(context);
+    final emailController = TextEditingController(
+      text: _emailController.text.trim(),
+    );
+    final formKey = GlobalKey<FormState>();
+    final email = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.resetPasswordDialogTitle),
+        content: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(l10n.resetPasswordDialogBody),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                autofocus: true,
+                decoration: InputDecoration(
+                  labelText: l10n.email,
+                  prefixIcon: const Icon(Icons.email_outlined),
+                ),
+                validator: (v) =>
+                    v == null || !v.contains('@') ? l10n.invalidEmail : null,
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(l10n.cancel),
+          ),
+          FilledButton(
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                Navigator.pop(context, emailController.text.trim());
+              }
+            },
+            child: Text(l10n.sendResetLink),
+          ),
+        ],
+      ),
+    );
+    emailController.dispose();
+    if (email == null || !mounted) return;
+
+    try {
+      await _authService.sendPasswordResetEmail(email);
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.resetLinkSent)));
+      }
+    } on AuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorWithMessage(e.message))));
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(l10n.errorWithMessage('$e'))));
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -164,7 +237,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               )
                             : Text(l10n.login),
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 4),
+                      TextButton(
+                        onPressed: _showForgotPasswordDialog,
+                        child: Text(l10n.forgotPassword),
+                      ),
                       TextButton(
                         onPressed: () async {
                           final registered = await Navigator.of(context)

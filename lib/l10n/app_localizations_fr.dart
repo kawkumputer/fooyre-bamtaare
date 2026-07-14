@@ -186,6 +186,30 @@ class AppLocalizationsFr extends AppLocalizations {
   String get passwordUpdated => 'Mot de passe mis à jour.';
 
   @override
+  String get forgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get resetPasswordDialogTitle => 'Réinitialiser le mot de passe';
+
+  @override
+  String get resetPasswordDialogBody =>
+      'Saisissez votre e-mail pour recevoir un lien de réinitialisation.';
+
+  @override
+  String get sendResetLink => 'Envoyer le lien';
+
+  @override
+  String get resetLinkSent =>
+      'E-mail envoyé. Vérifiez votre boîte de réception.';
+
+  @override
+  String get resetPasswordScreenTitle => 'Nouveau mot de passe';
+
+  @override
+  String get resetPasswordScreenBody =>
+      'Choisissez un nouveau mot de passe pour votre compte.';
+
+  @override
   String get subscribeForFull => 'Abonnez-vous pour lire l\'édition complète';
 
   @override

@@ -12,6 +12,7 @@ import 'models/profile.dart';
 import 'screens/admin/admin_upload_screen.dart';
 import 'screens/admin/admin_users_screen.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/auth/reset_password_screen.dart';
 import 'screens/editions/editions_list_screen.dart';
 import 'screens/profile/profile_screen.dart';
 import 'services/auth_service.dart';
@@ -77,6 +78,12 @@ class AuthGate extends StatelessWidget {
     return StreamBuilder<AuthState>(
       stream: Supabase.instance.client.auth.onAuthStateChange,
       builder: (context, snapshot) {
+        // Lien "mot de passe oublie" ouvert : l'utilisateur est
+        // temporairement authentifie, mais doit d'abord choisir un
+        // nouveau mot de passe avant d'acceder a l'app.
+        if (snapshot.data?.event == AuthChangeEvent.passwordRecovery) {
+          return const ResetPasswordScreen();
+        }
         final session = Supabase.instance.client.auth.currentSession;
         if (session == null) {
           return const LoginScreen();

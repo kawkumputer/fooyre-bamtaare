@@ -428,6 +428,48 @@ abstract class AppLocalizations {
   /// **'Mot de passe mis à jour.'**
   String get passwordUpdated;
 
+  /// No description provided for @forgotPassword.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mot de passe oublié ?'**
+  String get forgotPassword;
+
+  /// No description provided for @resetPasswordDialogTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réinitialiser le mot de passe'**
+  String get resetPasswordDialogTitle;
+
+  /// No description provided for @resetPasswordDialogBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Saisissez votre e-mail pour recevoir un lien de réinitialisation.'**
+  String get resetPasswordDialogBody;
+
+  /// No description provided for @sendResetLink.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer le lien'**
+  String get sendResetLink;
+
+  /// No description provided for @resetLinkSent.
+  ///
+  /// In fr, this message translates to:
+  /// **'E-mail envoyé. Vérifiez votre boîte de réception.'**
+  String get resetLinkSent;
+
+  /// No description provided for @resetPasswordScreenTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau mot de passe'**
+  String get resetPasswordScreenTitle;
+
+  /// No description provided for @resetPasswordScreenBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisissez un nouveau mot de passe pour votre compte.'**
+  String get resetPasswordScreenBody;
+
   /// No description provided for @subscribeForFull.
   ///
   /// In fr, this message translates to:

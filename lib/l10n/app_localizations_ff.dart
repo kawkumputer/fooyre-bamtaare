@@ -183,6 +183,28 @@ class AppLocalizationsFf extends AppLocalizations {
   String get passwordUpdated => 'Finnde waylaama.';
 
   @override
+  String get forgotPassword => 'A yejjitii finnde maa ?';
+
+  @override
+  String get resetPasswordDialogTitle => 'Waylu finnde ndee';
+
+  @override
+  String get resetPasswordDialogBody =>
+      'Winndu iimeel maa ngam heɓde jokkorde waylugol finnde.';
+
+  @override
+  String get sendResetLink => 'Neldu jokkorde ndee';
+
+  @override
+  String get resetLinkSent => 'Iimeel neldaama. Ƴeewto konte iimeel maa.';
+
+  @override
+  String get resetPasswordScreenTitle => 'Finnde hesere';
+
+  @override
+  String get resetPasswordScreenBody => 'Suɓo finnde hesere ngam konte maa.';
+
+  @override
   String get subscribeForFull => 'Lulno ngam tarde tonngoode timmunde';
 
   @override
