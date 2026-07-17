@@ -51,11 +51,11 @@ class AppLocalizationsFf extends AppLocalizations {
   String get accountCreated => 'Konte sosaama! A waawi naatde jooni.';
 
   @override
-  String get subscribeTitle => 'Lulno e Fooyre Ɓamtaare';
+  String get subscribeTitle => 'Heɓde damal timmungal e Fooyre Ɓamtaare';
 
   @override
   String get subscribeBody =>
-      'Ngam mbaawaa tarde tonngooɗe ɗee fof, jokkondir e caaktoowo oo mbele lulno-ɗaa.';
+      'Ngam tarde tonngooɗe ɗee fof, jokkondir e caaktoowo oo.';
 
   @override
   String get free => 'Alaa njoɓdi';
@@ -105,7 +105,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get subscribeContact =>
-      'Ngam lulnaade, jokkondir e caakto jaaynde ndee.';
+      'Ngam heɓde damal timmungal, jokkondir e caakto jaaynde ndee.';
 
   @override
   String get adminAccount => 'Konte jiiloowo';
@@ -118,6 +118,9 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get language => 'Ɗemngal';
+
+  @override
+  String get privacyPolicy => 'Sarɗiiji suturo';
 
   @override
   String get deleteMyAccount => 'Momtude konte am';
@@ -205,7 +208,8 @@ class AppLocalizationsFf extends AppLocalizations {
   String get resetPasswordScreenBody => 'Suɓo finnde hesere ngam konte maa.';
 
   @override
-  String get subscribeForFull => 'Lulno ngam tarde tonngoode timmunde';
+  String get subscribeForFull =>
+      'Jokkondir e caaktoowo ngam tarde tonngoode timmunde';
 
   @override
   String get editionComplete => 'Tonngoode timmunde';
@@ -242,7 +246,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get subscribeDialogBody =>
-      'Ngam tarde tonngoode timmunde, aɗa foti lulnaade. Jokkondir e caakto jaaynde ndee ngam heɓde damal.';
+      'Tonngoode timmunde ndee ko wonande jannguɓe heɓɓe damal. Jokkondir e caaktoowo.';
 
   @override
   String get close => 'Uddu';

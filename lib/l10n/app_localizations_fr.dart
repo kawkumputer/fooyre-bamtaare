@@ -52,11 +52,11 @@ class AppLocalizationsFr extends AppLocalizations {
       'Compte créé ! Vous pouvez vous connecter dès maintenant.';
 
   @override
-  String get subscribeTitle => 'Abonnez-vous à Fooyre Ɓamtaare';
+  String get subscribeTitle => 'Accès complet à Fooyre Ɓamtaare';
 
   @override
   String get subscribeBody =>
-      'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement.';
+      'Pour lire toutes les éditions, contactez la rédaction.';
 
   @override
   String get free => 'Gratuit';
@@ -107,7 +107,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscribeContact =>
-      'Pour vous abonner, contactez l\'éditeur du journal.';
+      'Pour un accès complet, contactez la rédaction du journal.';
 
   @override
   String get adminAccount => 'Compte administrateur';
@@ -120,6 +120,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get language => 'Langue';
+
+  @override
+  String get privacyPolicy => 'Politique de confidentialité';
 
   @override
   String get deleteMyAccount => 'Supprimer mon compte';
@@ -210,7 +213,8 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisissez un nouveau mot de passe pour votre compte.';
 
   @override
-  String get subscribeForFull => 'Abonnez-vous pour lire l\'édition complète';
+  String get subscribeForFull =>
+      'Contactez la rédaction pour lire l\'édition complète';
 
   @override
   String get editionComplete => 'Édition complète';
@@ -247,7 +251,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscribeDialogBody =>
-      'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès.';
+      'L\'édition complète est réservée aux lecteurs ayant un accès. Contactez la rédaction pour en savoir plus.';
 
   @override
   String get close => 'Fermer';

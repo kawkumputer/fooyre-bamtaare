@@ -185,13 +185,13 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeTitle.
   ///
   /// In fr, this message translates to:
-  /// **'Abonnez-vous à Fooyre Ɓamtaare'**
+  /// **'Accès complet à Fooyre Ɓamtaare'**
   String get subscribeTitle;
 
   /// No description provided for @subscribeBody.
   ///
   /// In fr, this message translates to:
-  /// **'Pour lire toutes les éditions, contactez l\'éditeur pour un abonnement.'**
+  /// **'Pour lire toutes les éditions, contactez la rédaction.'**
   String get subscribeBody;
 
   /// No description provided for @free.
@@ -281,7 +281,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeContact.
   ///
   /// In fr, this message translates to:
-  /// **'Pour vous abonner, contactez l\'éditeur du journal.'**
+  /// **'Pour un accès complet, contactez la rédaction du journal.'**
   String get subscribeContact;
 
   /// No description provided for @adminAccount.
@@ -307,6 +307,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Langue'**
   String get language;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Politique de confidentialité'**
+  String get privacyPolicy;
 
   /// No description provided for @deleteMyAccount.
   ///
@@ -473,7 +479,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeForFull.
   ///
   /// In fr, this message translates to:
-  /// **'Abonnez-vous pour lire l\'édition complète'**
+  /// **'Contactez la rédaction pour lire l\'édition complète'**
   String get subscribeForFull;
 
   /// No description provided for @editionComplete.
@@ -539,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @subscribeDialogBody.
   ///
   /// In fr, this message translates to:
-  /// **'Pour lire l\'édition complète, vous devez être abonné. Contactez l\'éditeur pour obtenir l\'accès.'**
+  /// **'L\'édition complète est réservée aux lecteurs ayant un accès. Contactez la rédaction pour en savoir plus.'**
   String get subscribeDialogBody;
 
   /// No description provided for @close.

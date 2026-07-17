@@ -4,6 +4,9 @@ GoogleService-Info.plist
 *firebase-adminsdk*.json
 *.p8
 *.p12
+*.jks
+*.keystore
+android/key.properties
 
 # Miscellaneous
 *.class

@@ -18,8 +18,8 @@
   "nameRequired": "Nom requis",
   "accountCreated": "Compte créé ! Vous pouvez vous connecter dès maintenant.",
 
-  "subscribeTitle": "Abonnez-vous à Fooyre Ɓamtaare",
-  "subscribeBody": "Pour lire toutes les éditions, contactez l'éditeur pour un abonnement.",
+  "subscribeTitle": "Accès complet à Fooyre Ɓamtaare",
+  "subscribeBody": "Pour lire toutes les éditions, contactez la rédaction.",
   "free": "Gratuit",
   "subscribers": "Abonnés",
   "loadError": "Erreur de chargement.\nTirez vers le bas pour réessayer.",
@@ -42,11 +42,12 @@
       "days": { "type": "int" }
     }
   },
-  "subscribeContact": "Pour vous abonner, contactez l'éditeur du journal.",
+  "subscribeContact": "Pour un accès complet, contactez la rédaction du journal.",
   "adminAccount": "Compte administrateur",
   "adminUnlimited": "Accès illimité à toutes les éditions",
   "signOut": "Se déconnecter",
   "language": "Langue",
+  "privacyPolicy": "Politique de confidentialité",
 
   "deleteMyAccount": "Supprimer mon compte",
   "deleteMyAccountConfirmTitle": "Supprimer définitivement votre compte ?",
@@ -85,7 +86,7 @@
   "resetPasswordScreenTitle": "Nouveau mot de passe",
   "resetPasswordScreenBody": "Choisissez un nouveau mot de passe pour votre compte.",
 
-  "subscribeForFull": "Abonnez-vous pour lire l'édition complète",
+  "subscribeForFull": "Contactez la rédaction pour lire l'édition complète",
   "editionComplete": "Édition complète",
   "chooseFullPdf": "PDF complet (abonnés)",
   "chooseCoverImage": "Affiche (image de la une)",
@@ -101,7 +102,7 @@
     }
   },
   "subscribeDialogTitle": "Édition complète",
-  "subscribeDialogBody": "Pour lire l'édition complète, vous devez être abonné. Contactez l'éditeur pour obtenir l'accès.",
+  "subscribeDialogBody": "L'édition complète est réservée aux lecteurs ayant un accès. Contactez la rédaction pour en savoir plus.",
   "close": "Fermer",
   "editionUnavailable": "Édition indisponible pour le moment.",
 

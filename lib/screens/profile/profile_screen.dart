@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../main.dart' show localeController;
@@ -9,6 +10,11 @@ import '../../services/auth_service.dart';
 import '../../widgets/subscribe_contact_actions.dart';
 import 'change_password_screen.dart';
 import 'edit_profile_screen.dart';
+
+/// Page hebergee sur GitHub Pages (meme domaine que la page de rebond des
+/// liens email) : requise par l'App Store et le Play Store.
+const _privacyPolicyUrl =
+    'https://kawkumputer.github.io/fooyre-bamtaare/privacy.html';
 
 class ProfileScreen extends StatelessWidget {
   final Profile? profile;
@@ -153,6 +159,18 @@ class ProfileScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 _LanguageCard(l10n: l10n),
+                const SizedBox(height: 8),
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.privacy_tip_outlined),
+                    title: Text(l10n.privacyPolicy),
+                    trailing: const Icon(Icons.open_in_new, size: 18),
+                    onTap: () => launchUrl(
+                      Uri.parse(_privacyPolicyUrl),
+                      mode: LaunchMode.externalApplication,
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 24),
                 OutlinedButton.icon(
                   icon: const Icon(Icons.logout),
