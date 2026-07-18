@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -29,7 +30,12 @@ Future<void> main() async {
   // le francais dans les deux langues.
   await initializeDateFormatting('fr');
   await localeController.load();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Firebase (notifications push) n'est configure que pour Android/iOS,
+  // les seules cibles de publication de l'app. Ignore sur web (utilise
+  // seulement pour un apercu rapide en dev via `flutter run -d chrome`).
+  if (!kIsWeb) {
+    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  }
   await Supabase.initialize(
     url: SupabaseConfig.url,
     publishableKey: SupabaseConfig.anonKey,
@@ -114,7 +120,10 @@ class _HomeShellState extends State<HomeShell> {
     super.initState();
     _loadProfile();
     // Demande de permission + abonnement notifications, non bloquant.
-    NotificationService().initialize();
+    // Firebase n'est pas initialise sur web (voir main()).
+    if (!kIsWeb) {
+      NotificationService().initialize();
+    }
   }
 
   Future<void> _loadProfile() async {
