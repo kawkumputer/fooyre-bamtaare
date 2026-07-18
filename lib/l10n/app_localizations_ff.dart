@@ -71,10 +71,10 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get noFreeEditions =>
-      'Alaa tonngoode nde yoɓetaake woodi.\nLulno heɓde jaaynde ndee.';
+      'Alaa tonngoode nde yoɓetaake woodi.\nLulno ngam heɓde jaaynde ndee.';
 
   @override
-  String get downloadingEdition => 'Gawtagol tonngoode ndee...';
+  String get downloadingEdition => 'Gaawtagol tonngoode ndee...';
 
   @override
   String get pdfOpenError =>
@@ -126,7 +126,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get deleteMyAccount => 'Momtude konte am';
 
   @override
-  String get deleteMyAccountConfirmTitle => 'Momtude konte maa haa poomaa ?';
+  String get deleteMyAccountConfirmTitle => 'Momtude konte maa haa laaɓa ?';
 
   @override
   String get deleteMyAccountConfirmBody =>
@@ -193,7 +193,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get resetPasswordDialogBody =>
-      'Winndu iimeel maa ngam heɓde jokkorde waylugol finnde.';
+      'Winndu iimeel maa ngam heɓde jokkorde baylugol finnde.';
 
   @override
   String get sendResetLink => 'Neldu jokkorde ndee';
@@ -291,7 +291,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get expiresSoon => 'ɓooyata!';
 
   @override
-  String get manageSubscription => 'Wattitde lulnagol';
+  String get manageSubscription => 'Lulnagol';
 
   @override
   String get subscriptionPeriods => 'Yontaaji lulnagol';
@@ -300,7 +300,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get addPeriod => 'Ɓeydu yonta';
 
   @override
-  String get periodStartDate => 'Ñalnde fuɗɗagol';
+  String get periodStartDate => 'Ñalnde puɗɗagol';
 
   @override
   String get periodEndDate => 'Ñalnde gasgol';
@@ -309,11 +309,11 @@ class AppLocalizationsFf extends AppLocalizations {
   String get noPeriodsYet => 'Alaa yonta lulnagol windaa.';
 
   @override
-  String get deletePeriodConfirmTitle => 'Momtude ngol yonta ?';
+  String get deletePeriodConfirmTitle => 'Momtude o yonta ?';
 
   @override
   String deletePeriodConfirmBody(String start, String end) {
-    return 'Immorde $start haa $end. Lulnaaɗo oo waawataa taƴde tonngooɗe yaltuɗe e ngol yonta.';
+    return 'Tuggude $start haa $end. Lulniiɗo oo waawataa heɓde tonngooɗe jaltuɗe e o saha.';
   }
 
   @override
@@ -324,13 +324,13 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get invalidPeriodRange =>
-      'Ñalnde gasgol foti wonde caggal ñalnde fuɗɗagol.';
+      'Ñalnde gasgol foti wonde ko caggal ñalnde puɗɗagol.';
 
   @override
   String get activePeriodBadge => 'hannde';
 
   @override
-  String get subscriptionHistory => 'Diiwaan lulnaagu';
+  String get subscriptionHistory => 'Sahaaji lulno';
 
   @override
   String get publishEdition => 'Yollu tonngoode';
