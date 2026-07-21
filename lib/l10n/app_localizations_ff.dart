@@ -87,6 +87,10 @@ class AppLocalizationsFf extends AppLocalizations {
   String get myProfile => 'Heftinirde am';
 
   @override
+  String get guestProfilePrompt =>
+      'Naatu e konte maa ngam wattitde heftinirde maa e lulnagol maa.';
+
+  @override
   String get noPhone => 'Alaa telefon';
 
   @override

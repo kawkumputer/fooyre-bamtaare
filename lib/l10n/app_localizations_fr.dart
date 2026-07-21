@@ -89,6 +89,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get myProfile => 'Mon profil';
 
   @override
+  String get guestProfilePrompt =>
+      'Connectez-vous pour gérer votre profil et votre abonnement.';
+
+  @override
   String get noPhone => 'Pas de téléphone';
 
   @override

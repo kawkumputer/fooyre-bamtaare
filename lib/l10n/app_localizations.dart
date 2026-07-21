@@ -248,6 +248,12 @@ abstract class AppLocalizations {
   /// **'Mon profil'**
   String get myProfile;
 
+  /// No description provided for @guestProfilePrompt.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connectez-vous pour gérer votre profil et votre abonnement.'**
+  String get guestProfilePrompt;
+
   /// No description provided for @noPhone.
   ///
   /// In fr, this message translates to:

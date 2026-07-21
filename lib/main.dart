@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -12,7 +14,7 @@ import 'l10n/fallback_localizations.dart';
 import 'models/profile.dart';
 import 'screens/admin/admin_upload_screen.dart';
 import 'screens/admin/admin_users_screen.dart';
-import 'screens/auth/login_screen.dart';
+import 'screens/auth/auth_prompt_screen.dart';
 import 'screens/auth/reset_password_screen.dart';
 import 'screens/editions/editions_list_screen.dart';
 import 'screens/profile/profile_screen.dart';
@@ -34,7 +36,9 @@ Future<void> main() async {
   // les seules cibles de publication de l'app. Ignore sur web (utilise
   // seulement pour un apercu rapide en dev via `flutter run -d chrome`).
   if (!kIsWeb) {
-    await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
   }
   await Supabase.initialize(
     url: SupabaseConfig.url,
@@ -75,7 +79,9 @@ class FooyreApp extends StatelessWidget {
   }
 }
 
-/// Redirige vers la connexion ou l'accueil selon l'etat de session.
+/// Affiche l'accueil (HomeShell), qui gere lui-meme la navigation invite
+/// / connecte : l'app ne doit pas forcer la connexion pour parcourir ses
+/// fonctionnalites non liees a un compte (guideline App Store 5.1.1(v)).
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
 
@@ -89,10 +95,6 @@ class AuthGate extends StatelessWidget {
         // nouveau mot de passe avant d'acceder a l'app.
         if (snapshot.data?.event == AuthChangeEvent.passwordRecovery) {
           return const ResetPasswordScreen();
-        }
-        final session = Supabase.instance.client.auth.currentSession;
-        if (session == null) {
-          return const LoginScreen();
         }
         return const HomeShell();
       },
@@ -114,16 +116,29 @@ class _HomeShellState extends State<HomeShell> {
   Profile? _profile;
   bool _loadingProfile = true;
   int _currentIndex = 0;
+  StreamSubscription<AuthState>? _authSub;
 
   @override
   void initState() {
     super.initState();
     _loadProfile();
+    // Recharge le profil a chaque connexion/deconnexion (l'ecran Profil
+    // peut desormais pousser LoginScreen depuis l'accueil en mode invite,
+    // au lieu d'un AuthGate qui remplacerait tout l'ecran).
+    _authSub = Supabase.instance.client.auth.onAuthStateChange.listen(
+      (_) => _loadProfile(),
+    );
     // Demande de permission + abonnement notifications, non bloquant.
     // Firebase n'est pas initialise sur web (voir main()).
     if (!kIsWeb) {
       NotificationService().initialize();
     }
+  }
+
+  @override
+  void dispose() {
+    _authSub?.cancel();
+    super.dispose();
   }
 
   Future<void> _loadProfile() async {
@@ -143,25 +158,24 @@ class _HomeShellState extends State<HomeShell> {
   @override
   Widget build(BuildContext context) {
     if (_loadingProfile) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
     final isAdmin = _profile?.isAdmin ?? false;
+    final isSignedIn = _authService.currentUser != null;
     final l10n = AppLocalizations.of(context);
 
     final screens = <Widget>[
       EditionsListScreen(profile: _profile),
       if (isAdmin) const AdminUsersScreen(),
       if (isAdmin) const AdminUploadScreen(),
-      ProfileScreen(
-        profile: _profile,
-        onProfileUpdated: _loadProfile,
-        onSignedOut: () {
-          // AuthGate reagit au changement d'etat et affiche LoginScreen.
-        },
-      ),
+      isSignedIn
+          ? ProfileScreen(
+              profile: _profile,
+              onProfileUpdated: _loadProfile,
+              onSignedOut: _loadProfile,
+            )
+          : AuthPromptScreen(onAuthChanged: _loadProfile),
     ];
 
     final destinations = <NavigationDestination>[
