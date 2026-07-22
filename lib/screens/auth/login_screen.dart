@@ -5,7 +5,6 @@ import '../../l10n/app_localizations.dart';
 import '../../services/auth_service.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/language_toggle_button.dart';
-import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -20,7 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   final _authService = AuthService();
   bool _loading = false;
-  bool _justRegistered = false;
 
   @override
   void dispose() {
@@ -166,37 +164,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 36),
-                  if (_justRegistered) ...[
-                    Card(
-                      color: Theme.of(context).colorScheme.secondaryContainer,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Icon(
-                              Icons.check_circle_outline,
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSecondaryContainer,
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                l10n.accountCreated,
-                                style: TextStyle(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSecondaryContainer,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -235,19 +202,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextButton(
                     onPressed: _showForgotPasswordDialog,
                     child: Text(l10n.forgotPassword),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final registered = await Navigator.of(context).push<bool>(
-                        MaterialPageRoute(
-                          builder: (_) => const RegisterScreen(),
-                        ),
-                      );
-                      if (registered == true && mounted) {
-                        setState(() => _justRegistered = true);
-                      }
-                    },
-                    child: Text(l10n.noAccountSignUp),
                   ),
                 ],
               ),

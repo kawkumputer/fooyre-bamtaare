@@ -6,9 +6,10 @@ import '../models/subscription_period.dart';
 class AuthService {
   final SupabaseClient _client = Supabase.instance.client;
 
-  /// Page de rebond HTTPS (GitHub Pages) utilisee comme redirection
-  /// apres confirmation d'email, avant de renvoyer vers l'app via le
-  /// schema personnalise io.fbpm.fooyre://login-callback.
+  /// Page de rebond HTTPS (GitHub Pages) utilisee comme redirection pour
+  /// les liens envoyes par e-mail (reinitialisation de mot de passe),
+  /// avant de renvoyer vers l'app via le schema personnalise
+  /// io.fbpm.fooyre://login-callback.
   ///
   /// Necessaire car certains clients mail (Gmail) reecrivent les liens
   /// avec leur propre redirecteur, qui echoue silencieusement sur un
@@ -24,20 +25,6 @@ class AuthService {
   User? get currentUser => _client.auth.currentUser;
 
   Stream<AuthState> get onAuthStateChange => _client.auth.onAuthStateChange;
-
-  Future<void> signUp({
-    required String email,
-    required String password,
-    required String nom,
-    String? telephone,
-  }) async {
-    await _client.auth.signUp(
-      email: email,
-      password: password,
-      data: {'nom': nom, 'telephone': telephone},
-      emailRedirectTo: emailRedirectTo,
-    );
-  }
 
   Future<void> signIn({required String email, required String password}) async {
     await _client.auth.signInWithPassword(email: email, password: password);

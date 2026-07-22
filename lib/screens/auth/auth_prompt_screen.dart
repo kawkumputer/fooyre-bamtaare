@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../l10n/app_localizations.dart';
 import 'login_screen.dart';
-import 'register_screen.dart';
 
 /// Affichee dans l'onglet Profil quand personne n'est connecte (mode
-/// invite). Se connecter/creer un compte reste facultatif : seules les
-/// fonctionnalites liees a un compte (abonnement, edition du profil, ...)
-/// en ont besoin, pas la consultation des editions.
+/// invite). Se connecter reste facultatif : seules les fonctionnalites
+/// liees a un compte (abonnement, edition du profil, ...) en ont besoin,
+/// pas la consultation des editions.
+///
+/// Pas d'inscription en libre-service ici (guideline App Store 3.1.3(a) :
+/// une "Reader App" ne doit pas proposer de creation de compte donnant
+/// acces a du contenu payant). Les nouveaux abonnes contactent la
+/// redaction ; le compte est cree cote admin (Supabase Dashboard).
 class AuthPromptScreen extends StatelessWidget {
   final VoidCallback onAuthChanged;
 
@@ -46,16 +50,6 @@ class AuthPromptScreen extends StatelessWidget {
                   onAuthChanged();
                 },
                 child: Text(l10n.login),
-              ),
-              const SizedBox(height: 8),
-              OutlinedButton(
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const RegisterScreen()),
-                  );
-                  onAuthChanged();
-                },
-                child: Text(l10n.createAccount),
               ),
             ],
           ),
