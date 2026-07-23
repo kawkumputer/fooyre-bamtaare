@@ -18,6 +18,19 @@
   "nameRequired": "Nom requis",
   "accountCreated": "Compte créé ! Vous pouvez vous connecter dès maintenant.",
 
+  "addSubscriber": "Ajouter un abonné",
+  "subscriberCreatedTitle": "Compte créé",
+  "subscriberCreatedBody": "Communiquez ces identifiants à {name} :\n\nE-mail : {email}\nMot de passe : {password}",
+  "@subscriberCreatedBody": {
+    "placeholders": {
+      "name": { "type": "String" },
+      "email": { "type": "String" },
+      "password": { "type": "String" }
+    }
+  },
+  "copy": "Copier",
+  "credentialsCopied": "Identifiants copiés.",
+
   "subscribeTitle": "Accès complet à Fooyre Ɓamtaare",
   "subscribeBody": "Pour lire toutes les éditions, contactez la rédaction.",
   "free": "Gratuit",

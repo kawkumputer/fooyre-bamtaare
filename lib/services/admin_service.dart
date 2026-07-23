@@ -28,6 +28,25 @@ class AdminService {
     }).toList();
   }
 
+  /// Cree un compte lecteur (Edge Function admin-create-user, admin
+  /// uniquement) et retourne le mot de passe temporaire genere, a
+  /// communiquer au nouvel abonne (WhatsApp, e-mail...).
+  Future<String> createSubscriberAccount({
+    required String email,
+    required String nom,
+    String? telephone,
+  }) async {
+    final res = await _client.functions.invoke(
+      'admin-create-user',
+      body: {'email': email, 'nom': nom, 'telephone': telephone},
+    );
+    final data = res.data as Map<String, dynamic>;
+    if (data['error'] != null) {
+      throw Exception(data['error']);
+    }
+    return data['password'] as String;
+  }
+
   /// Confirme manuellement l'email d'un utilisateur (contournement pour
   /// les cas ou le lien de confirmation ne fonctionne pas, ex: Gmail
   /// sur iOS).

@@ -52,6 +52,23 @@ class AppLocalizationsFr extends AppLocalizations {
       'Compte créé ! Vous pouvez vous connecter dès maintenant.';
 
   @override
+  String get addSubscriber => 'Ajouter un abonné';
+
+  @override
+  String get subscriberCreatedTitle => 'Compte créé';
+
+  @override
+  String subscriberCreatedBody(String name, String email, String password) {
+    return 'Communiquez ces identifiants à $name :\n\nE-mail : $email\nMot de passe : $password';
+  }
+
+  @override
+  String get copy => 'Copier';
+
+  @override
+  String get credentialsCopied => 'Identifiants copiés.';
+
+  @override
   String get subscribeTitle => 'Accès complet à Fooyre Ɓamtaare';
 
   @override

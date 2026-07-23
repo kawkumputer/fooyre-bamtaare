@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/profile.dart';
 import '../../services/admin_service.dart';
+import 'admin_create_subscriber_screen.dart';
 import 'admin_subscription_screen.dart';
 
 class AdminUsersScreen extends StatefulWidget {
@@ -119,7 +120,23 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
     final scheme = Theme.of(context).colorScheme;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.subscribers)),
+      appBar: AppBar(
+        title: Text(l10n.subscribers),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.person_add_alt_outlined),
+            tooltip: l10n.addSubscriber,
+            onPressed: () async {
+              final created = await Navigator.of(context).push<bool>(
+                MaterialPageRoute(
+                  builder: (_) => const AdminCreateSubscriberScreen(),
+                ),
+              );
+              if (created == true) await _refresh();
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(

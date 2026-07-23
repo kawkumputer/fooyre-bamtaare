@@ -182,6 +182,36 @@ abstract class AppLocalizations {
   /// **'Compte créé ! Vous pouvez vous connecter dès maintenant.'**
   String get accountCreated;
 
+  /// No description provided for @addSubscriber.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter un abonné'**
+  String get addSubscriber;
+
+  /// No description provided for @subscriberCreatedTitle.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte créé'**
+  String get subscriberCreatedTitle;
+
+  /// No description provided for @subscriberCreatedBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Communiquez ces identifiants à {name} :\n\nE-mail : {email}\nMot de passe : {password}'**
+  String subscriberCreatedBody(String name, String email, String password);
+
+  /// No description provided for @copy.
+  ///
+  /// In fr, this message translates to:
+  /// **'Copier'**
+  String get copy;
+
+  /// No description provided for @credentialsCopied.
+  ///
+  /// In fr, this message translates to:
+  /// **'Identifiants copiés.'**
+  String get credentialsCopied;
+
   /// No description provided for @subscribeTitle.
   ///
   /// In fr, this message translates to:

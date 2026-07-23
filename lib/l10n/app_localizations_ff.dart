@@ -51,6 +51,23 @@ class AppLocalizationsFf extends AppLocalizations {
   String get accountCreated => 'Konte sosaama! A waawi naatde jooni.';
 
   @override
+  String get addSubscriber => 'Ɓeydu lulnaaɗo';
+
+  @override
+  String get subscriberCreatedTitle => 'Konte sosaama';
+
+  @override
+  String subscriberCreatedBody(String name, String email, String password) {
+    return 'Yottin ɗee alkule konte to $name :\n\nIimeel : $email\nFinnde : $password';
+  }
+
+  @override
+  String get copy => 'Natto';
+
+  @override
+  String get credentialsCopied => 'Alkule konte ɗee nattaama.';
+
+  @override
   String get subscribeTitle => 'Heɓde damal timmungal e Fooyre Ɓamtaare';
 
   @override
