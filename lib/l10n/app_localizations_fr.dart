@@ -146,6 +146,13 @@ class AppLocalizationsFr extends AppLocalizations {
   String get privacyPolicy => 'Politique de confidentialité';
 
   @override
+  String get contact => 'Contact';
+
+  @override
+  String get contactBody =>
+      'Pour toute question sur le journal ou pour un accès à l\'édition complète, contactez la rédaction :';
+
+  @override
   String get deleteMyAccount => 'Supprimer mon compte';
 
   @override

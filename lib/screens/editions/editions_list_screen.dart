@@ -8,6 +8,7 @@ import '../../services/edition_service.dart';
 import '../../widgets/app_logo.dart';
 import '../../widgets/language_toggle_button.dart';
 import '../../widgets/subscribe_contact_actions.dart';
+import '../contact_screen.dart';
 import 'pdf_viewer_screen.dart';
 
 class EditionsListScreen extends StatefulWidget {
@@ -102,7 +103,16 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
             Text('Fooyre Ɓamtaare'),
           ],
         ),
-        actions: const [LanguageToggleButton()],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.mail_outline),
+            tooltip: l10n.contact,
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const ContactScreen()),
+            ),
+          ),
+          const LanguageToggleButton(),
+        ],
       ),
       body: Column(
         children: [

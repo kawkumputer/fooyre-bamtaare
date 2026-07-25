@@ -144,6 +144,13 @@ class AppLocalizationsFf extends AppLocalizations {
   String get privacyPolicy => 'Sarɗiiji suturo';
 
   @override
+  String get contact => 'Jokkorde';
+
+  @override
+  String get contactBody =>
+      'Ngam kala naamnal fii jaaynde ndee walla ngam heɓde tonngoode timmunde, jokkondir e caaktoowo oo :';
+
+  @override
   String get deleteMyAccount => 'Momtude konte am';
 
   @override

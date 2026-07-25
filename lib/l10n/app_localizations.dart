@@ -350,6 +350,18 @@ abstract class AppLocalizations {
   /// **'Politique de confidentialité'**
   String get privacyPolicy;
 
+  /// No description provided for @contact.
+  ///
+  /// In fr, this message translates to:
+  /// **'Contact'**
+  String get contact;
+
+  /// No description provided for @contactBody.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour toute question sur le journal ou pour un accès à l\'édition complète, contactez la rédaction :'**
+  String get contactBody;
+
   /// No description provided for @deleteMyAccount.
   ///
   /// In fr, this message translates to:

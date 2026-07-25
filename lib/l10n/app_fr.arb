@@ -62,6 +62,8 @@
   "signOut": "Se déconnecter",
   "language": "Langue",
   "privacyPolicy": "Politique de confidentialité",
+  "contact": "Contact",
+  "contactBody": "Pour toute question sur le journal ou pour un accès à l'édition complète, contactez la rédaction :",
 
   "deleteMyAccount": "Supprimer mon compte",
   "deleteMyAccountConfirmTitle": "Supprimer définitivement votre compte ?",
