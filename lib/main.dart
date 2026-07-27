@@ -178,6 +178,15 @@ class _HomeShellState extends State<HomeShell> {
           : AuthPromptScreen(onAuthChanged: _loadProfile),
     ];
 
+    // Le nombre d'onglets varie selon le role (admin/lecteur/invite) :
+    // si l'onglet selectionne n'existe plus (ex: un admin se deconnecte,
+    // perdant les onglets Abonnes/Publier), on revient au premier onglet
+    // plutot que de laisser l'IndexedStack pointer hors limites (ecran
+    // blanc).
+    if (_currentIndex >= screens.length) {
+      _currentIndex = 0;
+    }
+
     final destinations = <NavigationDestination>[
       NavigationDestination(
         icon: const Icon(Icons.menu_book_outlined),
