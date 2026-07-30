@@ -66,7 +66,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get copy => 'Copier';
 
   @override
-  String get credentialsCopied => 'Identifiants copiés.';
+  String get credentialsCopied => 'Mot de passe copié.';
 
   @override
   String get subscribeTitle => 'Accès complet à Fooyre Ɓamtaare';

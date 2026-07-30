@@ -65,7 +65,7 @@ class AppLocalizationsFf extends AppLocalizations {
   String get copy => 'Natto';
 
   @override
-  String get credentialsCopied => 'Alkule konte ɗee nattaama.';
+  String get credentialsCopied => 'Finnde nattaama.';
 
   @override
   String get subscribeTitle => 'Heɓde damal timmungal e Fooyre Ɓamtaare';

@@ -209,7 +209,7 @@ abstract class AppLocalizations {
   /// No description provided for @credentialsCopied.
   ///
   /// In fr, this message translates to:
-  /// **'Identifiants copiés.'**
+  /// **'Mot de passe copié.'**
   String get credentialsCopied;
 
   /// No description provided for @subscribeTitle.

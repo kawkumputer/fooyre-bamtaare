@@ -80,7 +80,7 @@ class _AdminCreateSubscriberScreenState
         actions: [
           TextButton(
             onPressed: () async {
-              await Clipboard.setData(ClipboardData(text: body));
+              await Clipboard.setData(ClipboardData(text: password));
               if (context.mounted) {
                 ScaffoldMessenger.of(
                   context,
