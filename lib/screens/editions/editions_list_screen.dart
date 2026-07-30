@@ -96,11 +96,16 @@ class _EditionsListScreenState extends State<EditionsListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
             AppLogo(size: 32),
             SizedBox(width: 10),
-            Text('Fooyre Ɓamtaare'),
+            Flexible(
+              child: Text(
+                'Fooyre Ɓamtaare',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
           ],
         ),
         actions: [
