@@ -148,7 +148,7 @@ class AppLocalizationsFf extends AppLocalizations {
 
   @override
   String get contactBody =>
-      'Ngam kala naamnal fii jaaynde ndee walla ngam heɓde tonngoode timmunde, jokkondir e caaktoowo oo :';
+      'Ngam kala naamnal ko yowiti he jaaynde ndee walla ngam heɓde tonngoode timmunde, jokkondir e caaktoowo oo :';
 
   @override
   String get deleteMyAccount => 'Momtude konte am';

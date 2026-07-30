@@ -15,6 +15,8 @@
 // sont fournies automatiquement par la plateforme Edge Functions.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
+const JSON_HEADERS = { "Content-Type": "application/json" };
+
 function generatePassword(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
   const bytes = new Uint8Array(12);
@@ -29,6 +31,7 @@ Deno.serve(async (req: Request) => {
     if (req.method !== "POST") {
       return new Response(JSON.stringify({ error: "Methode non autorisee" }), {
         status: 405,
+        headers: JSON_HEADERS,
       });
     }
 
@@ -36,6 +39,7 @@ Deno.serve(async (req: Request) => {
     if (!authHeader) {
       return new Response(JSON.stringify({ error: "Non authentifie" }), {
         status: 401,
+        headers: JSON_HEADERS,
       });
     }
 
@@ -54,6 +58,7 @@ Deno.serve(async (req: Request) => {
     if (callerError || !caller) {
       return new Response(JSON.stringify({ error: "Session invalide" }), {
         status: 401,
+        headers: JSON_HEADERS,
       });
     }
 
@@ -67,6 +72,7 @@ Deno.serve(async (req: Request) => {
     if (profileError || callerProfile?.role !== "admin") {
       return new Response(JSON.stringify({ error: "Non autorise" }), {
         status: 403,
+        headers: JSON_HEADERS,
       });
     }
 
@@ -74,7 +80,7 @@ Deno.serve(async (req: Request) => {
     if (!email || !nom) {
       return new Response(
         JSON.stringify({ error: "email et nom requis" }),
-        { status: 400 },
+        { status: 400, headers: JSON_HEADERS },
       );
     }
 
@@ -88,16 +94,19 @@ Deno.serve(async (req: Request) => {
     if (createError) {
       return new Response(JSON.stringify({ error: createError.message }), {
         status: 400,
+        headers: JSON_HEADERS,
       });
     }
 
     return new Response(JSON.stringify({ ok: true, password }), {
       status: 200,
+      headers: JSON_HEADERS,
     });
   } catch (e) {
     console.error(e);
     return new Response(JSON.stringify({ error: String(e) }), {
       status: 500,
+      headers: JSON_HEADERS,
     });
   }
 });

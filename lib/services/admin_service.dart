@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -40,7 +41,12 @@ class AdminService {
       'admin-create-user',
       body: {'email': email, 'nom': nom, 'telephone': telephone},
     );
-    final data = res.data as Map<String, dynamic>;
+    // La reponse peut arriver en texte brut (Content-Type absent cote
+    // Edge Function) plutot que deja decodee : on gere les deux cas.
+    final raw = res.data;
+    final data = raw is String
+        ? jsonDecode(raw) as Map<String, dynamic>
+        : raw as Map<String, dynamic>;
     if (data['error'] != null) {
       throw Exception(data['error']);
     }
